@@ -1,0 +1,940 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Video Background Pro\n"
+"POT-Creation-Date: 2016-08-03 17:58-0700\n"
+"PO-Revision-Date: 2016-06-05 01:12-0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: vidbgpro.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: inc/admin_notices.php:19
+msgid ""
+"Thank you for purchasing Video Background Pro! If you need any assistance, "
+"please visit the <a href=\"http://pushlabs.co/documentation/video-background-"
+"pro\" target=\"_blank\">documentation</a>."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:169
+#: inc/classes/vidbg_vc_integration.php:172
+#: inc/classes/vidbg_vc_integration.php:183
+#: inc/classes/vidbg_vc_integration.php:194
+#: inc/classes/vidbg_vc_integration.php:205
+#: inc/classes/vidbg_vc_integration.php:212
+#: inc/classes/vidbg_vc_integration.php:219
+#: inc/classes/vidbg_vc_integration.php:232
+#: inc/classes/vidbg_vc_integration.php:244
+#: inc/classes/vidbg_vc_integration.php:255
+#: inc/classes/vidbg_vc_integration.php:262
+#: inc/classes/vidbg_vc_integration.php:270
+#: inc/classes/vidbg_vc_integration.php:278
+#: inc/classes/vidbg_vc_integration.php:286
+#: inc/classes/vidbg_vc_integration.php:294
+msgid "Video Background"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:190
+msgid "Video Background Type"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:192
+#: inc/classes/vidbg_vc_integration.php:167
+msgid ""
+"Please specify if you would like to self host your video background or use a "
+"YouTube video instead."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:194
+#: inc/classes/vidbg_vc_integration.php:169 inc/register_metaboxes.php:41
+msgid "Self Host"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:195
+#: inc/classes/vidbg_vc_integration.php:170
+msgid "YouTube"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:201
+#: inc/classes/vidbg_vc_integration.php:176 inc/register_metaboxes.php:47
+msgid "Link to .mp4"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:203
+#: inc/classes/vidbg_vc_integration.php:178
+msgid "Please specify the link to the .mp4 file."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:209
+#: inc/classes/vidbg_vc_integration.php:187 inc/register_metaboxes.php:57
+msgid "Link to .webm"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:210
+#: inc/classes/vidbg_vc_integration.php:189
+msgid "Please specify the link to the .webm file."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:216
+#: inc/classes/vidbg_vc_integration.php:198
+msgid "Link to YouTube video"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:217
+#: inc/classes/vidbg_vc_integration.php:200
+msgid "Please specify the link to the YouTube video."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:223
+#: inc/classes/vidbg_vc_integration.php:209
+msgid "Fallback Image"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:224
+#: inc/classes/vidbg_vc_integration.php:211
+msgid "Please upload a fallback image."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:230
+#: inc/classes/vidbg_vc_integration.php:216
+msgid "Enable Overlay?"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:231
+#: inc/classes/vidbg_vc_integration.php:218 inc/register_metaboxes.php:85
+msgid ""
+"Add an overlay over the video. This is useful if your text isn't readable "
+"with a video background."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:237
+#: inc/classes/vidbg_vc_integration.php:224 inc/register_metaboxes.php:97
+msgid "Overlay Color"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:238
+#: inc/classes/vidbg_vc_integration.php:227 inc/register_metaboxes.php:98
+msgid ""
+"If overlay is enabled, a color will be used for the overlay. You can specify "
+"the color here."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:245
+#: inc/classes/vidbg_vc_integration.php:236 inc/register_metaboxes.php:105
+msgid "Overlay Opacity"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:246
+#: inc/classes/vidbg_vc_integration.php:239
+msgid ""
+"Specify the opacity of the overlay. Accepts any value between 0.00-1.00 with "
+"0 being completely transparent and 1 being completely invisible. Ex. 0.30"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:253
+#: inc/classes/vidbg_vc_integration.php:248 inc/register_metaboxes.php:115
+msgid "Overlay Texture"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:254
+#: inc/classes/vidbg_vc_integration.php:250 inc/register_metaboxes.php:116
+msgid ""
+"If you would like to display a custom pattern for an overlay, you can do so "
+"here."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:260
+#: inc/classes/vidbg_vc_integration.php:259
+msgid "Disable Loop?"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:261
+#: inc/classes/vidbg_vc_integration.php:261 inc/register_metaboxes.php:126
+msgid ""
+"Turn off the loop for Video Background. Once the video is complete, it will "
+"display the last frame of the video."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:267
+#: inc/classes/vidbg_vc_integration.php:267
+msgid "Play the Audio?"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:268
+#: inc/classes/vidbg_vc_integration.php:269 inc/register_metaboxes.php:138
+msgid "Enabling this will play the audio of the video."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:274
+#: inc/classes/vidbg_vc_integration.php:275
+msgid "Enable play/pause button on the frontend?"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:275
+#: inc/classes/vidbg_vc_integration.php:276 inc/register_metaboxes.php:150
+msgid ""
+"By enabling this option, a play/pause button will show up in the bottom "
+"right hand corner of the video background."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:281
+#: inc/classes/vidbg_vc_integration.php:283
+msgid "Eanble mute/unmute button on the frontend?"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:282
+#: inc/classes/vidbg_vc_integration.php:284 inc/register_metaboxes.php:162
+msgid ""
+"By enabling this option, a mute/unmute button will show up in the bottom "
+"right hand corner of the video background."
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:288
+#: inc/classes/vidbg_vc_integration.php:291 inc/register_metaboxes.php:173
+msgid "Frontend Buttons Position"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:289
+#: inc/classes/vidbg_vc_integration.php:292 inc/register_metaboxes.php:174
+msgid ""
+"Please select the position you would like your frontend buttons to be in. "
+"(If applicable)"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:291
+#: inc/classes/vidbg_vc_integration.php:296 inc/register_metaboxes.php:180
+msgid "Bottom Right"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:292
+#: inc/classes/vidbg_vc_integration.php:297 inc/register_metaboxes.php:179
+msgid "Top Right"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:293
+#: inc/register_metaboxes.php:181
+msgid "Bottom Left"
+msgstr ""
+
+#: inc/classes/vidbg_siteorigin_integration.php:294
+#: inc/register_metaboxes.php:182
+msgid "Top Left"
+msgstr ""
+
+#: inc/classes/vidbg_vc_integration.php:165 inc/register_metaboxes.php:36
+msgid "Video background type"
+msgstr ""
+
+#: inc/classes/vidbg_vc_integration.php:298
+msgid "Bottom left"
+msgstr ""
+
+#: inc/classes/vidbg_vc_integration.php:299
+msgid "Top left"
+msgstr ""
+
+#: inc/getting_started.php:37
+msgid "<h2>Video Background <span class=\"vidbgpro-tag\">Pro</span></h2>"
+msgstr ""
+
+#: inc/getting_started.php:38
+msgid "<p>Thank you for purchasing Video Background Pro!</p>"
+msgstr ""
+
+#: inc/getting_started.php:39
+msgid "<h3>Getting Started</h3>"
+msgstr ""
+
+#: inc/getting_started.php:40
+msgid ""
+"<p>Video background Pro makes it easy to add responsive, great looking video "
+"backgrounds to any element on your website. There are four ways to implement "
+"a video background with the Video Background Pro plugin:</p>"
+msgstr ""
+
+#: inc/getting_started.php:42
+msgid "<li>Using the metabox</li>"
+msgstr ""
+
+#: inc/getting_started.php:43
+msgid ""
+"<li>Using the Video Background Pro integration with Visual Composer</li>"
+msgstr ""
+
+#: inc/getting_started.php:44
+msgid ""
+"<li>Using the Video Background Pro integration with Page Builder by "
+"SiteOrigin</li>"
+msgstr ""
+
+#: inc/getting_started.php:45
+msgid "<li>Using the shortcode.</li>"
+msgstr ""
+
+#: inc/getting_started.php:47
+msgid ""
+"<p>For full documentation, instructions, and video tutorials, please visit "
+"<a href=\"http://pushlabs.co/documentation/video-background-pro\" target="
+"\"_blank\">the documentation</a>.</p>"
+msgstr ""
+
+#: inc/getting_started.php:48
+msgid "<h3>Need Help?</h3>"
+msgstr ""
+
+#: inc/getting_started.php:49
+msgid ""
+"<p>If you need assistance with Video Background Pro, you can <a href="
+"\"http://pushlabs.co/support\" target=\"_blank\">submit a ticket</a>.</p>"
+msgstr ""
+
+#: inc/getting_started.php:50
+msgid ""
+" <a href=\"https://twitter.com/intent/follow?screen_name=blakewilsonme\" "
+"class=\"button button-primary vidbg-twitter\" target=\"_blank\">Get Updates "
+"on Twitter</a>"
+msgstr ""
+
+#: inc/getting_started.php:64
+msgid "<a href=\"options-general.php?page=vidbgpro\">Getting Started</a>"
+msgstr ""
+
+#: inc/register_metaboxes.php:22
+msgid "Video Background <span class=\"vidbgpro-tag\">Pro</span>"
+msgstr ""
+
+#: inc/register_metaboxes.php:29
+msgid "Container"
+msgstr ""
+
+#: inc/register_metaboxes.php:30
+msgid ""
+"Please specify the container you would like your video background to be in. "
+"ex: <code>.header</code> or <code>body</code>"
+msgstr ""
+
+#: inc/register_metaboxes.php:37
+msgid ""
+"Please specify if you would like to self host your video background or use a "
+"youtube video."
+msgstr ""
+
+#: inc/register_metaboxes.php:42
+msgid "Youtube"
+msgstr ""
+
+#: inc/register_metaboxes.php:48
+msgid ""
+"Please specify the link to the .mp4 file. You can either enter a URL or "
+"upload a file."
+msgstr ""
+
+#: inc/register_metaboxes.php:52
+msgid "Upload .mp4 file"
+msgstr ""
+
+#: inc/register_metaboxes.php:58
+msgid ""
+"Please specify the link to the .webm file. You can either enter a URL or "
+"upload a file."
+msgstr ""
+
+#: inc/register_metaboxes.php:62
+msgid "Upload .webm file"
+msgstr ""
+
+#: inc/register_metaboxes.php:67
+msgid "Link to Youtube video"
+msgstr ""
+
+#: inc/register_metaboxes.php:68
+msgid "Please add the link to the Youtube video."
+msgstr ""
+
+#: inc/register_metaboxes.php:74
+msgid "Link to fallback image"
+msgstr ""
+
+#: inc/register_metaboxes.php:75
+msgid ""
+"Please specify a link to the fallback image. You can either enter a URL or "
+"upload a file."
+msgstr ""
+
+#: inc/register_metaboxes.php:79
+msgid "Upload fallback image"
+msgstr ""
+
+#: inc/register_metaboxes.php:84
+msgid "Overlay"
+msgstr ""
+
+#: inc/register_metaboxes.php:90 inc/register_metaboxes.php:131
+#: inc/register_metaboxes.php:143 inc/register_metaboxes.php:155
+#: inc/register_metaboxes.php:167
+msgid "Off"
+msgstr ""
+
+#: inc/register_metaboxes.php:91 inc/register_metaboxes.php:132
+#: inc/register_metaboxes.php:144 inc/register_metaboxes.php:156
+#: inc/register_metaboxes.php:168
+msgid "On"
+msgstr ""
+
+#: inc/register_metaboxes.php:106
+msgid ""
+"Specify the opacity of the overlay with the left being mostly transparent "
+"and the right being hardly transparent."
+msgstr ""
+
+#: inc/register_metaboxes.php:120
+msgid "Upload texture"
+msgstr ""
+
+#: inc/register_metaboxes.php:125
+msgid "Turn off loop?"
+msgstr ""
+
+#: inc/register_metaboxes.php:137
+msgid "Play the audio?"
+msgstr ""
+
+#: inc/register_metaboxes.php:149
+msgid "Enable Play/Pause button"
+msgstr ""
+
+#: inc/register_metaboxes.php:161
+msgid "Enable Mute/Unmute button"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:80
+msgid "Test Metabox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:91
+#: inc/vendor/cmb2/example-functions.php:383
+msgid "Test Text"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:92
+#: inc/vendor/cmb2/example-functions.php:104
+#: inc/vendor/cmb2/example-functions.php:112
+#: inc/vendor/cmb2/example-functions.php:120
+#: inc/vendor/cmb2/example-functions.php:129
+#: inc/vendor/cmb2/example-functions.php:137
+#: inc/vendor/cmb2/example-functions.php:152
+#: inc/vendor/cmb2/example-functions.php:160
+#: inc/vendor/cmb2/example-functions.php:168
+#: inc/vendor/cmb2/example-functions.php:185
+#: inc/vendor/cmb2/example-functions.php:194
+#: inc/vendor/cmb2/example-functions.php:207
+#: inc/vendor/cmb2/example-functions.php:214
+#: inc/vendor/cmb2/example-functions.php:221
+#: inc/vendor/cmb2/example-functions.php:235
+#: inc/vendor/cmb2/example-functions.php:248
+#: inc/vendor/cmb2/example-functions.php:261
+#: inc/vendor/cmb2/example-functions.php:273
+#: inc/vendor/cmb2/example-functions.php:282
+#: inc/vendor/cmb2/example-functions.php:290
+#: inc/vendor/cmb2/example-functions.php:299
+#: inc/vendor/cmb2/example-functions.php:306
+#: inc/vendor/cmb2/example-functions.php:320
+#: inc/vendor/cmb2/example-functions.php:384
+#: inc/vendor/cmb2/example-functions.php:475
+#: inc/vendor/cmb2/example-functions.php:483
+#: inc/vendor/cmb2/example-functions.php:490
+#: inc/vendor/cmb2/example-functions.php:497
+#: inc/vendor/cmb2/example-functions.php:504
+#: inc/vendor/cmb2/example-functions.php:511
+#: inc/vendor/cmb2/example-functions.php:518
+#: inc/vendor/cmb2/example-functions.php:545
+#: inc/vendor/cmb2/example-functions.php:553
+#: inc/vendor/cmb2/example-functions.php:560
+#: inc/vendor/cmb2/example-functions.php:597
+msgid "field description (optional)"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:103
+msgid "Test Text Small"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:111
+msgid "Test Text Medium"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:119
+msgid "Website URL"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:128
+msgid "Test Text Email"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:136
+msgid "Test Time"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:144
+#: inc/vendor/cmb2/example-functions.php:145
+msgid "Time zone"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:151
+msgid "Test Date Picker"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:159
+msgid "Test Date Picker (UNIX timestamp)"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:167
+msgid "Test Date/Time Picker Combo (UNIX timestamp)"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:184
+msgid "Test Money"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:193
+msgid "Test Color Picker"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:206
+msgid "Test Text Area"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:213
+msgid "Test Text Area Small"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:220
+msgid "Test Text Area for Code"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:227
+msgid "Test Title Weeeee"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:228
+msgid "This is a title description"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:234
+msgid "Test Select"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:240
+#: inc/vendor/cmb2/example-functions.php:253
+#: inc/vendor/cmb2/example-functions.php:265
+msgid "Option One"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:241
+#: inc/vendor/cmb2/example-functions.php:254
+#: inc/vendor/cmb2/example-functions.php:266
+msgid "Option Two"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:242
+#: inc/vendor/cmb2/example-functions.php:255
+#: inc/vendor/cmb2/example-functions.php:267
+msgid "Option Three"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:247
+msgid "Test Radio inline"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:260
+msgid "Test Radio"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:272
+msgid "Test Taxonomy Radio"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:281
+msgid "Test Taxonomy Select"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:289
+msgid "Test Taxonomy Multi Checkbox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:298
+msgid "Test Checkbox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:305
+msgid "Test Multi Checkbox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:311
+msgid "Check One"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:312
+msgid "Check Two"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:313
+msgid "Check Three"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:319
+msgid "Test wysiwyg"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:327
+msgid "Test Image"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:328
+msgid "Upload an image or enter a URL."
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:334
+msgid "Multiple Files"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:335
+msgid "Upload or add multiple images/attachments."
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:342
+msgid "oEmbed"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:343
+msgid ""
+"Enter a youtube, twitter, or instagram URL. Supports services listed at <a "
+"href=\"http://codex.wordpress.org/Embeds\">http://codex.wordpress.org/"
+"Embeds</a>."
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:374
+msgid "About Page Metabox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:403
+msgid "Repeating Field Group"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:411
+msgid "Generates reusable form entries"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:413
+msgid "Entry {#}"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:414
+msgid "Add Another Entry"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:415
+msgid "Remove Entry"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:428
+msgid "Entry Title"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:435
+msgid "Description"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:436
+msgid "Write a short description for this entry"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:442
+msgid "Entry Image"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:448
+msgid "Image Caption"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:467
+msgid "User Profile Metabox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:474
+#: inc/vendor/cmb2/example-functions.php:544
+msgid "Extra Info"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:482
+msgid "Avatar"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:489
+msgid "Facebook URL"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:496
+msgid "Twitter URL"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:503
+msgid "Google+ URL"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:510
+msgid "Linkedin URL"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:517
+msgid "User Field"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:537
+msgid "Category Metabox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:552
+msgid "Term Image"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:559
+msgid "Arbitrary Term Field"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:581
+msgid "Theme Options Metabox"
+msgstr ""
+
+#: inc/vendor/cmb2/example-functions.php:596
+msgid "Site Background Color"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2.php:122
+msgid "Metabox configuration is required to have an ID parameter"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2.php:375
+msgid "Click to toggle"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Ajax.php:65
+msgid "Please Try Again"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Ajax.php:155
+msgid "Remove Embed"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Ajax.php:159
+#, php-format
+msgid "No oEmbed Results Found for %s. View more info at"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Field.php:1030
+msgid "Add Group"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Field.php:1031
+msgid "Remove Group"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Field.php:1053
+#: inc/vendor/cmb2/includes/CMB2_Field.php:1057
+msgid "None"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:86
+#: inc/vendor/cmb2/includes/CMB2_JS.php:119
+msgid "Clear"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:87
+msgid "Default"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:88
+msgid "Select Color"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:89
+msgid "Current Color"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:109
+msgctxt "Valid formatDate string for jquery-ui datepicker"
+msgid "mm/dd/yy"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:110
+msgid "Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:111
+msgid "Su, Mo, Tu, We, Th, Fr, Sa"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:112
+msgid "Sun, Mon, Tue, Wed, Thu, Fri, Sat"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:113
+msgid ""
+"January, February, March, April, May, June, July, August, September, "
+"October, November, December"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:114
+msgid "Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:115
+msgid "Next"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:116
+msgid "Prev"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:117
+msgid "Today"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:118
+#: inc/vendor/cmb2/includes/CMB2_JS.php:128
+msgid "Done"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:122
+msgid "Choose Time"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:123
+msgid "Time"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:124
+msgid "Hour"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:125
+msgid "Minute"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:126
+msgid "Second"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:127
+msgid "Now"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:129
+msgctxt ""
+"Valid formatting string, as per http://trentrichardson.com/examples/"
+"timepicker/"
+msgid "hh:mm TT"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:135
+msgid "Use this file"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:136
+msgid "Use these files"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:137
+#: inc/vendor/cmb2/includes/CMB2_Types.php:1021
+msgid "Remove Image"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:138
+#: inc/vendor/cmb2/includes/CMB2_Types.php:357
+#: inc/vendor/cmb2/includes/CMB2_Types.php:1040
+msgid "Remove"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:139
+#: inc/vendor/cmb2/includes/CMB2_Types.php:1035
+msgid "File:"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:140
+#: inc/vendor/cmb2/includes/CMB2_Types.php:1038
+msgid "Download"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_JS.php:141
+msgid "Select / Deselect All"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Types.php:298
+msgid "Add Row"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Types.php:768
+#: inc/vendor/cmb2/includes/CMB2_Types.php:816
+msgid "No terms"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Types.php:884
+msgid "Add or Upload Files"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_Types.php:945
+msgid "Add or Upload File"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_hookup.php:120
+msgid ""
+"Term Metadata is a WordPress > 4.4 feature. Please upgrade your WordPress "
+"install."
+msgstr ""
+
+#: inc/vendor/cmb2/includes/CMB2_hookup.php:124
+msgid "Term metaboxes configuration requires a 'taxonomies' parameter"
+msgstr ""
+
+#: inc/vendor/cmb2/includes/helper-functions.php:250
+msgid "Save"
+msgstr ""
+
+#: vidbgpro.php:123
+msgid "Show Advanced Options"
+msgstr ""
+
+#: vidbgpro.php:124
+msgid "Hide Advanced Options"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Video Background Pro"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://pushlabs.co/video-background-pro/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Pro version of the popular Video Background plugin on the WordPress repo."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Blake Wilson, Push Labs"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://pushlabs.co"
+msgstr ""

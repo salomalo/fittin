@@ -1,0 +1,798 @@
+/**
+ *
+ *	Theme Name:		Fitt-In
+ *	Theme URI:		
+ *	Author:			Pebble Tree Studios
+ *	Author URI:		http://www.pebbletreestudios.co.uk
+ *	Description:	The theme for Fitt-In
+ *	Version:		1.0
+ *	Template:		canvas
+ *
+ **/
+
+/* Import Styles
+--------------------------------------------------------------------------------*/
+
+@import url('../canvas/style.css');
+
+
+
+/** ------------------------------------------ DESKTOP **/ 
+
+@media only screen and (min-width: 768px) {
+    
+    
+    
+    /* HEADER */
+    
+    #navigation { 
+        float: right; 
+        width: auto; 
+        clear:none; 
+        max-width: 600px;
+        background-color: transparent; 
+    }
+    
+
+    #navigation .menus {
+        margin-top: 12px;
+    }
+    
+    #navigation .menus a {
+        color: #ffffff;
+        padding: 1em 1.5em;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+    
+    
+    #navigation ul.nav li a:hover {
+        background: transparent !important;
+        background-color: transparent !important;
+        /*border: 1px solid #ffffff;*/
+        border-radius: 8px !important;
+        color: #392077;
+    }
+    
+     #navigation ul.nav li:hover {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    
+    #navigation .menus .login-button a {
+        background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png);
+        background-repeat: no-repeat;
+        background-position: 16px center;
+        padding-left: 46px; 
+        border: 1px solid #ffffff;
+        border-radius: 8px !important;
+        margin-left: 10px;
+        background-size: 18px;
+    }
+    
+    #navigation .menus .login-button a:hover {
+        background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png) !important;
+        background-repeat: no-repeat !important;
+        background-position: 16px center !important;
+        padding-left: 46px; 
+        background-color: #392077 !important; 
+        border: 1px solid #392077;
+        color: #ffffff;
+        background-size: 18px !important;
+    }
+    
+    
+    #nav-container {
+        background-color: transparent;    
+    }
+    
+    
+     #logo {
+        max-width:154px; 
+    }
+    
+    /* END HEADER */
+    
+    
+    .hero {
+        height: 65vh; 
+        padding-top: 18vh;
+    }
+    
+    .hero-internal {
+        height: 34vh; 
+        padding-top: 7vh;
+    }
+    
+    
+    
+    /** MAIN CONTENT **/
+    
+    #wrapper {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    #video-section {
+        background-color: #7936fe;
+        padding: 120px 0px 120px 0px;
+    }
+    
+    #video-section #wrapper #inner-wrapper {
+        width: 1100px;
+        margin: 0px auto;   
+    }
+    
+    #video-section p {
+        color: #ffffff !important;
+    }
+    
+    #video-section h2 {
+        color: #ffffff !important;
+    }
+    
+    #video-section img {
+        box-shadow: 1px 1px 7px #2e1668;
+        padding: 0px;
+    }
+    
+    #content {
+       
+    }
+    
+    #wrapper .entry p {
+    
+        line-height: 25px;
+    
+    }
+    
+    .spacer-5 {
+        height: 5vh;
+    }
+    
+    
+   
+    /** FOOTER **/
+    
+    #footer-container a {
+        margin-left: 30px;
+    }
+
+    #footer-container .fa {
+        font-size: 22px;
+        margin-left: 15px;
+    }
+    
+    .footer-logo {
+        float: left;
+    }
+    
+    .footer-menu {
+        float: right;
+        text-align: right;
+    }
+    
+    
+    
+/* Member Mouse Login */    
+    
+    
+    
+    .mm-login {
+    
+    margin: 0px auto;
+    
+    }
+    
+    
+      
+}
+
+
+
+/** ------------------------------------------------ ALL **/
+
+
+
+/* Member Mouse Test Mode Label */
+
+
+#mm-testmode-container {display: none;}
+
+
+
+/* TITLES */
+
+.home .entry-title, .post-27 .entry-title,  .post-28 .entry-title, .page-template-login-logout .entry-title, .page-template-memberareas .entry-title, .page-template-video-lib .entry-title, .fitt_in_videos-template-default .entry-title , .page-id-32 .entry-title {
+    display: none;
+}
+
+
+
+/* PAGE BACKGROUNDS */
+
+.page-id-27, .page-id-28 {
+
+    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/internal-bg.png);
+
+}
+
+
+.archive, .single-post{
+
+    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/blog-bg.png);
+
+}
+
+
+.page-id-35 #wrapper, .page-id-39 #wrapper, .page-id-42 #wrapper, .page-id-37 #wrapper, .page-id-36 #wrapper {
+    
+    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png);
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+
+}
+
+
+.mm-login td{
+
+    border: none !important;
+
+}
+
+
+
+
+
+/** VIDEO BACKGROUND **/
+
+.vidbg-container {
+    position: absolute !important;
+}
+
+.vidbg-overlay {
+    background-position: center top !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+/** CONTENT **/
+
+
+.youtube {
+    padding: 6px 6px 0px 6px;
+    background-color: #ededed;
+}
+
+/** BUTTONS **/
+
+
+ .fittin-buttons {
+    border: 1px solid #ffffff;
+    border-radius: 8px !important;
+    color: #ffffff;
+    padding: 1em 1.5em;
+    font-size: 14px;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+ }
+
+ .fittin-buttons:hover {
+    background-color: #392077; 
+    border: 1px solid #392077;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+ }
+
+.fittin-buttons.opache {
+    margin-right: 18px; 
+    color: #392077;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: solid 1px rgba(255, 255, 255, 0.1); 
+}
+
+.fittin-buttons.purple  {
+    color: #392077;
+    border: solid 1px #392077; 
+}
+
+.fittin-buttons.purple:hover {
+    color: #ffffff;
+}
+
+.fittin-buttons.opache:hover {
+    margin-right: 18px; 
+    color: #392077;
+    background-color: #ffffff;
+    border: solid 1px rgba(255, 255, 255, 0.1); 
+}
+
+#wrapper .mm-button {
+    
+    border: 1px solid #392077;
+    border-radius: 8px !important;
+    color: #ffffff;
+    padding: 1em 1.5em;
+    font-size: 14px;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+    background-color: #392077 !important;
+    background: #392077 !important;
+    text-transform: none;
+    width: auto;
+    text-shadow: none !important;
+    box-shadow: none !important;
+
+}
+
+#wrapper .mm-button:hover {
+    
+    border: 1px solid #392077;
+    border-radius: 8px !important;
+    color: #392077 !important;
+    padding: 1em 1.5em;
+    font-size: 14px;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+    background-color: #ffffff !important;
+    text-transform: none;
+    width: auto;
+    background: #ffffff !important;
+
+}
+
+
+
+/** MEMBER AREAS **/
+
+.page-template-memberareas, .page-template-video-lib, .fitt_in_videos-template-default, .page-id-32 {
+    background-color: #fafafa !important;
+}
+
+.page-template-memberareas hr {
+
+    border-top: dashed 1px !important;
+    border: 0px; 
+    color: #ccc; 
+    background-color: transparent !important;
+
+}
+
+.page-template .member-head, .single .member-head {
+    border-bottom: 1px #555555 solid !important;
+    background-color: #663ff2 !important; 
+    box-shadow: 0px 3px 4px #c5c5c5;
+    margin-bottom: 60px !important;
+    position: relative;
+} 
+
+/* VIDEO PAGE */
+
+.simplefavorite-button {
+
+    float: right;
+    font-size: 25px;
+    font-weight: normal;
+    background-color: transparent !important;
+    background: transparent !important;
+    margin-right: 13px;
+    border: none;
+    color: #392077 !important;
+}
+
+
+.simplefavorite-button:hover {
+    text-transform: none;
+    color: #a23da1 !important;
+}
+
+
+
+
+.fitt_in_videos-template-default .post-meta, .fitt_in_videos-template-default #post-author, .fitt_in_videos-template-default .post-entries, .logged-in-as {
+    
+    display: none;
+
+}
+
+body.fitt_in_videos-template-default #wrapper #main {
+
+    max-width:670px !important;
+    min-width: 670px !important;
+    width: 670px !important;
+    margin: auto !important; 
+}
+
+
+/** Account Page **/
+
+#wrapper .mm-myaccount-module {
+    margin: 10px 10px 30px 10px;
+    border: none;
+    padding: 0px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 3px #eae3df;
+    padding-bottom: 20px;
+}
+
+
+#wrapper .mm-myaccount-module-header {
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    background-color: #ffffff;
+    padding: 30px 40px;
+    font-family: lato, sans-serif;
+    font-size: 20px;
+}
+
+#wrapper .mm-myaccount-module-header .fa{
+    margin-right: 10px;
+}
+
+#wrapper .mm-update-button {
+    position: relative;
+    top: -3px;
+    left: 15px;
+}
+
+#wrapper .mm-update-button:hover {
+    position: relative;
+    top: -3px;
+    left: 15px;
+    text-decoration: none !important;
+    background-color: #999999 !important;
+    color: #ffffff !important;
+}
+
+
+
+#wrapper .mm-myaccount-content-wrapper {
+    padding: 30px 40px;
+}
+
+#wrapper .mm-myaccount-content-wrapper .mm-myaccount-element {
+    padding-bottom: 15px; 
+}
+
+
+#wrapper .mm-myaccount-content-wrapper .mm-myaccount-label {
+    margin-right: 10px;
+    font-weight: 300;
+}
+
+
+/** Account Edit Pop up **/
+
+
+.ui-dialog .ui-dialog-titlebar  {
+    background: none !important;
+    border: none !important;
+    margin-top: 10px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    font-family: lato, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: normal !important;
+}
+
+.mm-myaccount-dialog-section-header {
+    background: #fff !important;
+    padding: 0px 0px 10px 0px !important;
+    border-radius: 0px !important;
+    color: #666 !important;
+    text-shadow: none !important;
+    margin-top: 20px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+}
+
+.ui-widget-content input{
+    padding: 15px;
+    border-width: 1px;
+    border-radius: 4px !important;
+}
+
+.ui-widget-content select {
+    margin: 10px 0px 20px 0px;
+}
+
+.ui-widget-content .mm-ui-button.blue {
+    border: 1px solid #392077;
+    background-color: #392077;
+    border-radius: 8px !important;
+    color: #ffffff;
+    padding: 1em 1.5em;
+    font-size: 14px;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+ }
+
+.mm-ui-button.blue:hover {
+    color: #392077;
+    background-color: #ffffff;
+    text-decoration: none;
+}
+
+
+.ui-widget-content .mm-ui-button {
+    border: 1px solid #392077;
+    background-color: #ffffff;
+    border-radius: 8px !important;
+    color: #392077;
+    padding: 1em 1.5em;
+    font-size: 14px;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+}
+
+.mm-ui-button:hover {
+    color: #ffffff;
+    background-color: #392077;
+    text-decoration: none;
+}
+
+
+
+/** MEMBER NAV **/
+
+
+.member-nav {
+    background-color: #ffffff;
+    padding: 15px; 
+    width: 200px;
+    height: 150px;
+    border: 0px solid #cccccc;
+    border-radius: 2px; 
+    box-shadow: 0px 2px 3px #eae3df;
+    position: absolute;
+    right: 38px;
+    top: 30px;
+    z-index: 100;
+    display: none;
+}
+
+.member-nav a {
+    font-weight: normal;
+}
+
+.member-nav li {
+    margin-bottom: 10px;
+}
+
+
+
+/** Forms **/
+
+
+#wrapper input {
+    border: 1px solid #c6c6c6;
+}
+
+#wrapper .mm-field, #wrapper .mm-textField {
+    padding: 1em 1.5em;
+    border-radius: 8px !important;
+}
+
+.entry .mm-login .mm-field {
+    width: 370px;
+}
+
+.entry form table td {
+    padding: .857em 0.6em;
+} 
+
+.mm-login .mm-label-column {
+    text-align: right;
+    padding-top: 25px;
+}
+
+
+/** Login, Logout and Signup  **/
+
+
+/** LOGIN PAGE PADDING **/
+
+body.page-id-35 #wrapper {
+    padding-top: 30px;
+}
+
+
+.entry .mm-login .mm-remember-me {
+    margin-left: 0px; 
+}
+
+.page-template-login-logout-php #wrapper h2 {
+    font-size: 37px !important;
+    font-family: 'lato', sans-serif !important;
+    font-weight: 200 !important;
+    color: #352274 !important;
+    line-height: 70px !important;
+}
+
+.page-template-login-logout-php #wrapper h3 {
+    font-size: 27px !important;
+    font-family: 'lato', sans-serif !important;
+    font-weight: normal !important;
+    color: #352274 !important;
+}
+
+
+#mm-account-information-section, .mm-checkoutInfoBlock {
+    border: none;
+}
+
+
+.entry .mm-checkoutContainer {
+    max-width: 600px;
+}
+
+#mm_checkout_form .mm-checkoutInfoBlock {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.mm-checkoutContainer .twocol-one {
+    margin-bottom: 0px;
+}
+
+
+.formhalf .mm-textField {
+    width: 98px;
+}
+
+.formhalf label {
+    float: left;
+    padding-top: 12px;
+    width: 100px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.mm-formField .mm-textField {
+    width: 390px;
+    margin-bottom: 15px;
+}
+
+.mm-formField  label {
+    float: left;
+    padding-top: 12px;
+    width: 100px !important;
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+.mm-paymentbuttons .mm-button {
+    float: left;
+    margin-left: 140px;
+}
+
+
+.select-box {
+    padding: 1em 1.5em;
+    border-radius: 8px !important;
+    border: 1px solid #c6c6c6;
+    float: left;
+    width: 98px;
+    margin-bottom: 15px;
+}
+
+
+.mm-checkoutContainer select {
+    background-color: #ffffff;
+    border: none;
+    width: 99px !important;
+    margin-bottom: 0px !important;
+    font-family: 'lato', sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    color: #666666;
+}
+
+
+
+/** VIDEO WALL **/ 
+
+.fitt_in_videos-template-default .comment {
+
+    background: rgba(255, 255, 255, 1.00) !important;
+    box-shadow: 1px 3px 3px #eae1df !important;
+    
+}
+ 
+
+.video-card a, .vimeo-card {
+    background-color: #ffffff;
+    border: none;
+    padding: 7px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 1px 3px 3px #eae1df;
+    display: block;
+}
+
+.video-card a:hover{
+    background-color: #f7f7f7;
+    border: none;
+    padding: 7px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 3px 5px 4px #eae1df;
+    display: block;
+}
+
+
+.video-card img {
+    padding: 0px;
+    
+}
+
+
+.esg-grid .mainul li.eg-henryharrison-wrapper {
+    background-color: #ffffff;
+    padding: 0px 0px 0px 0px;
+    border-width: 0px 0px 0px 0px;
+    border-radius: 4px 4px 4px 4px;
+    border-color: transparent;
+    border-style: none;
+    box-shadow: 1px 3px 3px #eae1df !important;  
+} 
+
+.esg-overflowtrick {
+    overflow: visible !important;
+}
+
+
+/** IMAGES **/
+
+.entry img, img.thumbnail, #portfolio .group.portfolio-img img {
+    background: none;
+    background-color: none; 
+    border: none;
+}
+
+
+/** HEADER **/
+
+#navigation .menus a {
+    font-family: 'Lato', sans-serif;
+}
+
+
+
+/** FOOTER **/
+
+#footer-container {
+    color: #ffffff;
+    border: 0px !important;
+}
+
+#footer-container p {
+    color: #ffffff;
+}
+
+#footer-container a {
+    color: #ffffff;
+}
+
+.sub-footer {
+    background-color: #f6f6f6;
+    padding: 60px 0px;
+}
+
+#footer-container .sub-footer a {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: #575756;
+    font-weight: normal;
+    display: block;
+}
+
+#footer-container .sub-footer p {
+    color: #575756;
+}
+
+    
