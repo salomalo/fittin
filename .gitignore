@@ -24,7 +24,7 @@ wp-login.php
 wp-load.php
 wp-links-opml.php
 
-
+.htaccess
 wp-cron.php
 
 wp-content/advanced-cache.php
