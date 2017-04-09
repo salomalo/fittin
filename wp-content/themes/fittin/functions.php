@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @package Fitt-In   
+ * @package Fitt-In
  * @since Fitt-In 1.0
  *
  * Functions
  *
  */
 
+include( 'lib/member-page.php' );
 
 add_action( 'init', 'woo_custom_move_navigation', 10 );
 function woo_custom_move_navigation () {
@@ -33,11 +34,6 @@ add_filter('tiny_mce_before_init', 'ikreativ_tinymce_fix');
 
 // Add Shortcode
 function favs_shortcode() {
-
-	
-	
-    
-    
 
 }
 add_shortcode( 'Favs', 'favs_shortcode' );
