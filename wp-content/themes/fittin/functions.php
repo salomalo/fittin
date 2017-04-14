@@ -37,3 +37,15 @@ function favs_shortcode() {
 
 }
 add_shortcode( 'Favs', 'favs_shortcode' );
+
+
+
+
+// custom admin style sheet
+function my_admin_head() {
+	$whodat = get_current_user_id();
+	if ($whodat != 2) {
+        echo '<link href="https://fittin.wpengine.com/wp-content/themes/fittin/group-leader-style.css" rel="stylesheet" type="text/css">';
+    }
+}
+add_action('admin_head', 'my_admin_head');

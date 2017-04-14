@@ -1,0 +1,21 @@
+ #adminmenu, #adminmenuback, #adminmenumain, #wpadminbar, .error, #wpfooter {
+
+    display: none !important;
+
+}
+
+html.wp-toolbar {
+    padding-top: 0px;
+}
+
+
+#wpcontent {
+    margin-left: 0px;
+}
+
+
+body {
+
+    background-color: #ffffff;
+
+}

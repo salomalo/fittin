@@ -272,7 +272,7 @@
  .fittin-buttons {
     border: 1px solid #ffffff;
     border-radius: 8px !important;
-    color: #ffffff;
+    color: #ffffff !important;
     padding: 1em 1.5em;
     font-size: 14px;
     font-family: 'lato', sans-serif;
@@ -289,23 +289,24 @@
 
 .fittin-buttons.opache {
     margin-right: 18px; 
-    color: #392077;
+    color: #392077 !important;
     background-color: rgba(255, 255, 255, 0.4);
     border: solid 1px rgba(255, 255, 255, 0.1); 
+    
 }
 
 .fittin-buttons.purple  {
-    color: #392077;
+    color: #392077 !important;
     border: solid 1px #392077; 
 }
 
 .fittin-buttons.purple:hover {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .fittin-buttons.opache:hover {
     margin-right: 18px; 
-    color: #392077;
+    color: #392077 !important;
     background-color: #ffffff;
     border: solid 1px rgba(255, 255, 255, 0.1); 
 }
@@ -408,6 +409,37 @@ body.fitt_in_videos-template-default #wrapper #main {
 
 
 /** Account Page **/
+
+.packages {
+    background-color: #fafafa !important;
+    border: none;
+    padding: 30px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 1px 3px 3px #eae1df;
+    display: block;
+}
+
+.bronze {
+    background-repeat: no-repeat;
+    background-image: url(images/bronze.png);
+    background-position: 260px 15px;
+    background-size: 30px;
+}
+
+.silver {
+    background-repeat: no-repeat;
+    background-image: url(images/silver.png);
+    background-position: 260px 15px;
+    background-size: 30px;
+}
+
+.gold {
+    background-repeat: no-repeat;
+    background-image: url(images/gold.png);
+    background-position: 260px 15px;
+    background-size: 30px;
+}
 
 #wrapper .mm-myaccount-module {
     margin: 10px 10px 30px 10px;
@@ -640,39 +672,43 @@ body.page-id-35 #wrapper {
 
 
 .formhalf .mm-textField {
-    width: 98px;
+    width: 68px;
+    font-size: 0.9em;
 }
 
 .formhalf label {
     float: left;
     padding-top: 12px;
-    width: 100px;
+    width: 120px;
     text-align: right;
     padding-right: 20px;
+    font-size: 0.9em;
 }
 
 .mm-formField .mm-textField {
-    width: 390px;
+    width: 360px;
     margin-bottom: 15px;
+    font-size: 0.9em;
 }
 
 .mm-formField  label {
     float: left;
     padding-top: 12px;
-    width: 100px !important;
+    width: 120px !important;
     text-align: right;
     padding-right: 20px;
+    font-size: 0.9em;
 }
 
 
 .mm-paymentbuttons .mm-button {
     float: left;
-    margin-left: 140px;
+    margin-left: 160px;
 }
 
 
 .select-box {
-    padding: 1em 1.5em;
+    padding: 0.8em 0.8em;
     border-radius: 8px !important;
     border: 1px solid #c6c6c6;
     float: left;
@@ -680,6 +716,14 @@ body.page-id-35 #wrapper {
     margin-bottom: 15px;
 }
 
+.select-box-large {
+    padding: 0.8em 0.8em;
+    border-radius: 8px !important;
+    border: 1px solid #c6c6c6;
+    float: left;
+    width: 198px;
+    margin-bottom: 15px;
+}
 
 .mm-checkoutContainer select {
     background-color: #ffffff;
@@ -731,14 +775,14 @@ body.page-id-35 #wrapper {
 }
 
 
-.esg-grid .mainul li.eg-henryharrison-wrapper {
+.esg-grid .mainul li.eg-monroe-wrapper {
     background-color: #ffffff;
     padding: 0px 0px 0px 0px;
     border-width: 0px 0px 0px 0px;
     border-radius: 4px 4px 4px 4px;
     border-color: transparent;
     border-style: none;
-    box-shadow: 1px 3px 3px #eae1df !important;  
+    box-shadow: 3px 4px 3px #eae1df !important;  
 } 
 
 .esg-overflowtrick {
@@ -760,6 +804,10 @@ body.page-id-35 #wrapper {
 #navigation .menus a {
     font-family: 'Lato', sans-serif;
 }
+
+
+
+
 
 
 
