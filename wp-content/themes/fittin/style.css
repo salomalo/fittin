@@ -703,7 +703,7 @@ body.page-id-35 #wrapper {
 
 .mm-paymentbuttons .mm-button {
     float: left;
-    margin-left: 160px;
+    margin-left: 16 0px;
 }
 
 
@@ -775,11 +775,11 @@ body.page-id-35 #wrapper {
 }
 
 
-.esg-grid .mainul li.eg-monroe-wrapper {
-    background-color: #ffffff;
-    padding: 0px 0px 0px 0px;
+.esg-grid .mainul li.eg-roosevelt-wrapper {
+    background-color: #ffffff !important;
+    padding: 7px !important;
     border-width: 0px 0px 0px 0px;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px !important;
     border-color: transparent;
     border-style: none;
     box-shadow: 3px 4px 3px #eae1df !important;  

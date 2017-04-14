@@ -117,18 +117,18 @@
     
                         {
                     
-                       
                             $thumb_id = get_post_thumbnail_id($fav);
                             $thumb_url_array = wp_get_attachment_image_src($thumb_id, 'thumbnail-size', true);
                             $thumb_url = $thumb_url_array[0];
                             $vimid = get_field("vimeo_id_number", $fav);
                             $videotitle = get_the_title($fav);
+                            $vidlink = get_permalink($fav);
 
                             if ( $vidcounts < 3 ) 
                             
                                 {
                         
-                                echo do_shortcode('[fourcol_one]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5>'.$videotitle.'</h5>[/fourcol_one]');
+                                echo do_shortcode('[fourcol_one]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5><a href="'.$vidlink.'">'.$videotitle.'</a></h5>[/fourcol_one]');
                             
                                 $vidcounts = $vidcounts + 1;   
                             
@@ -139,8 +139,7 @@
                             
                                 echo do_shortcode('[fourcol_one_last]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5>'.$videotitle.'</h5>[/fourcol_one_last]');
                               
-                                the_favorites_button($fav);
- 
+                                
                             
                                 }
                     
