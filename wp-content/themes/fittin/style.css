@@ -1,7 +1,7 @@
 /**
  *
  *	Theme Name:		Fitt-In
- *	Theme URI:		
+ *	Theme URI:
  *	Author:			Pebble Tree Studios
  *	Author URI:		http://www.pebbletreestudios.co.uk
  *	Description:	The theme for Fitt-In
@@ -15,37 +15,38 @@
 
 @import url('../canvas/style.css');
 
+@import url('mobile.css');
 
 
-/** ------------------------------------------ DESKTOP **/ 
+/** ------------------------------------------ DESKTOP **/
 
 @media only screen and (min-width: 768px) {
-    
-    
-    
+
+
+
     /* HEADER */
-    
-    #navigation { 
-        float: right; 
-        width: auto; 
-        clear:none; 
+
+    #navigation {
+        float: right;
+        width: auto;
+        clear:none;
         max-width: 600px;
-        background-color: transparent; 
+        background-color: transparent;
     }
-    
+
 
     #navigation .menus {
         margin-top: 12px;
     }
-    
+
     #navigation .menus a {
         color: #ffffff;
-        padding: 1em 1.5em;
-        font-size: 14px;
+        padding: 1em 1.4em;
+        font-size: 16px;
         margin-right: 5px;
     }
-    
-    
+
+
     #navigation ul.nav li a:hover {
         background: transparent !important;
         background-color: transparent !important;
@@ -53,108 +54,125 @@
         border-radius: 8px !important;
         color: #392077;
     }
-    
+
      #navigation ul.nav li:hover {
         background: transparent !important;
         background-color: transparent !important;
     }
-    
-    
+
+
     #navigation .menus .login-button a {
         background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png);
         background-repeat: no-repeat;
         background-position: 16px center;
-        padding-left: 46px; 
+        padding-left: 46px;
         border: 1px solid #ffffff;
         border-radius: 8px !important;
         margin-left: 10px;
         background-size: 18px;
     }
-    
+
     #navigation .menus .login-button a:hover {
         background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png) !important;
         background-repeat: no-repeat !important;
         background-position: 16px center !important;
-        padding-left: 46px; 
-        background-color: #392077 !important; 
+        padding-left: 46px;
+        background-color: #392077 !important;
         border: 1px solid #392077;
         color: #ffffff;
         background-size: 18px !important;
     }
-    
-    
+
+
     #nav-container {
-        background-color: transparent;    
+        background-color: transparent;
     }
-    
-    
+
+
      #logo {
-        max-width:154px; 
+        max-width:154px;
     }
-    
+
+	.page-template-dashboard #header, .page-template-memberareas #header {
+
+	padding: 10px 0px;
+
+	}
+
+  .dashboard-links {
+    float: right;
+  }
+
+  .dashboard-links a {
+    font-size: 12px;
+  }
+
+
     /* END HEADER */
-    
-    
+
+
     .hero {
-        height: 65vh; 
+        height: 65vh;
         padding-top: 18vh;
     }
-    
+
     .hero-internal {
-        height: 34vh; 
+        height: 34vh;
         padding-top: 7vh;
     }
-    
-    
-    
+
+
+
     /** MAIN CONTENT **/
-    
+
     #wrapper {
         max-width: 100% !important;
         width: 100% !important;
     }
-    
+
     #video-section {
         background-color: #7936fe;
-        padding: 120px 0px 120px 0px;
+        padding: 80px 0px 80px 0px;
     }
-    
+
     #video-section #wrapper #inner-wrapper {
         width: 1100px;
-        margin: 0px auto;   
+        margin: 0px auto;
     }
-    
+
     #video-section p {
         color: #ffffff !important;
     }
-    
+
     #video-section h2 {
         color: #ffffff !important;
     }
-    
+
     #video-section img {
         box-shadow: 1px 1px 7px #2e1668;
         padding: 0px;
     }
-    
+
     #content {
-       
+
     }
-    
+
     #wrapper .entry p {
-    
+
         line-height: 25px;
-    
+
     }
-    
+
     .spacer-5 {
         height: 5vh;
+        float: left;
+        width: 100%;
     }
-    
-    
-   
+
+
+
     /** FOOTER **/
-    
+
     #footer-container a {
         margin-left: 30px;
     }
@@ -163,30 +181,30 @@
         font-size: 22px;
         margin-left: 15px;
     }
-    
+
     .footer-logo {
         float: left;
     }
-    
+
     .footer-menu {
         float: right;
         text-align: right;
     }
-    
-    
-    
-/* Member Mouse Login */    
-    
-    
-    
+
+
+
+/* Member Mouse Login */
+
+
+
     .mm-login {
-    
+
     margin: 0px auto;
-    
+
     }
-    
-    
-      
+
+
+
 }
 
 
@@ -215,19 +233,19 @@
 .page-id-27, .page-id-28 {
 
     background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/internal-bg.png);
-
+    background-position: center top;
 }
 
 
-.archive, .single-post{
+.archive, .single-post, .page-id-90 {
 
     background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/blog-bg.png);
 
 }
 
 
-.page-id-35 #wrapper, .page-id-39 #wrapper, .page-id-42 #wrapper, .page-id-37 #wrapper, .page-id-36 #wrapper {
-    
+.page-id-35 #wrapper, .page-id-39 #wrapper, .page-id-42 #wrapper, .page-id-37 #wrapper, .page-id-36 #wrapper, .page-id-80 #wrapper {
+
     background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png);
     background-position: center top;
     background-repeat: no-repeat;
@@ -280,7 +298,7 @@
  }
 
  .fittin-buttons:hover {
-    background-color: #392077; 
+    background-color: #392077;
     border: 1px solid #392077;
     color: #ffffff;
     text-decoration: none;
@@ -288,16 +306,16 @@
  }
 
 .fittin-buttons.opache {
-    margin-right: 18px; 
+    margin-right: 18px;
     color: #392077 !important;
     background-color: rgba(255, 255, 255, 0.4);
-    border: solid 1px rgba(255, 255, 255, 0.1); 
-    
+    border: solid 1px rgba(255, 255, 255, 0.1);
+
 }
 
 .fittin-buttons.purple  {
     color: #392077 !important;
-    border: solid 1px #392077; 
+    border: solid 1px #392077;
 }
 
 .fittin-buttons.purple:hover {
@@ -305,14 +323,14 @@
 }
 
 .fittin-buttons.opache:hover {
-    margin-right: 18px; 
+    margin-right: 18px;
     color: #392077 !important;
     background-color: #ffffff;
-    border: solid 1px rgba(255, 255, 255, 0.1); 
+    border: solid 1px rgba(255, 255, 255, 0.1);
 }
 
 #wrapper .mm-button {
-    
+
     border: 1px solid #392077;
     border-radius: 8px !important;
     color: #ffffff;
@@ -330,7 +348,7 @@
 }
 
 #wrapper .mm-button:hover {
-    
+
     border: 1px solid #392077;
     border-radius: 8px !important;
     color: #392077 !important;
@@ -356,19 +374,29 @@
 .page-template-memberareas hr {
 
     border-top: dashed 1px !important;
-    border: 0px; 
-    color: #ccc; 
+    border: 0px;
+    color: #ccc;
     background-color: transparent !important;
 
 }
 
-.page-template .member-head, .single .member-head {
+.page-template .member-head {
     border-bottom: 1px #555555 solid !important;
-    background-color: #663ff2 !important; 
+    background-color: #663ff2 !important;
     box-shadow: 0px 3px 4px #c5c5c5;
     margin-bottom: 60px !important;
     position: relative;
-} 
+}
+
+.single .member-head {
+   border-bottom: 1px #555555 solid !important;
+   background-color: #663ff2 !important;
+   box-shadow: 0px 3px 4px #c5c5c5;
+   margin-bottom: 60px !important;
+   position: relative;
+   padding-top: 10px !important;
+   padding-bottom: 10px !important;
+}
 
 /* VIDEO PAGE */
 
@@ -394,7 +422,7 @@
 
 
 .fitt_in_videos-template-default .post-meta, .fitt_in_videos-template-default #post-author, .fitt_in_videos-template-default .post-entries, .logged-in-as {
-    
+
     display: none;
 
 }
@@ -404,7 +432,7 @@ body.fitt_in_videos-template-default #wrapper #main {
     max-width:670px !important;
     min-width: 670px !important;
     width: 670px !important;
-    margin: auto !important; 
+    margin: auto !important;
 }
 
 
@@ -486,7 +514,7 @@ body.fitt_in_videos-template-default #wrapper #main {
 }
 
 #wrapper .mm-myaccount-content-wrapper .mm-myaccount-element {
-    padding-bottom: 15px; 
+    padding-bottom: 15px;
 }
 
 
@@ -573,15 +601,15 @@ body.fitt_in_videos-template-default #wrapper #main {
 
 .member-nav {
     background-color: #ffffff;
-    padding: 15px; 
+    padding: 15px;
     width: 200px;
     height: 150px;
     border: 0px solid #cccccc;
-    border-radius: 2px; 
+    border-radius: 2px;
     box-shadow: 0px 2px 3px #eae3df;
     position: absolute;
     right: 38px;
-    top: 30px;
+    top: 0px;
     z-index: 100;
     display: none;
 }
@@ -614,7 +642,7 @@ body.fitt_in_videos-template-default #wrapper #main {
 
 .entry form table td {
     padding: .857em 0.6em;
-} 
+}
 
 .mm-login .mm-label-column {
     text-align: right;
@@ -633,13 +661,13 @@ body.page-id-35 #wrapper {
 
 
 .entry .mm-login .mm-remember-me {
-    margin-left: 0px; 
+    margin-left: 0px;
 }
 
 .page-template-login-logout-php #wrapper h2 {
-    font-size: 37px !important;
+    font-size: 30px !important;
     font-family: 'lato', sans-serif !important;
-    font-weight: 200 !important;
+    font-weight: 300 !important;
     color: #352274 !important;
     line-height: 70px !important;
 }
@@ -672,43 +700,39 @@ body.page-id-35 #wrapper {
 
 
 .formhalf .mm-textField {
-    width: 68px;
-    font-size: 0.9em;
+    width: 98px;
 }
 
 .formhalf label {
     float: left;
     padding-top: 12px;
-    width: 120px;
+    width: 100px;
     text-align: right;
     padding-right: 20px;
-    font-size: 0.9em;
 }
 
 .mm-formField .mm-textField {
-    width: 360px;
+    width: 370px;
     margin-bottom: 15px;
-    font-size: 0.9em;
 }
 
 .mm-formField  label {
     float: left;
     padding-top: 12px;
-    width: 120px !important;
+    width: 100px !important;
     text-align: right;
     padding-right: 20px;
-    font-size: 0.9em;
 }
 
 
 .mm-paymentbuttons .mm-button {
     float: left;
-    margin-left: 16 0px;
+    margin-left: 140px;
 }
 
 
 .select-box {
-    padding: 0.8em 0.8em;
+    /*padding: 1em 1.5em;*/
     border-radius: 8px !important;
     border: 1px solid #c6c6c6;
     float: left;
@@ -717,7 +741,7 @@ body.page-id-35 #wrapper {
 }
 
 .select-box-large {
-    padding: 0.8em 0.8em;
+    padding: 1em 1.5em;
     border-radius: 8px !important;
     border: 1px solid #c6c6c6;
     float: left;
@@ -725,10 +749,11 @@ body.page-id-35 #wrapper {
     margin-bottom: 15px;
 }
 
+
 .mm-checkoutContainer select {
     background-color: #ffffff;
     border: none;
-    width: 99px !important;
+    width: 97px !important;
     margin-bottom: 0px !important;
     font-family: 'lato', sans-serif;
     font-weight: normal;
@@ -738,15 +763,15 @@ body.page-id-35 #wrapper {
 
 
 
-/** VIDEO WALL **/ 
+/** VIDEO WALL **/
 
 .fitt_in_videos-template-default .comment {
 
     background: rgba(255, 255, 255, 1.00) !important;
     box-shadow: 1px 3px 3px #eae1df !important;
-    
+
 }
- 
+
 
 .video-card a, .vimeo-card {
     background-color: #ffffff;
@@ -771,19 +796,19 @@ body.page-id-35 #wrapper {
 
 .video-card img {
     padding: 0px;
-    
+
 }
 
 
-.esg-grid .mainul li.eg-roosevelt-wrapper {
+.esg-grid .mainul li.eg-roosevelt-wrapper, .esg-grid .mainul li.eg-roosevelt2-wrapper {
     background-color: #ffffff !important;
     padding: 7px !important;
     border-width: 0px 0px 0px 0px;
-    border-radius: 4px 4px 4px 4px !important;
+    border-radius: 4px 4px 4px 4px;
     border-color: transparent;
     border-style: none;
-    box-shadow: 3px 4px 3px #eae1df !important;  
-} 
+    box-shadow: 3px 4px 3px #eae1df !important;
+}
 
 .esg-overflowtrick {
     overflow: visible !important;
@@ -794,7 +819,7 @@ body.page-id-35 #wrapper {
 
 .entry img, img.thumbnail, #portfolio .group.portfolio-img img {
     background: none;
-    background-color: none; 
+    background-color: none;
     border: none;
 }
 
@@ -806,9 +831,20 @@ body.page-id-35 #wrapper {
 }
 
 
+.logo-strap {
+	float: left;
+	margin-left: 20px;
+	margin-top: 16px;
+	color: #ffffff;
+	font-size: 12px;
+    font-weight: bold;
+}
 
+ul.nav li.current-menu-item a {
+	background-color:transparent !important;
+	color: #ffffff !important;
 
-
+	}
 
 
 /** FOOTER **/
@@ -843,4 +879,54 @@ body.page-id-35 #wrapper {
     color: #575756;
 }
 
-    
+
+   /* SCROLL ARROW */
+
+.arrow a {
+	color: #ffffff !important;
+	}
+
+.arrow {
+  text-align: center;
+  margin: 8% 0;
+}
+.bounce {
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+@-webkit-keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}

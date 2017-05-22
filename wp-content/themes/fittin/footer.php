@@ -18,23 +18,22 @@
     <div class="sub-footer">
 
        <div class="col-full">
-           
+
            <div class="footer-logo">
                <img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="120"><br><br>
-               <p><strong>Movement breaks for mind and body</strong><br>
-                  Online fitness tool for schools</p>
+               <p><strong>Movement breaks for mind and body</strong></p>
            </div>
-           
+
            <div class="footer-menu">
-           
-                <a href="">What is Fitt-In?</a><br>
-                <a href="">How does it work?</a><br>
-                <a href="">How much will it cost?</a><br>
-                <a href="">Blog</a><br>
-                <a href="">Login</a>
-               
+
+                <a href="https://fittin.wpengine.com/#what">What is Fitt-in?</a><br>
+                <a href="https://fittin.wpengine.com/#how">How does it work?</a><br>
+                <a href="https://fittin.wpengine.com/#howmuch">How much will it cost?</a><br>
+                <a href="/archives/category/uncategorized">Blog</a><br>
+                <a href="/wp-admin">Login</a>
+
             </div>
-           
+
         </div>
 
     </div>
@@ -64,5 +63,12 @@
 
 <?php wp_footer(); ?>
 <?php woo_foot(); ?>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+
 </body>
 </html>

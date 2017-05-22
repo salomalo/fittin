@@ -1,0 +1,219 @@
+
+
+
+/** ------------------------------------------ MOBILE **/
+
+
+
+
+@media only screen and (max-width: 768px) {
+/* mobile styles go below this line */
+#navigation {
+background: #703bf8; }
+
+#navigation h3 {
+font-size: 1em;
+padding: 0.7em 1em;
+color:#ffffff;
+text-transform:uppercase;
+}
+.nav li{
+width:100%;
+text-align: left;
+background: #703bf8;
+color: #ffffff;
+}
+ul.nav li ul li a {
+background: none repeat scroll 0% 0% transparent !important;
+color: #ffffff; !important;
+}
+ul.nav li a {
+padding: 0.5em 1em;
+display: block;
+color: #ffffff;
+}
+ul.nav li.current_page_item a, ul.nav li.current_page_parent a, ul.nav li.current-menu-ancestor a, ul.nav li.current-cat a, ul.nav li.current-menu-item a {
+background: none repeat scroll 0% 0% #392177;
+color: #ffffff;
+}
+ul.nav li ul li a {
+background: none repeat scroll 0% 0% transparent !important;
+color: #ffffff !important;
+}
+#navigation .nav-home:before, #navigation .nav-close:before, #navigation .cart-contents:before, #navigation ul.rss li a:before {
+background: #392177;
+color: #ffffff;
+}
+
+.show-nav #inner-wrapper {
+	left: 0% !important;
+	}
+
+.csstransforms3d.csstransitions #navigation {
+	left: 100%;
+	width: 100%;
+	}
+
+
+#logo {
+	width: 30%;
+	}
+
+
+.home #logo {
+	width: 60%;
+	margin: 10px auto 20px auto;
+
+	}
+
+
+.nav-toggle	{
+	background-color: #392177;
+	background-image: none;
+	}
+
+.nav-toggle:before 	{
+	color: #ffffff;
+	}
+
+
+.spacer-5 {
+        height: 6vh;
+    }
+
+h1 {
+	margin-bottom: 40px;
+
+	}
+
+.sixcol-four td {
+	padding: 10px 0px 0px 0px !important;
+	}
+
+.sixcol-four td p {
+	display: none;
+	}
+
+.sixcol-four td span{
+	font-size: 30px !important;
+	line-height: 30px !important;
+	}
+
+.sub-footer {
+	padding-left: 20px !important;
+	padding-right: 20px !important;
+	}
+
+.page-template-login-logout .nav-toggle.icon, .page-template .nav-toggle.icon, .single-fitt_in_videos .nav-toggle.icon{
+	display: none;
+	}
+
+html .page-template-login-logout-php #wrapper h3 {
+
+	font-size: 14px !important;
+
+	}
+
+	input {
+		width: 100%;
+
+		}
+
+	.mm-formField .mm-textField, .formhalf .mm-textField {
+		max-width: 80% !important;
+		width: 80% !important;
+
+		}
+
+	.entry .formhalf label, .entry .mm-formField label {
+		width: auto !important;
+		margin-bottom: 10px;
+		}
+
+	.mm-paymentbuttons .mm-button {
+		margin-left: 0px !important;
+		}
+
+	html .page-template-login-logout-php #wrapper h2 {
+		line-height: 30px !important;
+		font-size:25px !important;
+		}
+
+	.select-box {
+		width: 76% !important;
+		}
+
+	.entry .mm-login .mm-field {
+    	width: 90px !important;
+	}
+
+	.mm-login {
+    	width: 100% !important;
+	}
+
+	.hero h1 {
+		font-size: 30px;
+		}
+
+	.mm-checkoutInfoBlock {
+		padding: 0px !important;
+		}
+
+	#mm-billing-shipping-info-section, #mm-subscription-info-section, #mm-order-history-section {
+		display: none !important;
+		}
+
+	#wrapper .mm-myaccount-content-wrapper {
+    	padding: 20px !important;
+	}
+
+	.packages {
+		margin-bottom: 15px;
+		}
+
+	#mm-account-details-body {
+		display: block;
+		width: 100%;
+		}
+
+	.single-fitt_in_videos #member-nav-icon {
+		width: 25px !important;
+    	float: right !important;
+    	margin-right: 0px !important;
+    	margin-top: 4px !important;
+	}
+
+	 #member-nav-icon {
+		width: 25px !important;
+    	float: right !important;
+    	margin-right: 10px !important;
+    	margin-top: -45px !important;
+	}
+
+	.member-nav {
+		right: 20px !important;
+		}
+
+	html .page-template .member-head, html .single .member-head {
+		margin-bottom: 20px !important;
+		}
+
+
+	html body.fitt_in_videos-template-default #wrapper #main {
+		width: 100% !important;
+		max-width: 100% !important;
+		min-width: 100% !important;
+		}
+
+
+		.mm-checkoutInfoBlock {
+		    border: 0px solid #e5e5e5 !important;
+		}
+
+
+		.entry table tbody td .fittin-buttons {
+			font-size: 11px;
+		}
+
+
+}

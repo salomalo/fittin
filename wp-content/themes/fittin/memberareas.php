@@ -37,7 +37,7 @@
             <li><a href=" https://fittin.wpengine.com/home-1/">Dashboard</a></li>
             <li><a href="https://fittin.wpengine.com/videos/">Videos</a></li>
             <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
-            <li>Statistics</li>
+            <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li>
             <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
         </ul>
      
@@ -50,11 +50,13 @@
 	<div id="inner-wrapper">
         
 
-		<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="65"></a>
+		<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
         
+        <div class="logo-strap">Movement breaks for mind and body</div>
         
-        
-         <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
+        <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
+
+		<div style="clear:both;"></div>
 
 	</header>
 	<?php woo_header_after(); ?>
