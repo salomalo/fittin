@@ -48,7 +48,7 @@ function my_admin_head() {
         echo '<link href="https://fittin.wpengine.com/wp-content/themes/fittin/group-leader-style.css" rel="stylesheet" type="text/css">';
     }
 }
-add_action('admin_head', 'my_admin_head');
+// add_action('admin_head', 'my_admin_head');
 
 // ======
 // Scripts
@@ -62,7 +62,7 @@ function fittin_scripts() {
             array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'user_id' => get_current_user_id() ) );
     }
 }
-add_action('wp_enqueue_scripts', 'fittin_scripts');
+// add_action('wp_enqueue_scripts', 'fittin_scripts');
 
 // ============
 // AJAX Handler
@@ -87,4 +87,4 @@ function ajax_handler() {
     wp_die();
 
 }
-add_action( 'wp_ajax_my_action', 'ajax_handler' );
+// add_action( 'wp_ajax_my_action', 'ajax_handler' );
