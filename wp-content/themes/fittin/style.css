@@ -17,7 +17,6 @@
 
 @import url('mobile.css');
 
-
 /** ------------------------------------------ DESKTOP **/
 
 @media only screen and (min-width: 768px) {
@@ -738,7 +737,7 @@ body.page-id-35 #wrapper {
 
 
 .select-box {
-    /*padding: 1em 1.5em;*/
+    padding: 0.7em 1em;
     border-radius: 8px !important;
     border: 1px solid #c6c6c6;
     float: left;
@@ -766,6 +765,12 @@ body.page-id-35 #wrapper {
     font-size: 16px;
     color: #666666;
 }
+
+.mm-checkoutContainer select.billing_country_subdivisions,
+.mm-checkoutContainer select#mm_field_billing_country {
+	width: 100% !important;
+}
+
 
 
 
