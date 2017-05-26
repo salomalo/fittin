@@ -30,7 +30,7 @@
 
         <ul>
             <li><a href="https://fittin.wpengine.com/home-1/">Dashboard</a></li>
-            <li><a href="https://fittin.wpengine.com/videos/">Videos</a></li>
+            <li><a href="https://fittin.wpengine.com/videos/">All Videos</a></li>
             <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
             <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li>
             <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
