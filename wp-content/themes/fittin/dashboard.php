@@ -25,14 +25,13 @@
 	<?php woo_header_before(); ?>
 
     <div class="member-nav" id="member-nav">
-
          <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
 
         <ul>
             <li><a href="https://fittin.wpengine.com/home-1/">Dashboard</a></li>
             <li><a href="https://fittin.wpengine.com/videos/">All Videos</a></li>
             <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
-            <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li>
+            <!-- <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li> -->
             <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
         </ul>
 
@@ -46,7 +45,7 @@
 
 
 		<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
-
+<?php $user = wp_get_current_user(); print_r($user->roles[0]); ?>
         <div class="logo-strap">Movement breaks for mind and body</div>
 
         <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
@@ -111,51 +110,31 @@
                     echo "<p>You don't have any favourite's yet? Head to the video library now!</p>";
 
                      } else {
-
-
+					echo '<div class="favourites">';
                     $vidcounts = 0;
 
-                    foreach($favs as $fav)
+                    foreach($favs as $fav) {
 
-                        {
+						$thumb_id = get_post_thumbnail_id($fav);
+						$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'thumbnail-size', true);
+						$thumb_url = $thumb_url_array[0];
+						$vimid = get_field("vimeo_id_number", $fav);
+						$videotitle = get_the_title($fav);
+						$vidlink = get_permalink($fav);
 
-                            $thumb_id = get_post_thumbnail_id($fav);
-                            $thumb_url_array = wp_get_attachment_image_src($thumb_id, 'thumbnail-size', true);
-                            $thumb_url = $thumb_url_array[0];
-                            $vimid = get_field("vimeo_id_number", $fav);
-                            $videotitle = get_the_title($fav);
-                            $vidlink = get_permalink($fav);
+						if ( $vidcounts < 3 ) {
 
-                            if ( $vidcounts < 3 )
+							echo do_shortcode('[fourcol_one]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5><a href="'.$vidlink.'">'.$videotitle.'</a></h5>[/fourcol_one]');
 
-                                {
+							$vidcounts = $vidcounts + 1;
 
-                                echo do_shortcode('[fourcol_one]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5><a href="'.$vidlink.'">'.$videotitle.'</a></h5>[/fourcol_one]');
-
-                                $vidcounts = $vidcounts + 1;
-
-
-                            } else {
-
-                                $vidcounts = 0;
-
-                                echo do_shortcode('[fourcol_one_last]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5><a href="'.$vidlink.'">'.$videotitle.'</a></h5>[/fourcol_one_last]');
-
-
-
-                                }
-
-
-
+                        } else {
+							$vidcounts = 0;
+							echo do_shortcode('[fourcol_one_last]<div class="video-card" style="margin-bottom:15px;">[video_lightbox_vimeo5 video_id="'.$vimid.'" width="640" height="480" anchor="'.$thumb_url.'"]</div><h5><a href="'.$vidlink.'">'.$videotitle.'</a></h5>[/fourcol_one_last]');
                         }
-
-
-
-
-
+                    } // foreach
+					echo '</div><!--favourites-->';
                 }
-
-
             ?>
 
 

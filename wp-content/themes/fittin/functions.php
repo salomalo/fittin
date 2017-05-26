@@ -57,7 +57,7 @@ function my_admin_head() {
 function fittin_scripts() {
 	wp_enqueue_script( 'fittin-main', get_stylesheet_directory_uri() . '/scripts/main.js', 'jquery', '1.0.0', true );
 }
-// add_action('wp_enqueue_scripts', 'fittin_scripts');
+add_action('wp_enqueue_scripts', 'fittin_scripts');
 
 function fittin_admin_scripts() {
     if ( is_user_logged_in() ) {

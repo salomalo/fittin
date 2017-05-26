@@ -32,12 +32,12 @@
     <div class="member-nav" id="member-nav">
 
          <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
-
+		 
         <ul>
             <li><a href=" https://fittin.wpengine.com/home-1/">Dashboard</a></li>
             <li><a href="https://fittin.wpengine.com/videos/">All Videos</a></li>
             <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
-            <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li>
+            <!-- <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li> -->
             <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
         </ul>
 
