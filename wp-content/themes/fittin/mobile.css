@@ -151,13 +151,25 @@ html .page-template-login-logout-php #wrapper h3 {
     	width: 100% !important;
 	}
 
+	#content {
+		position: static;
+		margin-top: 62vh;
+	}
+
+	.hero {
+		position: absolute;
+		top: 340px;
+		left: 0;
+		width: 100%;
+	}
+
 	.hero h1 {
 		font-size: 30px;
-		}
+	}
 
 	.mm-checkoutInfoBlock {
 		padding: 0px !important;
-		}
+	}
 
 	#mm-billing-shipping-info-section, #mm-subscription-info-section, #mm-order-history-section {
 		display: none !important;
