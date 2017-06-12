@@ -31,7 +31,7 @@
 
     <div class="member-nav" id="member-nav">
 
-         <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
+         <img src="<?php echo get_stylesheet_directory_uri() ?>/images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
 
         <ul>
             <li><a href="/home-1/">Dashboard</a></li>
@@ -54,7 +54,7 @@
 
         <div class="logo-strap">Movement breaks for mind and body</div>
 
-        <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
+        <img src="<?php echo get_stylesheet_directory_uri() ?>/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
 
 		<div style="clear:both;"></div>
 
