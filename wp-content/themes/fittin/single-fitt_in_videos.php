@@ -28,14 +28,14 @@
 
     <div class="member-nav" id="member-nav">
 
-         <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
+         <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
 
         <ul>
-            <li><a href=" https://fittin.wpengine.com/home-1/">Dashboard</a></li>
-            <li><a href="https://fittin.wpengine.com/videos/">Videos</a></li>
-            <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
-            <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li>
-            <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
+            <li><a href="/home-1/">Dashboard</a></li>
+            <li><a href="/videos/">Videos</a></li>
+            <li><a href="/myaccount/">My Account</a></li>
+            <li><a href="/home-1/#stats">Statistics</a></li>
+            <li><a href="/logout/">Logout</a></li>
         </ul>
 
     </div>
@@ -47,11 +47,11 @@
   	<div id="inner-wrapper">
 
 
-  		<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
+  		<a href="/" title="Online fitness tools for schools"><img src="/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
 
           <div class="logo-strap">Movement breaks for mind and body</div>
 
-          <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
+          <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
 
   		<div style="clear:both;"></div>
 
@@ -75,13 +75,22 @@
     <div id="content" class="col-full">
 
     	<div id="main-sidebar-container">
-
+            
+            
         <a onclick="goBack()" ><i class="fa fa-chevron-left" aria-hidden="true"></i> &nbsp;Back</a>
 
             <!-- #main Starts -->
             <?php woo_main_before(); ?>
             <section id="main">
 
+               
+	<?php if (mm_member_decision(array("membershipId"=>"1")) == true) { ?>
+                        
+<span style="color: rgb(108,195,146); border: 1px dashed rgba(108,195,146,0.5); padding: 8px 14px 10px; margin: 10px 0 14px 8px;display: inline-block; float: left;">Your free-trial expires on <?php echo  do_shortcode('[MM_Member_Data name="expirationDate"]'); ?> - <a href="/myaccount">Click here to purchase now</a></span>    
+                
+                
+    <?php } ?>            
+                
 
 <?php
 	woo_loop_before();
@@ -91,9 +100,11 @@
 
 
 
-    echo '<center><iframe src="https://player.vimeo.com/video/'.$vimid.'" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen class="vimeo-card"></iframe><br></center><br><h3>'.$videotitle.'</h3>';
+    echo '<center><iframe src="https://player.vimeo.com/video/'.$vimid.'" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen class="vimeo-card"></iframe><br></center><br>';
 
 the_favorites_button($post_id, $site_id);
+
+echo '<h3>'.$videotitle.'</h3>';
 
 echo '<br><h6>Rating:</h6><br>';
 
@@ -130,7 +141,7 @@ echo '<br>';
 
 
 
- <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png" style="width: 100%;">
+ <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-bg.png" style="width: 100%;">
 
 
 	</div><!-- /#inner-wrapper -->

@@ -33,7 +33,7 @@
         <br><br>
 
         <center>
-<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="154"></a>
+<a href="/" title="Online fitness tools for schools"><img src="/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="154"></a>
 <h2>Movement breaks for mind and body</h2>
 </center>
     <!-- #content Starts -->
@@ -97,7 +97,6 @@
 
 </div><!-- /#wrapper -->
 
-    <!--<img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png" style="width: 100%;">-->
 
 <div class="fix"></div><!--/.fix-->
 

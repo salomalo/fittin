@@ -61,7 +61,7 @@
 
 
     #navigation .menus .login-button a {
-        background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png);
+        background-image: url(/images/login-icon.png);
         background-repeat: no-repeat;
         background-position: 16px center;
         padding-left: 46px;
@@ -72,7 +72,7 @@
     }
 
     #navigation .menus .login-button a:hover {
-        background-image: url(https://fittin.wpengine.com/wp-content/themes/fittin/images/login-icon.png) !important;
+        background-image: url(/images/login-icon.png) !important;
         background-repeat: no-repeat !important;
         background-position: 16px center !important;
         padding-left: 46px;
@@ -207,6 +207,21 @@
 }
 
 
+.mm-checkoutSection2 {
+    margin-left: 143px;
+}
+
+
+.mm-checkoutSection2 ul {
+    padding-left: 0px !important;
+}
+
+
+.mm-checkoutSection2 h3 {
+    display: none;  
+}
+
+
 
 /** ------------------------------------------------ ALL **/
 
@@ -231,21 +246,21 @@
 
 .page-id-27, .page-id-28 {
 
-    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/internal-bg.png);
+    background-image: url(/images/internal-bg.png);
     background-position: center top;
 }
 
 
 .archive, .single-post, .page-id-90 {
 
-    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/blog-bg.png);
+    background-image: url(/images/blog-bg.png);
 
 }
 
 
 .page-id-35 #wrapper, .page-id-39 #wrapper, .page-id-42 #wrapper, .page-id-37 #wrapper, .page-id-36 #wrapper, .page-id-80 #wrapper {
 
-    background-image: url(http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png);
+    background-image: url(/images/member-bg.png);
     background-position: center top;
     background-repeat: no-repeat;
     background-attachment: scroll;
@@ -370,6 +385,8 @@
 
 
 
+
+
 /** MEMBER AREAS **/
 
 .page-template-memberareas, .page-template-video-lib, .fitt_in_videos-template-default, .page-id-32 {
@@ -408,13 +425,13 @@
 .simplefavorite-button {
 
     float: right;
-    font-size: 25px;
+    font-size: 12px;
     font-weight: normal;
     background-color: transparent !important;
     background: transparent !important;
     margin-right: 13px;
     border: none;
-    color: #392077 !important;
+    color: #428bca  !important;
 }
 
 
@@ -735,6 +752,32 @@ body.page-id-35 #wrapper {
     margin-left: 140px;
 }
 
+.select-box .mm-textField {
+    padding: 0px !important;
+    background-image: url(/images/down-arrow.png);
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: center right;
+    border-radius: 0px;    
+}
+
+.select-box-large .mm-selectList {
+    padding: 0px !important;
+    background-image: url(/images/down-arrow.png);
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: 90% center;
+    border-radius: 0px;    
+}
+
+
+.ui-widget-content .mm-myaccount-field-dropdown {
+    margin: 10px 0px 20px 0px;
+    width: 176px;
+    padding: 10px !important;
+}
+
+
 
 .select-box {
     padding: 0.7em 1em;
@@ -764,6 +807,7 @@ body.page-id-35 #wrapper {
     font-weight: normal;
     font-size: 16px;
     color: #666666;
+    -webkit-appearance:none;
 }
 
 .mm-checkoutContainer select.billing_country_subdivisions,
@@ -771,6 +815,16 @@ body.page-id-35 #wrapper {
 	width: 100% !important;
 }
 
+ .submit {
+    background-color: #392077 !important;
+    border: 1px solid #ffffff;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    padding: 1em 1.5em;
+    font-size: 14px !important;
+    font-family: 'lato', sans-serif !important;
+    font-weight: normal !imporant;
+ }
 
 
 
@@ -944,7 +998,7 @@ ul.nav li.current-menu-item a {
 
 /* Video tracking */
 .single-fitt_in_videos center {
-    position: relative;
+    /* position: relative; */
 }
 
 .vimeo-ready {

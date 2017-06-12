@@ -45,21 +45,16 @@ add_shortcode( 'Favs', 'favs_shortcode' );
 function my_admin_head() {
 	$whodat = get_current_user_id();
 	if ($whodat != 2) {
-        echo '<link href="https://fittin.wpengine.com/wp-content/themes/fittin/group-leader-style.css" rel="stylesheet" type="text/css">';
+        echo '<link href="<?php echo get_stylesheet_directory_uri() ?>group-leader-style.css" rel="stylesheet" type="text/css">';
     }
 }
-// add_action('admin_head', 'my_admin_head');
+add_action('admin_head', 'my_admin_head');
 
 // ======
 // Scripts
 // =======
 
 function fittin_scripts() {
-	wp_enqueue_script( 'fittin-main', get_stylesheet_directory_uri() . '/scripts/main.js', 'jquery', '1.0.0', true );
-}
-add_action('wp_enqueue_scripts', 'fittin_scripts');
-
-function fittin_admin_scripts() {
     if ( is_user_logged_in() ) {
         // try this to specify video pages? if( 'index.php' != $hook ) {
         wp_enqueue_script( 'fittin-main', get_stylesheet_directory_uri() . '/scripts/main.js', 'jquery', '1.0.0', true );
@@ -67,7 +62,7 @@ function fittin_admin_scripts() {
             array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'user_id' => get_current_user_id() ) );
     }
 }
-// add_action('wp_enqueue_scripts', 'fittin_admin_scripts');
+// add_action('wp_enqueue_scripts', 'fittin_scripts');
 
 // ============
 // AJAX Handler

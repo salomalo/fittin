@@ -31,14 +31,14 @@
 
     <div class="member-nav" id="member-nav">
 
-         <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
-		 
+         <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon.png" style="width: 25px; float: right;" id="member-nav-icon-close">
+
         <ul>
-            <li><a href=" https://fittin.wpengine.com/home-1/">Dashboard</a></li>
-            <li><a href="https://fittin.wpengine.com/videos/">All Videos</a></li>
-            <li><a href="https://fittin.wpengine.com/myaccount/">My Account</a></li>
-            <!-- <li><a href="https://fittin.wpengine.com/home-1/#stats">Statistics</a></li> -->
-            <li><a href="https://fittin.wpengine.com/logout/">Logout</a></li>
+            <li><a href="/home-1/">Dashboard</a></li>
+            <li><a href="/videos/">All Videos</a></li>
+            <li><a href="/myaccount/">My Account</a></li>
+            <li><a href="/home-1/#stats">Statistics</a></li>
+            <li><a href="/logout/">Logout</a></li>
         </ul>
 
     </div>
@@ -50,11 +50,11 @@
 	<div id="inner-wrapper">
 
 
-		<a href="http://fittin.wpengine.com/" title="Online fitness tools for schools"><img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
+		<a href="/" title="Online fitness tools for schools"><img src="/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="100" style="float: left;"></a>
 
         <div class="logo-strap">Movement breaks for mind and body</div>
 
-        <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
+        <img src="<?php echo get_stylesheet_directory_uri() ?>images/member-icon-white.png" style="width: 25px; float: right; margin-right: 30px; margin-top: 5px;" id="member-nav-icon">
 
 		<div style="clear:both;"></div>
 
@@ -112,7 +112,7 @@
 
 
 
- <img src="http://fittin.wpengine.com/wp-content/themes/fittin/images/member-bg.png" style="width: 100%;">
+ <img src="/wp-content/themes/fittin/images/member-bg.png" style="width: 100%;">
 
 
 	</div><!-- /#inner-wrapper -->

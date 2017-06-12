@@ -20,15 +20,15 @@
        <div class="col-full">
 
            <div class="footer-logo">
-               <img src="http://fittin.wpengine.com/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="120"><br><br>
+               <img src="/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="120"><br><br>
                <p><strong>Movement breaks for mind and body</strong></p>
            </div>
 
            <div class="footer-menu">
 
-                <a href="https://fittin.wpengine.com/#what">What is Fitt-in?</a><br>
-                <a href="https://fittin.wpengine.com/#how">How does it work?</a><br>
-                <a href="https://fittin.wpengine.com/#howmuch">How much will it cost?</a><br>
+                <a href="/#what">What is Fitt-in?</a><br>
+                <a href="/#how">How does it work?</a><br>
+                <a href="/#howmuch">How much will it cost?</a><br>
                 <a href="/archives/category/uncategorized">Blog</a><br>
                 <a href="/wp-admin">Login</a>
 
