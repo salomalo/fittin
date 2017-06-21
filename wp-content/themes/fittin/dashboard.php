@@ -163,6 +163,10 @@
 $time_log = get_user_meta( get_current_user_id(), 'time_list' );
 ?>
 <h3>My usage</h3>
+            
+<?php echo do_shortcode('[wp_charts title="linechart" type="line" align="alignright" margin="5px 20px" datasets="40,43,61,50 next 33,15,40,22" labels="one,two,three,four" scaleoverride="true" scalesteps="5" scalestepwidth="10" scalestartvalue="0"]'); ?>       
+            
+            
 <?php
 foreach ( $time_log[0] as $time ) {
 	echo date( 'd-m-Y H:i', $time ) . "<br/>";
