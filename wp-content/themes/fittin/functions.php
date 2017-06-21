@@ -78,7 +78,25 @@ function ajax_handler() {
 
 	$user = intval( $_POST['user'] );
 
-	update_user_meta( $user, 'time_list_most_recent', time() );
+	$recent = get_user_meta( $user, 'time_list_most_recent' );
+	if ( '' != $recent[0] ) {
+		// compare current time to recent time
+		$time_difference =  time() - $recent[0];
+
+		if ( $time_difference > 300 ) { // 5 mins
+
+			update_user_meta( $user, 'time_list_most_recent', time() );
+
+		} else {
+			// don't log this
+			die('not enough time elapsed');
+		}
+
+	} else { // if no recent time found
+
+		update_user_meta( $user, 'time_list_most_recent', time() );
+
+	}
 
     $time_list = get_user_meta( $user, 'time_list', true );
 
@@ -90,7 +108,7 @@ function ajax_handler() {
 
     update_user_meta( $user, 'time_list', $time_list );
 
-    wp_die('hello?');
+    wp_die($time_difference);
 
 }
 add_action( 'wp_ajax_my_action', 'ajax_handler' );
