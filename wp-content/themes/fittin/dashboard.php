@@ -157,10 +157,63 @@
 <hr />
 
 &nbsp;
-<h5 id="stats">Statistics comings soon...</h5>
+<h5 id="stats">Statistics</h5>
 
-<img src="<?php echo get_stylesheet_directory_uri() ?>/images/graph.png" style="opacity: .5;">            
-            
+<?php
+$time_log = get_user_meta( get_current_user_id(), 'time_list' );
+?>
+<h3>My usage</h3>
+<?php
+foreach ( $time_log[0] as $time ) {
+	echo date( 'd-m-Y H:i', $time ) . "<br/>";
+}
+?>
+<h3>Get sub users</h3>
+<?php
+
+$user_info = get_userdata( get_current_user_id() );
+foreach( $user_info->roles as $role ) {
+	if ( 'Group Leader' === $role ) { // if group leader
+
+		// get group leader's group id
+		$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . get_current_user_id() . "'";
+		$result	= $wpdb -> get_row($sql);
+		if ( count( $result ) > 0 ) {
+
+			// now get users from group
+			$gMemSql = "SELECT * FROM ".$wpdb -> prefix."group_sets_members WHERE group_id = '".$result->id."' ORDER BY createdDate";
+			$gMemResults = $wpdb -> get_results($gMemSql);
+
+			foreach( $gMemResults as $member ) { ?>
+				<div>
+					<?php $member_info = get_user_by( 'ID', $member->member_id  );
+
+					echo '<h4>' . $member_info->display_name . '</h4>';
+					$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
+					<ul>
+						<?php foreach ( $member_stats[0] as $stat ) {
+							echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
+						} ?>
+					</ul>
+				</div>
+			<?php }
+		}
+
+	} else {
+		// not a group leader
+	}
+}
+
+
+
+?>
+<h3>Get sub users usage </h3>
+
+
+
+
+<img src="<?php echo get_stylesheet_directory_uri() ?>/images/graph.png" style="opacity: .5;">
+
 
 
 		</div><!-- /#main-sidebar-container -->

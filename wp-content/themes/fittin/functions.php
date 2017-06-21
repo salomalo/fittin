@@ -57,13 +57,16 @@ add_action('wp_enqueue_scripts', 'group_leader_style');
 
 function fittin_scripts() {
     if ( is_user_logged_in() ) {
+		wp_enqueue_script( 'vimeo-player', "https://player.vimeo.com/api/player.js" );
+
         // try this to specify video pages? if( 'index.php' != $hook ) {
-        wp_enqueue_script( 'fittin-main', get_stylesheet_directory_uri() . '/scripts/main.js', 'jquery', '1.0.0', true );
+        wp_enqueue_script( 'fittin-main', get_stylesheet_directory_uri() . '/scripts/main.js', array('jquery','vimeo-player'), '1.0.0', true );
         wp_localize_script( 'fittin-main', 'ajax_object',
             array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'user_id' => get_current_user_id() ) );
+
     }
 }
-// add_action('wp_enqueue_scripts', 'fittin_scripts');
+add_action('wp_enqueue_scripts', 'fittin_scripts');
 
 // ============
 // AJAX Handler
@@ -74,18 +77,20 @@ function ajax_handler() {
 	global $wpdb; // this is how you get access to the database
 
 	$user = intval( $_POST['user'] );
-    $time = intval( $_POST['time'] );
+
+	update_user_meta( $user, 'time_list_most_recent', time() );
 
     $time_list = get_user_meta( $user, 'time_list', true );
+
     if ( '' == $time_list ) {
-        $time_list = array( $time );
+        $time_list = array();
     }
 
-    array_push( $time_list, $time );
+    array_push( $time_list, time() );
 
     update_user_meta( $user, 'time_list', $time_list );
 
-    wp_die();
+    wp_die('hello?');
 
 }
-// add_action( 'wp_ajax_my_action', 'ajax_handler' );
+add_action( 'wp_ajax_my_action', 'ajax_handler' );
