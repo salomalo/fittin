@@ -42,12 +42,14 @@ add_shortcode( 'Favs', 'favs_shortcode' );
 
 
 // custom admin style sheet
-function my_admin_head() {
-	if ( !current_user_can( 'manage_themes' ) {
-        echo '<link href="' . get_stylesheet_directory_uri() . '/group-leader-style.css" rel="stylesheet" type="text/css">';
+
+
+function group_leader_style() {
+	if ( !current_user_can( 'edit_themes' ) ) {
+        wp_enqueue_style( 'group-leader', get_stylesheet_directory_uri() . '/group-leader-style.css', '1.0.0' );
     }
 }
-add_action('admin_head', 'my_admin_head');
+add_action('wp_enqueue_scripts', 'group_leader_style');
 
 // ======
 // Scripts
