@@ -161,6 +161,15 @@
 
 <?php
 $time_log = get_user_meta( get_current_user_id(), 'time_list' );
+$recent = get_user_meta( get_current_user_id(), 'time_list_most_recent' );
+
+echo '<pre>';
+print_r($time_log);
+echo '</pre>';
+
+echo '<pre>';
+print_r($recent);
+echo '</pre>';
 ?>
 <h3>My usage</h3>
 <?php
@@ -191,9 +200,17 @@ foreach( $user_info->roles as $role ) {
 					echo '<h4>' . $member_info->display_name . '</h4>';
 					$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
 					<ul>
-						<?php foreach ( $member_stats[0] as $stat ) {
-							echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
-						} ?>
+						<?php
+						$stats_array = array();
+						foreach ( $member_stats[0] as $stat ) {
+							array_push( $stats_array[date('Y-m-d')][], $stat );
+
+							array_push( $stats_array[date('Y-m-d')][], $stat );
+
+							// echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
+						}
+						var_dump($stats_array);
+						?>
 					</ul>
 				</div>
 			<?php }
