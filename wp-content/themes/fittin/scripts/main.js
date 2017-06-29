@@ -11,19 +11,32 @@ jQuery(document).ready(function($){
 	    var player = new Vimeo.Player(iframe);
 
 		player.getVideoTitle().then(function(title) {
-	        // console.log('title:', title);
+	        console.log('title:', title);
 	    });
 
 	    player.on('play', function() {
-	        // console.log('played the video!');
 
-			var data = {
-				'action': 'my_action',
-				'user': ajax_object.user_id
-			};
+			player.getDuration().then(function(length) {
 
-			jQuery.post(ajax_object.ajax_url, data, function(response) {
-				// console.log('Got this from the server: ' + response);
+				player.getVideoId().then(function(videoid) {
+
+					var data = {
+						'action': 'my_action',
+						'user': ajax_object.user_id,
+						'video_length': length,
+						'video_id': videoid
+					};
+
+					jQuery.post(ajax_object.ajax_url, data, function(response) {
+						console.log('Got this from the server: ' + response);
+					});
+
+				}).catch(function(error) {
+				    console.log('getVideoId error: '+error);
+				});
+
+			}).catch(function(error) {
+			    console.log('getDuration error: '+error);
 			});
 
 		});

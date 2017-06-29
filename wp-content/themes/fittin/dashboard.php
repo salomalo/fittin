@@ -157,35 +157,27 @@
 <hr />
 
 &nbsp;
-<h5 id="stats">Your Usage Statistics</h5>
+<h5 id="stats">Statistics</h5>
 
 <?php
 $time_log = get_user_meta( get_current_user_id(), 'time_list' );
+$recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
+
+// echo '<pre>';
+// print_r($time_log);
+// echo '</pre>';
+//
+// echo '<pre>';
+// print_r($recent);
+// echo '</pre>';
 ?>
-
-            
-<div class="clear"></div>
-            
-<?php 
-
-$minutes = "11, 5, 0, 5, 2, 5, 5, 3, 6"; 
-$dates = "20-06-2017, 22-06-2017, 25-06-2017, 26-06-2017, 27-06-2017, 28-06-2017, 29-06-2017, 30-06-2017, 31-06-2017";
-
-$minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'.$minutes.'" labels="'.$dates.'" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
-
-
-echo do_shortcode($minutesperdate); 
-            
-?>            
-   
-            
-            
+<!-- <h3>My usage</h3> -->
 <?php
 foreach ( $time_log[0] as $time ) {
-	//*echo date( 'd-m-Y H:i', $time ) . "<br/>";
+	// echo date( 'd-m-Y H:i', $time ) . "<br/>";
 }
 ?>
-
+<!-- <h3>Get sub users</h3> -->
 <?php
 
 $user_info = get_userdata( get_current_user_id() );
@@ -205,12 +197,20 @@ foreach( $user_info->roles as $role ) {
 				<div>
 					<?php $member_info = get_user_by( 'ID', $member->member_id  );
 
-					echo '<h4>' . $member_info->display_name . '</h4>';
+					// echo '<h4>' . $member_info->display_name . '</h4>';
 					$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
 					<ul>
-						<?php foreach ( $member_stats[0] as $stat ) {
-							echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
-						} ?>
+						<?php
+						$stats_array = array();
+						foreach ( $member_stats[0] as $stat ) {
+							array_push( $stats_array[date('Y-m-d')][], $stat );
+
+							array_push( $stats_array[date('Y-m-d')][], $stat );
+
+							// echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
+						}
+						// var_dump($stats_array);
+						?>
 					</ul>
 				</div>
 			<?php }
@@ -224,6 +224,38 @@ foreach( $user_info->roles as $role ) {
 
 
 ?>
+<!-- <h3>Get sub users usage </h3> -->
+<div class="clear"></div>
+
+<?php
+$minutes = '';
+$dates = '';
+foreach ( $time_log[0] as $day_key => $day_log ) {
+	$dates .= $day_key . ', ';
+	$second_calculation = 0;
+	foreach ( $day_log as $day_log_timestamp ) {
+		$second_calculation += $day_log_timestamp['video_duration'];
+	}
+	$minutes .= intval($second_calculation/60) . ', ';
+}
+// echo '<h1>';
+// print_r($minutes);
+// echo '</h1><h1>';
+// print_r($dates);
+// echo '</h1>';
+
+
+// $minutes = "11, 5, 0, 5, 2, 5, 5, 3, 6";
+// $dates = "20-06-2017, 22-06-2017, 25-06-2017, 26-06-2017, 27-06-2017, 28-06-2017, 29-06-2017, 30-06-2017, 31-06-2017";
+
+$minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'.$minutes.'" labels="'.$dates.'" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
+
+
+echo do_shortcode($minutesperdate);
+
+?>
+
+
 
 		</div><!-- /#main-sidebar-container -->
 
