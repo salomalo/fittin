@@ -230,13 +230,18 @@ foreach( $user_info->roles as $role ) {
 <?php
 $minutes = '';
 $dates = '';
-foreach ( $time_log[0] as $day_key => $day_log ) {
-	$dates .= $day_key . ', ';
-	$second_calculation = 0;
-	foreach ( $day_log as $day_log_timestamp ) {
-		$second_calculation += $day_log_timestamp['video_duration'];
+
+if ( $time_log && isset( $time_log ) ) {
+	foreach ( $time_log[0] as $day_key => $day_log ) {
+		$dates .= $day_key . ', ';
+		$second_calculation = 0;
+		if ( $day_log &&  isset( $day_log ) ) {
+			foreach ( $day_log as $day_log_timestamp ) {
+				$second_calculation += $day_log_timestamp['video_duration'];
+			}
+		}
+		$minutes .= intval($second_calculation/60) . ', ';
 	}
-	$minutes .= intval($second_calculation/60) . ', ';
 }
 // echo '<h1>';
 // print_r($minutes);
