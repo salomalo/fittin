@@ -173,9 +173,9 @@ $recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
 ?>
 <!-- <h3>My usage</h3> -->
 <?php
-foreach ( $time_log[0] as $time ) {
+// foreach ( $time_log[0] as $time ) {
 	// echo date( 'd-m-Y H:i', $time ) . "<br/>";
-}
+// }
 ?>
 <!-- <h3>Get sub users</h3> -->
 <?php
