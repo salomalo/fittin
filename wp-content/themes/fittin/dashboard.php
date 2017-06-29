@@ -157,7 +157,7 @@
 <hr />
 
 &nbsp;
-<h5 id="stats">Statistics</h5>
+<h5 id="stats">Your Usage Statistics</h5>
 
 <?php
 $time_log = get_user_meta( get_current_user_id(), 'time_list' );
@@ -171,13 +171,30 @@ echo '<pre>';
 print_r($recent);
 echo '</pre>';
 ?>
-<h3>My usage</h3>
+
+            
+<div class="clear"></div>
+            
+<?php 
+
+$minutes = "11, 5, 0, 5, 2, 5, 5, 3, 6"; 
+$dates = "20-06-2017, 22-06-2017, 25-06-2017, 26-06-2017, 27-06-2017, 28-06-2017, 29-06-2017, 30-06-2017, 31-06-2017";
+
+$minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'.$minutes.'" labels="'.$dates.'" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
+
+
+echo do_shortcode($minutesperdate); 
+            
+?>            
+   
+            
+            
 <?php
 foreach ( $time_log[0] as $time ) {
-	echo date( 'd-m-Y H:i', $time ) . "<br/>";
+	//*echo date( 'd-m-Y H:i', $time ) . "<br/>";
 }
 ?>
-<h3>Get sub users</h3>
+
 <?php
 
 $user_info = get_userdata( get_current_user_id() );
@@ -224,14 +241,6 @@ foreach( $user_info->roles as $role ) {
 
 
 ?>
-<h3>Get sub users usage </h3>
-
-
-
-
-<img src="<?php echo get_stylesheet_directory_uri() ?>/images/graph.png" style="opacity: .5;">
-
-
 
 		</div><!-- /#main-sidebar-container -->
 
