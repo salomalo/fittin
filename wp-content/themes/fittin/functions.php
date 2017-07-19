@@ -9,7 +9,11 @@
  */
 
 include( 'lib/member-page.php' );
-include( 'lib/ajax.php' );
+include( 'lib/ajax-record-stats.php' );
+include( 'lib/ajax-week.php' );
+include( 'lib/view-standard.php' );
+include( 'lib/view-week.php' );
+
 
 add_action( 'init', 'woo_custom_move_navigation', 10 );
 function woo_custom_move_navigation () {
