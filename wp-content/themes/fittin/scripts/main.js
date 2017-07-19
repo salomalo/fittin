@@ -44,6 +44,7 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.week-view').click(function(e){
+
 		e.preventDefault();
 		var weekData = {
 			'action': 'week_view_button',
@@ -53,7 +54,7 @@ jQuery(document).ready(function($){
 		jQuery.post(ajax_object.ajax_url, weekData, function(response) {
 			var datesMinutes = JSON.parse(response);
 			console.log(datesMinutes);
-
+			$('.fittin-chart').before('<h2 style="color:#333;">Week no '+datesMinutes['week_no']+'</h2>');
 
 			// $('.fittin-chart').html(newChart);
 			fittinChart.data.labels = datesMinutes[0];
