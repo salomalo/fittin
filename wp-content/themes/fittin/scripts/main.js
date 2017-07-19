@@ -1,5 +1,9 @@
 jQuery(document).ready(function($){
 
+	// ============
+	// record stats
+	// ============
+
 	if ($('iframe.vimeo-card').length > 0) {
 		var iframe = $('iframe.vimeo-card');
 	} else if ($('.pp_fade iframe').length > 0) {
@@ -7,21 +11,16 @@ jQuery(document).ready(function($){
 	}
 
 	if ($('iframe.vimeo-card').length > 0 || $('.pp_fade iframe').length > 0) {
-
 	    var player = new Vimeo.Player(iframe);
-
 		player.getVideoTitle().then(function(title) {
 	        console.log('title:', title);
 	    });
-
 	    player.on('play', function() {
-
 			player.getDuration().then(function(length) {
-
 				player.getVideoId().then(function(videoid) {
 
 					var data = {
-						'action': 'my_action',
+						'action': 'record_stats',
 						'user': ajax_object.user_id,
 						'video_length': length,
 						'video_id': videoid
@@ -34,13 +33,34 @@ jQuery(document).ready(function($){
 				}).catch(function(error) {
 				    console.log('getVideoId error: '+error);
 				});
-
 			}).catch(function(error) {
 			    console.log('getDuration error: '+error);
 			});
-
 		});
-
 	}
+
+	// ================
+	// set up week view
+	// ================
+
+	$('.week-view').click(function(e){
+
+		e.preventDefault();
+		var weekData = {
+			'action': 'week_view_button',
+			'user': ajax_object.user_id
+		};
+
+		jQuery.post(ajax_object.ajax_url, weekData, function(response) {
+			var datesMinutes = JSON.parse(response);
+			console.log(datesMinutes);
+			$('.fittin-chart').before('<h2 style="color:#333;">Week no '+datesMinutes['week_no']+'</h2>');
+
+			// $('.fittin-chart').html(newChart);
+			fittinChart.data.labels = datesMinutes[0];
+			fittinChart.data.datasets[0].data = datesMinutes[1];
+			fittinChart.update();
+		});
+	});
 
 });
