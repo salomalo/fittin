@@ -4,7 +4,6 @@ function view_week( $time_log ) {
 
 	$minutes = [];
 	$dates = [];
-	$current_day_midnight = 999999999999; // initially allow first value
 
 	if ( $time_log && isset( $time_log ) ) {
 
@@ -15,12 +14,14 @@ function view_week( $time_log ) {
 
 			if ( 0 == $x ) {
 				$week_no = idate( 'W', $day_log[0]['time'] );
+				$week_commencing = date( "jS F Y", strtotime( date( 'Y', $day_log[0]['time'] ) . "W" . $week_no ) ); // 2011-01-03
+
 			}
 
 			if ( idate( 'W', $day_log[0]['time'] ) == $week_no ) { // check for week against first time entry
 				$timestamp = strtotime( $day_key );
 
-				array_push( $dates, date( 'D', $timestamp ) );
+				array_push( $dates, date( 'D jS', $timestamp ) );
 				$second_calculation = 0;
 
 				if ( $day_log && isset( $day_log ) ) { // get all entries for this day
@@ -31,8 +32,6 @@ function view_week( $time_log ) {
 
 				array_push( $minutes, intval($second_calculation/60) );
 
-				$current_day = $day_log[0]['time'];
-				$current_day_midnight = $current_day - $current_day%86400;
 
 			} else { // more than 7 days
 				// array_push( $dates, 'TOO FAR AWAY' );
@@ -43,6 +42,6 @@ function view_week( $time_log ) {
 
 	} // if
 
-	return array( $dates, $minutes, 'week_no' => $week_no );
+	return array( 'dates' => $dates, 'minutes' => $minutes, 'week_no' => $week_no, 'week_commencing' => $week_commencing );
 
 }
