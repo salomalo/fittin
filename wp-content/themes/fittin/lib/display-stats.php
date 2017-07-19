@@ -80,7 +80,7 @@ var fittinChart = new Chart(ctx, {
 			<?php echo $dates ?>
 		],
 		datasets : [{
-			label 			: "MYLABEL" ,
+			label 			: "Video views (minutes)" ,
 			backgroundColor	: "#663ff2",
 			data 			: [<?php echo $minutes ?>]
 		}]

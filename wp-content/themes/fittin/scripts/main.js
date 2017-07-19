@@ -54,11 +54,11 @@ jQuery(document).ready(function($){
 		jQuery.post(ajax_object.ajax_url, weekData, function(response) {
 			var datesMinutes = JSON.parse(response);
 			console.log(datesMinutes);
-			$('.fittin-chart').before('<h2 style="color:#333;">Week no '+datesMinutes['week_no']+'</h2>');
+			$('.fittin-chart').before('<h4 style="color:#333;">Week commencing '+datesMinutes['week_commencing']+'</h4>');
 
 			// $('.fittin-chart').html(newChart);
-			fittinChart.data.labels = datesMinutes[0];
-			fittinChart.data.datasets[0].data = datesMinutes[1];
+			fittinChart.data.labels = datesMinutes['dates'];
+			fittinChart.data.datasets[0].data = datesMinutes['minutes'];
 			fittinChart.update();
 		});
 	});
