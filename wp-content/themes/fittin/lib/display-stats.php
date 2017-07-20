@@ -88,6 +88,14 @@ var fittinChart = new Chart(ctx, {
     options: {
 		lineTension: 1,
 		pointBackgroundColor: "f0f",
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero: true,
+					fixedStepSize: 1
+				}
+			}]
+	    }
     }
 });
 </script>
