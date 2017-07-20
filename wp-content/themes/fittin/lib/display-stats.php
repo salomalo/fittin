@@ -67,7 +67,7 @@ do_action( 'modify_dates_minutes' );
 
 $minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'. $minutes . '" labels="' . $dates . '" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
 
-echo '<div class="fittin-chart">';
+echo '<div class="fittin-chart"><h4></h4>';
 // echo do_shortcode($minutesperdate);
 ?>
 <canvas id="fittinChart" width="1200" height="400"></canvas>

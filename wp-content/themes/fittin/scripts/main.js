@@ -53,8 +53,8 @@ jQuery(document).ready(function($){
 
 		jQuery.post(ajax_object.ajax_url, weekData, function(response) {
 			var datesMinutes = JSON.parse(response);
-			console.log(datesMinutes);
-			$('.fittin-chart').before('<h4 style="color:#333;">Week commencing '+datesMinutes['week_commencing']+'</h4>');
+			// console.log(datesMinutes);
+			$('.fittin-chart h4').html('Week commencing '+datesMinutes['week_commencing']);
 
 			// $('.fittin-chart').html(newChart);
 			fittinChart.data.labels = datesMinutes['dates'];
