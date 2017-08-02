@@ -4,7 +4,7 @@
 // AJAX Handler
 // ============
 
-function ajax_handler() {
+function record_stats() {
 
 	global $wpdb; // get access to the database
 
@@ -43,4 +43,4 @@ function ajax_handler() {
 	wp_die();
 
 }
-add_action( 'wp_ajax_my_action', 'ajax_handler' );
+add_action( 'wp_ajax_record_stats', 'record_stats' );

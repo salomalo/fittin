@@ -11,6 +11,7 @@
  ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 <meta charset="<?php echo esc_attr( get_bloginfo( 'charset' ) ); ?>" />
 <title><?php woo_title(); ?></title>
 <?php woo_meta(); ?>
@@ -20,7 +21,6 @@
 </head>
 <body <?php body_class(); ?>>
 <?php woo_top(); ?>
-
 
 	<?php woo_header_before(); ?>
 
@@ -140,126 +140,25 @@
 
 
 
-<div style="clear: both;"></div>
-<p style="text-align: right;"><a href="/videos/">View All</a></p>
+			<div style="clear: both;"></div>
+			<p style="text-align: right;"><a href="/videos/">View All</a></p>
 
 
-<hr />
+			<hr />
 
-&nbsp;
-<h5>Recommended Videos</h5>
-<div style="clear: both;"></div>
-<?php echo do_shortcode('[ess_grid alias="fav"]'); ?>
-<div style="clear: both;"></div>
-<p style="text-align: right;"><a href="/videos/">View All</a></p>
-
-
-<hr />
-
-&nbsp;
-<h5 id="stats">Statistics</h5>
-
-<?php
-$time_log = get_user_meta( get_current_user_id(), 'time_list' );
-$recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
-
-// echo '<pre>';
-// print_r($time_log);
-// echo '</pre>';
-//
-// echo '<pre>';
-// print_r($recent);
-// echo '</pre>';
-?>
-<!-- <h3>My usage</h3> -->
-<?php
-// foreach ( $time_log[0] as $time ) {
-	// echo date( 'd-m-Y H:i', $time ) . "<br/>";
-// }
-?>
-<!-- <h3>Get sub users</h3> -->
-<?php
-
-$user_info = get_userdata( get_current_user_id() );
-foreach( $user_info->roles as $role ) {
-	if ( 'Group Leader' === $role ) { // if group leader
-
-		// get group leader's group id
-		$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . get_current_user_id() . "'";
-		$result	= $wpdb -> get_row($sql);
-		if ( count( $result ) > 0 ) {
-
-			// now get users from group
-			$gMemSql = "SELECT * FROM ".$wpdb -> prefix."group_sets_members WHERE group_id = '".$result->id."' ORDER BY createdDate";
-			$gMemResults = $wpdb -> get_results($gMemSql);
-
-			foreach( $gMemResults as $member ) { ?>
-				<div>
-					<?php $member_info = get_user_by( 'ID', $member->member_id  );
-
-					// echo '<h4>' . $member_info->display_name . '</h4>';
-					$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
-					<ul>
-						<?php
-						$stats_array = array();
-						foreach ( $member_stats[0] as $stat ) {
-							array_push( $stats_array[date('Y-m-d')][], $stat );
-
-							array_push( $stats_array[date('Y-m-d')][], $stat );
-
-							// echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
-						}
-						// var_dump($stats_array);
-						?>
-					</ul>
-				</div>
-			<?php }
-		}
-
-	} else {
-		// not a group leader
-	}
-}
+			&nbsp;
+			<h5>Recommended Videos</h5>
+			<div style="clear: both;"></div>
+			<?php echo do_shortcode('[ess_grid alias="fav"]'); ?>
+			<div style="clear: both;"></div>
+			<p style="text-align: right;"><a href="/videos/">View All</a></p>
 
 
+			<hr />
 
-?>
-<!-- <h3>Get sub users usage </h3> -->
-<div class="clear"></div>
-
-<?php
-$minutes = '';
-$dates = '';
-
-if ( $time_log && isset( $time_log ) ) {
-	foreach ( $time_log[0] as $day_key => $day_log ) {
-		$dates .= $day_key . ', ';
-		$second_calculation = 0;
-		if ( $day_log &&  isset( $day_log ) ) {
-			foreach ( $day_log as $day_log_timestamp ) {
-				$second_calculation += $day_log_timestamp['video_duration'];
-			}
-		}
-		$minutes .= intval($second_calculation/60) . ', ';
-	}
-}
-// echo '<h1>';
-// print_r($minutes);
-// echo '</h1><h1>';
-// print_r($dates);
-// echo '</h1>';
-
-
-// $minutes = "11, 5, 0, 5, 2, 5, 5, 3, 6";
-// $dates = "20-06-2017, 22-06-2017, 25-06-2017, 26-06-2017, 27-06-2017, 28-06-2017, 29-06-2017, 30-06-2017, 31-06-2017";
-
-$minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'.$minutes.'" labels="'.$dates.'" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
-
-
-echo do_shortcode($minutesperdate);
-
-?>
-
+			&nbsp;
+			<h5 id="stats">Statistics</h5>
+			<?php include( 'lib/display-stats.php' ); ?>
 
 
 		</div><!-- /#main-sidebar-container -->
@@ -270,11 +169,6 @@ echo do_shortcode($minutesperdate);
 	<?php woo_content_after(); ?>
 
 <!-- FOOTER -->
-
-
-
-
-
 
  <img src="<?php echo get_stylesheet_directory_uri() ?>/images/member-bg.png" style="width: 100%;">
 
