@@ -7,9 +7,12 @@ function view_default( $time_log ) {
 
 	if ( $time_log && isset( $time_log ) ) {
 
-		$sort_stamp = strtotime($time_log[0][0]);
-		ksort( date( 'U', $sort_stamp ) ); // sorts by key
-		
+		// $sort_stamp = strtotime($time_log[0][0]);
+		// ksort( date( 'U', $sort_stamp ) ); // sorts by key
+		// ksort( $time_log[0] );
+		// uksort( $time_log[0], 'datediff' );
+
+
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
 			array_push( $dates, $day_key );
