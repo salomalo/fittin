@@ -77,7 +77,7 @@ do_action( 'modify_dates_minutes' );
 // ==================
 
 echo '<div class="fittin-chart"><h4></h4>'; ?>
-	
+
 <canvas id="fittinChart" width="1200" height="400"></canvas>
 <script>
 var ctx = document.getElementById("fittinChart").getContext('2d');

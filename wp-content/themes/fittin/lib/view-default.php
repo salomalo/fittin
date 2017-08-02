@@ -7,7 +7,7 @@ function view_default( $time_log ) {
 
 	if ( $time_log && isset( $time_log ) ) {
 
-		ksort( $time_log[0] ); // sorts by key (day in nice format)
+		ksort( strtotime( $time_log[0] ) ); // sorts by key (day in nice format)
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
 			array_push( $dates, $day_key );

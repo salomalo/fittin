@@ -72,6 +72,40 @@ jQuery(document).ready(function($){
 	});
 
 	// ================
+	// Month view
+	// ================
+
+	$('.month-view').click(function(e){
+
+		e.preventDefault();
+		if ($(this).hasClass('current')) {
+			return;
+			console.log('current');
+		} else {
+			var monthData = {
+				'action': 'month_view_button',
+				'user': ajax_object.user_id
+			};
+
+			jQuery.post(ajax_object.ajax_url, monthData, function(response) {
+				// console.log(response);
+
+				var datesMinutes = JSON.parse(response);
+				console.log(datesMinutes);
+				$('.fittin-chart h4').html(datesMinutes['month'] + ', ' +datesMinutes['year']);
+
+				fittinChart.data.labels = datesMinutes['dates'];
+				fittinChart.data.datasets[0].data = datesMinutes['minutes'];
+				fittinChart.update();
+				$('.default-view').removeClass('current');
+				$('.week-view').removeClass('current');
+				$('.month-view').addClass('current');
+
+			});
+		}
+	});
+
+	// ================
 	// Back to default view
 	// ================
 

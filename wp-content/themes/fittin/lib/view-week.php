@@ -7,7 +7,7 @@ function view_week( $time_log ) {
 
 	if ( $time_log && isset( $time_log ) ) {
 
-		ksort( $time_log[0] ); // sorts by key (day in nice format)
+		ksort( strtotime( $time_log[0] ) ); // sorts by key (day in nice format)
 		// $time_log[0] = array_reverse( $time_log[0] );
 		$x = 0;
 		foreach ( $time_log[0] as $day_key => $day_log ) {
