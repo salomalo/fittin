@@ -10,10 +10,13 @@
 
 include( 'lib/member-page.php' );
 include( 'lib/ajax-record-stats.php' );
+include( 'lib/ajax-default.php' );
 include( 'lib/ajax-week.php' );
-include( 'lib/view-standard.php' );
-include( 'lib/view-week.php' );
+include( 'lib/ajax-month.php' );
 
+include( 'lib/view-default.php' );
+include( 'lib/view-week.php' );
+include( 'lib/view-month.php' );
 
 add_action( 'init', 'woo_custom_move_navigation', 10 );
 function woo_custom_move_navigation () {
@@ -69,3 +72,17 @@ function fittin_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'fittin_scripts');
+
+// ========
+// Date sort
+// ========
+
+function datediff( $a, $b ) {
+	$a = date( 'U' , $a[0] );
+	$b = date( 'U' , $b[0] );
+
+	if ( $a == $b ) $r = 0;
+	else $r = ( $a > $b ) ? 1: -1;
+
+	return $r;
+}

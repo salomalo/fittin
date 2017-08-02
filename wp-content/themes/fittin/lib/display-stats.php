@@ -1,5 +1,9 @@
 <?php
-
+?>
+<button class="stats default-view current">All Stats</button>
+<button class="stats week-view">Week View</button>
+<button class="stats month-view">Month View</button>
+<?php
 $time_log = get_user_meta( get_current_user_id(), 'time_list' );
 $recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
 $user_info = get_userdata( get_current_user_id() );
@@ -48,9 +52,10 @@ foreach( $user_info->roles as $role ) {
 // Get data for chart
 // ==================
 
-$datesminutes = view_standard( $time_log );
-$dates = $datesminutes[0];
-$minutes = $datesminutes[1];
+$datesminutes = view_default( $time_log );
+$dates = implode( '", "', $datesminutes['dates'] );
+$dates = '"' . $dates . '"';
+$minutes = implode( ', ', $datesminutes['minutes'] );
 $week = view_week( $time_log );
 
 do_action( 'modify_dates_minutes' );
@@ -61,24 +66,25 @@ do_action( 'modify_dates_minutes' );
 // $dates = "10-07-2017, 11-07-2017, 12-07-2017, 13-07-2017, 14-07-2017, 15-07-2017, 16-07-2017, 17-07-2017, 18-07-2017, 19-07-2017";
 // -----------------------------------------
 
+// echo '<pre style="background:grey">';
+// print_r($dates);
+// echo "<br>";
+// print_r($minutes);
+// echo '</pre>';
+
 // ==================
 // Display Chart
 // ==================
 
-$minutesperdate = '[wp_charts title="Minutes Exercised" type="line" margin="10px 0px 20px 0px" datasets="'. $minutes . '" labels="' . $dates . '" scaleFontSize="12" scaleoverride="true" scalesteps="15" scalestepwidth="1" scalestartvalue="0" canvaswidth="1100px" canvasheight="366px" relativewidth="3" width="1100px" height="366px" colours="#663ff2" ]';
+echo '<div class="fittin-chart"><h4></h4>'; ?>
 
-echo '<div class="fittin-chart"><h4></h4>';
-// echo do_shortcode($minutesperdate);
-?>
 <canvas id="fittinChart" width="1200" height="400"></canvas>
 <script>
 var ctx = document.getElementById("fittinChart").getContext('2d');
 var fittinChart = new Chart(ctx, {
     type: 'line',
     data: {
-		labels : [
-			<?php echo $dates ?>
-		],
+		labels : [<?php echo $dates ?>],
 		datasets : [{
 			label 			: "Video views (minutes)" ,
 			backgroundColor	: "#663ff2",
@@ -106,7 +112,5 @@ var fittinChart = new Chart(ctx, {
 echo '</div>';
 
 ?>
-
-<button class="week-view">Week View</button>
 
 <?php
