@@ -10,8 +10,10 @@
 
 include( 'lib/member-page.php' );
 include( 'lib/ajax-record-stats.php' );
+include( 'lib/ajax-default.php' );
 include( 'lib/ajax-week.php' );
-include( 'lib/view-standard.php' );
+
+include( 'lib/view-default.php' );
 include( 'lib/view-week.php' );
 
 

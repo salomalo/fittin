@@ -1,16 +1,17 @@
 <?php
 
-function view_standard( $time_log ) {
+function view_default( $time_log ) {
 
-	$minutes = '';
-	$dates = '';
+	$minutes = [];
+	$dates = [];
 
 	if ( $time_log && isset( $time_log ) ) {
 
 		ksort( $time_log[0] ); // sorts by key (day in nice format)
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
-			$dates .= '"' . $day_key . '", ';
+			array_push( $dates, $day_key );
+
 			$second_calculation = 0;
 
 			if ( $day_log && isset( $day_log ) ) {
@@ -21,12 +22,12 @@ function view_standard( $time_log ) {
 
 			}
 
-			$minutes .= intval($second_calculation/60) . ', ';
+			array_push( $minutes, intval($second_calculation/60) );
 
 		} // foreach
 
 	} // if
 
-	return array( $dates, $minutes );
+	return array( 'dates' => $dates, 'minutes' => $minutes );
 
 }
