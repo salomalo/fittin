@@ -8,8 +8,10 @@ function view_month( $time_log ) {
 	$current_year = date('Y');
 
 	if ( $time_log && isset( $time_log ) ) {
+		
+		$sort_stamp = strtotime($time_log[0][0]);
+		ksort( date( 'U', $sort_stamp ) ); // sorts by key
 
-		ksort( strtotime( $time_log[0] ) ); // sorts by key (day in nice format)
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
 			$timestamp = strtotime($day_key);
