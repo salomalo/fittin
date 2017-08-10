@@ -56,7 +56,7 @@ $datesminutes = view_default( $time_log );
 $dates = implode( '", "', $datesminutes['dates'] );
 $dates = '"' . $dates . '"';
 $minutes = implode( ', ', $datesminutes['minutes'] );
-$week = view_week( $time_log );
+// $week = view_week( $time_log, null );
 
 do_action( 'modify_dates_minutes' );
 
@@ -109,7 +109,7 @@ var fittinChart = new Chart(ctx, {
 
 <?php
 
-echo '</div>';
+echo '<div class="chart-nav" data-timestamp=' . time() . ' data-week="0" data-month="0"><span class="prev hide">Previous</span><span class="divider hide"> || </span><span class="next hide">Next</span></div><div class="hide chart-loading">ABRAABRACADAB</div></div>';
 
 ?>
 
