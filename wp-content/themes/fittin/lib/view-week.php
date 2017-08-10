@@ -1,22 +1,24 @@
 <?php
 
-function view_week( $time_log ) {
+function view_week( $time_log, $selected_week ) {
 
 	$minutes = [];
 	$dates = [];
 
 	if ( $time_log && isset( $time_log ) ) {
 
-		// $sort_stamp = strtotime($time_log[0][0]);
-		// ksort( date( 'U', $sort_stamp ) ); // sorts by key (day in nice format)
-		// ksort( $time_log[0] );
-
-
 		$x = 0;
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
 			if ( 0 == $x ) {
-				$week_no = idate( 'W', $day_log[0]['time'] );
+
+				// get current week
+				$week_no = idate( 'W', time() );
+				if ( !empty( $selected_week ) ) {
+					$week_no = idate( 'W', $selected_week );
+				}
+
+
 				$week_commencing = date( "jS F Y", strtotime( date( 'Y', $day_log[0]['time'] ) . "W" . $week_no ) ); // 2011-01-03
 
 			}

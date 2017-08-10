@@ -109,7 +109,7 @@ var fittinChart = new Chart(ctx, {
 
 <?php
 
-echo '</div>';
+echo '<div class="chart-nav" data-timestamp=' . time() . ' data-week="0" data-month="0"><span class="prev hide">Previous</span><span class="divider hide"> || </span><span class="next hide">Next</span></div><div class="hide chart-loading">ABRAABRACADAB</div></div>';
 
 ?>
 
