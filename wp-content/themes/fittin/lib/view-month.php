@@ -1,17 +1,29 @@
 <?php
 
-function view_month( $time_log ) {
+function view_month( $time_log, $selected_month ) {
 
 	$minutes = [];
 	$dates = [];
-	$current_month = date('m');
+
+	$current_month = date( 'm' );
+	$current_month_nice = date( 'M' );
 	$current_year = date('Y');
 
-	if ( $time_log && isset( $time_log ) ) {
+	if ( !empty( $selected_month ) ) {
+		// $current_month = date( 'm', strtotime( $current_month . ' '. $selected_month . ' month') );
+		$current_month_year = strtotime( date('Y-m-d') . ' ' . "$selected_month" . ' month');
 
-		// $sort_stamp = strtotime($time_log[0][0]);
-		// ksort( date( 'U', $sort_stamp ) ); // sorts by key
-		// ksort( $time_log[0] );
+		$current_month = date( 'm', $current_month_year );
+		$current_month_nice = date( 'M', $current_month_year );
+
+		$current_year = date( 'Y', $current_month_year );
+
+		// if ( $current_month == '12' ) { // go back a year if going down to december
+		// 	$current_year = date( 'Y', strtotime( $current_year . ' -1 year') )
+		// }
+	}
+
+	if ( $time_log && isset( $time_log ) ) {
 
 		foreach ( $time_log[0] as $day_key => $day_log ) {
 
@@ -36,6 +48,6 @@ function view_month( $time_log ) {
 
 	} // if
 
-	return array( 'dates' => $dates, 'minutes' => $minutes, 'month' => date('F'), 'year' => $current_year );
+	return array( 'dates' => $dates, 'minutes' => $minutes, 'month' => $current_month_nice, 'year' => $current_year );
 
 }

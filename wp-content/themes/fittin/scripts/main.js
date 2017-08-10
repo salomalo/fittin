@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-
+	var state = 'default';
 	// ============
 	// record stats
 	// ============
@@ -44,19 +44,53 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.week-view').click(function(e){
+		weekView(e);
+	});
+	$('.prev').click(function(e){
+		if (state == 'week') {
+			var newTime = parseInt($('.chart-nav').attr('data-timestamp'));
+			newTime = newTime - (60*60*24*7);
 
+			$('.chart-nav').attr('data-timestamp',newTime);
+			$('.chart-nav').attr('data-week', parseInt($('.chart-nav').attr('data-week')) -1 );
+
+			weekView(e,newTime);
+		}
+	});
+	$('.next').click(function(e){
+		if (state == 'week' && $('.chart-nav').attr('data-week') < 0) {
+			var newTime = parseInt($('.chart-nav').attr('data-timestamp'));
+			newTime = newTime + (60*60*24*7);
+
+			$('.chart-nav').attr('data-timestamp',newTime);
+			$('.chart-nav').attr('data-week', parseInt($('.chart-nav').attr('data-week'))+1 );
+
+			weekView(e,newTime);
+		}
+	});
+
+	function weekView(e,newTime) {
 		e.preventDefault();
+		state = 'week';
+		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
 			console.log('current');
 		} else {
 			var weekData = {
 				'action': 'week_view_button',
-				'user': ajax_object.user_id
+				'user': ajax_object.user_id,
+				'selected_week' : newTime
 			};
 
 			jQuery.post(ajax_object.ajax_url, weekData, function(response) {
 				var datesMinutes = JSON.parse(response);
+
+				$('.fittin-chart .prev').removeClass('hide');
+				$('.fittin-chart .next').removeClass('hide');
+				$('.fittin-chart .divider').removeClass('hide');
+
+				$('.chart-loading').addClass('hide');
 				console.log(datesMinutes);
 				$('.fittin-chart h4').html('Week commencing '+datesMinutes['week_commencing']);
 
@@ -69,29 +103,52 @@ jQuery(document).ready(function($){
 				$('.month-view').removeClass('current');
 			});
 		}
-	});
+	}
 
 	// ================
 	// Month view
 	// ================
 
 	$('.month-view').click(function(e){
-
+		monthView(e);
+	});
+	$('.prev').click(function(e){
+		if (state == 'month') {
+			var newTime = parseInt($('.chart-nav').attr('data-month')) -1;
+			$('.chart-nav').attr('data-month', newTime);
+			monthView(e,newTime);
+		}
+	});
+	$('.next').click(function(e){
+		if (state == 'month' && $('.chart-nav').attr('data-month') < 0) {
+			var newTime = parseInt($('.chart-nav').attr('data-month'))+1;
+			$('.chart-nav').attr('data-month', newTime);
+			monthView(e,newTime);
+		}
+	});
+	function monthView(e,newTime) {
 		e.preventDefault();
+		state = 'month';
+
+		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
 			console.log('current');
 		} else {
 			var monthData = {
 				'action': 'month_view_button',
-				'user': ajax_object.user_id
+				'user': ajax_object.user_id,
+				'selected_month' : newTime
 			};
 
 			jQuery.post(ajax_object.ajax_url, monthData, function(response) {
-				// console.log(response);
-
 				var datesMinutes = JSON.parse(response);
-				console.log(datesMinutes);
+console.log(datesMinutes);
+				$('.chart-loading').addClass('hide');
+
+				$('.prev').removeClass('hide');
+				$('.next').removeClass('hide');
+				$('.divider').removeClass('hide');
 				$('.fittin-chart h4').html(datesMinutes['month'] + ', ' +datesMinutes['year']);
 
 				fittinChart.data.labels = datesMinutes['dates'];
@@ -103,7 +160,7 @@ jQuery(document).ready(function($){
 
 			});
 		}
-	});
+	}
 
 	// ================
 	// Back to default view
@@ -112,6 +169,9 @@ jQuery(document).ready(function($){
 	$('.default-view').click(function(e){
 
 		e.preventDefault();
+		state = 'default';
+
+		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
 			console.log('current');
@@ -122,9 +182,12 @@ jQuery(document).ready(function($){
 			};
 
 			jQuery.post(ajax_object.ajax_url, defaultData, function(response) {
-				// console.log(response);
-
 				var datesMinutes = JSON.parse(response);
+				$('.chart-loading').addClass('hide');
+				$('.prev').addClass('hide');
+				$('.next').addClass('hide');
+				$('.divider').addClass('hide');
+
 				console.log(datesMinutes);
 				$('.fittin-chart h4').html('');
 
@@ -138,5 +201,4 @@ jQuery(document).ready(function($){
 			});
 		}
 	});
-
 });
