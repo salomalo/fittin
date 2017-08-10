@@ -72,3 +72,17 @@ function fittin_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'fittin_scripts');
+
+// ========
+// Date sort
+// ========
+
+function datediff( $a, $b ) {
+	$a = date( 'U' , $a[0] );
+	$b = date( 'U' , $b[0] );
+
+	if ( $a == $b ) $r = 0;
+	else $r = ( $a > $b ) ? 1: -1;
+
+	return $r;
+}
