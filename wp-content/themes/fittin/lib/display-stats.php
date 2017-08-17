@@ -56,7 +56,7 @@ $datesminutes = view_default( $time_log );
 $dates = implode( '", "', $datesminutes['dates'] );
 $dates = '"' . $dates . '"';
 $minutes = implode( ', ', $datesminutes['minutes'] );
-$week = view_week( $time_log );
+// $week = view_week( $time_log, null );
 
 do_action( 'modify_dates_minutes' );
 
