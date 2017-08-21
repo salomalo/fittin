@@ -32,7 +32,7 @@ $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 $last_day = date('U');
 			$y = 0;
 
-			$output = "<img src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In'><p>Please find your video views for this week below: </p><table><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
+			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p><table style='margin-bottom:20px'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
 			if ( !empty( $log ) ) {
 				foreach( $log as $key => $value ) {
 					$uni_key = strtotime($key);
@@ -45,7 +45,7 @@ $last_day = date('U');
 							$time += $entry['video_duration'];
 						}
 
-						$output .= "<tr><td style='border:1px solid #333'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333'>" . round( $time / 60 ) . " mins</td></tr>";
+						$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px;'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333; padding: 2px 4px;'>" . round( $time / 60 ) . " mins</td></tr>";
 
 					}
 					$y++;
