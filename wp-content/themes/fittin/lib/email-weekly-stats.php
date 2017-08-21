@@ -32,8 +32,10 @@ $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 $last_day = date('U');
 			$y = 0;
 
-			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p><table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
+			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p>";
 			if ( !empty( $log ) ) {
+				$output .= "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
+				$total_time = 0;
 				foreach( $log as $key => $value ) {
 					$uni_key = strtotime($key);
 
@@ -43,6 +45,7 @@ $last_day = date('U');
 						$time = 0;
 						foreach ( $value as $entry ) {
 							$time += $entry['video_duration'];
+							$total_time += $entry['video_duration'];
 						}
 
 						$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px;'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333; padding: 2px 4px;'>" . round( $time / 60 ) . " mins</td></tr>";
@@ -50,8 +53,9 @@ $last_day = date('U');
 					}
 					$y++;
 				}
+				$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>TOTAL</td><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>" . round( $total_time / 60 ) . " mins</td></tr></table><p>Kind regards,<br>Fitt-in</p>";
+
 			}
-			$output .= "</table><p>Kind regards,<br>Fitt-in</p>";
 
 			echo "</pre>";
 
@@ -59,7 +63,7 @@ $last_day = date('U');
 			// get Log
 
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
-			if ( true == $send_email ) {
+			if ( true === $send_email ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
 				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
 			}
