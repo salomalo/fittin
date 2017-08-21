@@ -59,7 +59,7 @@ $last_day = date('U');
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
 			if ( true == $send_email ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				wp_mail( 'ch@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
+				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
 			}
 
 			$x++;
