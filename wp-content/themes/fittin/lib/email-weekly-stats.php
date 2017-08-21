@@ -33,21 +33,23 @@ $last_day = date('U');
 			$y = 0;
 
 			$output = "<img src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In'><p>Please find your video views for this week below: </p><table><tr><td style='border:1px solid #333'>Date</td><td style='border:1px solid #333'>Video views (mins)</td></tr>";
-			foreach( $log as $key => $value ) {
-				$uni_key = strtotime($key);
+			if ( !empty( $log ) ) {
+				foreach( $log as $key => $value ) {
+					$uni_key = strtotime($key);
 
-				// if falls within given week
-				if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
-					$send_email = true;
-					$time = 0;
-					foreach ( $value as $entry ) {
-						$time += $entry['video_duration'];
+					// if falls within given week
+					if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
+						$send_email = true;
+						$time = 0;
+						foreach ( $value as $entry ) {
+							$time += $entry['video_duration'];
+						}
+
+						$output .= "<tr><td style='border:1px solid #333'>". date( 'D jS F, Y', $uni_key ) . "</td><td>" . round( $time / 60 ) . " mins</td></tr>";
+
 					}
-
-					$output .= "<tr><td style='border:1px solid #333'>". date( 'D jS F, Y', $uni_key ) . "</td><td>" . round( $time / 60 ) . " mins</td></tr>";
-
+					$y++;
 				}
-				$y++;
 			}
 			$output .= "</table><p>Kind regards,<br>Fitt-in</p>";
 
