@@ -57,12 +57,16 @@ $last_day = date('U');
 			// get Log
 
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
-			if ( true == $send_email  ) {
+			if ( true == $send_email ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				wp_mail( 'ch@loopmill.com', 'Your video views this week', $output, $headers );
+				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
 			}
 
 			$x++;
 		} // foreach user
 	}
+});
+
+add_filter( 'wp_mail_content_type', function() {
+	return "text/html";
 });
