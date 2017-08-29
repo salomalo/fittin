@@ -27,15 +27,17 @@ function get_sub_users( $user_info ) {
 
 					$member_stats = get_user_meta( $member->member_id, 'time_list', true );
 					$stats_array = array();
-					foreach ( $member_stats as $key => $stat ) {
-						if ( empty( $new_time_log[$key] ) ) {
-							$new_time_log[$key] = $stat;
-						} else {
-							foreach ( $stat as $single ) {
-								$new_time_log[$key][] = $single;
+					if ( !empty( $member_stats ) ) {
+						foreach ( $member_stats as $key => $stat ) {
+							if ( empty( $new_time_log[$key] ) ) {
+								$new_time_log[$key] = $stat;
+							} else {
+								foreach ( $stat as $single ) {
+									$new_time_log[$key][] = $single;
+								}
 							}
-						}
-					} // foreach memstat as $stat
+						} // foreach memstat as $stat
+					}
 				} // foreach gmem as $member
 			} // if results counts > 0
 
