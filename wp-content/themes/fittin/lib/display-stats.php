@@ -6,14 +6,12 @@
 <?php
 // $recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
 $user_info = get_userdata( get_current_user_id() );
-
-
 $time_log = get_sub_users( $user_info );
-// if ( false === $time_log )  { // if no sub users
-	$time_log2 = get_user_meta( get_current_user_id(), 'time_list', true );
-// }
-echo '<pre>' . print_r( $time_log, true ), '</pre> || <br><Br><br><br>';
-echo '<pre>' . print_r( $time_log2, true ), '</pre>';
+if ( false === $time_log )  { // if no sub users
+	$time_log = get_user_meta( get_current_user_id(), 'time_list', true );
+}
+// echo '<pre>' . print_r( $time_log, true ), '</pre> || <br><Br><br><br>';
+// echo '<pre>' . print_r( $time_log2, true ), '</pre>';
 
 // ==================
 // Get data for chart

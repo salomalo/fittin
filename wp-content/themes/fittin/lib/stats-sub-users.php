@@ -15,31 +15,22 @@ function get_sub_users( $user_info ) {
 				$gMemResults = $wpdb -> get_results($gMemSql);
 
 				$new_time_log = [];
-				foreach( $gMemResults as $member ) { ?>
+				foreach( $gMemResults as $member ) {
 
-					<div>
-						<?php $member_info = get_user_by( 'ID', $member->member_id  );
-						$member_stats = get_user_meta( $member->member_id, 'time_list', true );
-						?>
-						<ul>
-							<?php
-							$stats_array = array();
-							foreach ( $member_stats as $key => $stat ) {
-								if ( empty( $new_time_log[$key] ) ) {
-									$new_time_log[$key] = $stat;
-								} else {
-									foreach ( $stat as $single ) {
-										$new_time_log[$key][] = $single;
-									}
-
-								}
-
-							} // foreach memstat as $stat
-							?>
-						</ul>
-					</div>
-				<?php } // foreach gmem as $member
-			}
+					$member_info = get_user_by( 'ID', $member->member_id  );
+					$member_stats = get_user_meta( $member->member_id, 'time_list', true );
+					$stats_array = array();
+					foreach ( $member_stats as $key => $stat ) {
+						if ( empty( $new_time_log[$key] ) ) {
+							$new_time_log[$key] = $stat;
+						} else {
+							foreach ( $stat as $single ) {
+								$new_time_log[$key][] = $single;
+							}
+						}
+					} // foreach memstat as $stat
+				} // foreach gmem as $member
+			} // if results counts > 0
 
 			return $new_time_log;
 

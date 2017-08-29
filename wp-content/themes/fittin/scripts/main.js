@@ -84,6 +84,7 @@ jQuery(document).ready(function($){
 			};
 
 			jQuery.post(ajax_object.ajax_url, weekData, function(response) {
+				console.log(response);
 				var datesMinutes = JSON.parse(response);
 
 				$('.fittin-chart .prev').removeClass('hide');
