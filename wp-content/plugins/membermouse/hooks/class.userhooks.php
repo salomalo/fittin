@@ -133,12 +133,29 @@ MemberMouse(TM) (http://www.membermouse.com)
 						
 						break;
 					case MM_CorePageType::$CHECKOUT:
+					    $onsiteService = MM_PaymentServiceFactory::getOnsitePaymentService();
+					    if ($onsiteService != null)
+					    {
+					        $onsiteService->checkoutInit();
+					    }
 						if (!headers_sent())
 						{
 							//send headers to discourage caching (especially bfcache) to force checkout page to be regenerated every page hit
-							//this should ensure the generation of a fresh form submission id
+							//this should also ensure the generation of a fresh form submission id
 							nocache_headers();
 						}
+						break;
+						
+					case MM_CorePageType::$MY_ACCOUNT:
+						$onsiteService = MM_PaymentServiceFactory::getOnsitePaymentService();
+						if ($onsiteService != null)
+						{
+							$onsiteService->myAccountInit();
+						}
+						
+						//TODO: offsite services may utilize checkoutInit in the future. Determining which offsite payment services are possibly available
+						//		may be necessary here to support those services
+						
 						break;
 				}
 			}
@@ -406,8 +423,12 @@ MemberMouse(TM) (http://www.membermouse.com)
 			
 			if(!defined("DOING_AJAX") || !DOING_AJAX)
 			{
-  		  wp_redirect(MM_CorePageEngine::getUrl(MM_CorePageType::$LOGIN_PAGE));
-        exit;	
+				$useSiteOptionMMLoginPage = MM_OptionUtils::getOption(MM_OptionUtils::$OPTION_KEY_USE_MM_LOGIN_PAGE);
+				if($useSiteOptionMMLoginPage=="1")
+				{
+  		  			wp_redirect(MM_CorePageEngine::getUrl(MM_CorePageType::$LOGIN_PAGE));
+        			exit;	
+				}
 			}
 			else
 			{
@@ -638,8 +659,13 @@ MemberMouse(TM) (http://www.membermouse.com)
 					MM_Preview::getData();
 					$newRedirectTo = $employee->getHomepage();
 				}
-				
-				if(empty($newRedirectTo))
+				else if (is_super_admin($user->data->ID))
+				{
+				    //if this user is not an employee, but is a wordpress admin, just let them continue to their original destination or the admin panel if not set
+				    //is_super_admin() returns true for all admins on non-network installs
+				    $newRedirectTo = !empty($redirectTo)?$redirectTo:get_admin_url();
+				}
+				else 
 				{
 					$mmUser = new MM_User($user->data->ID);
 					
@@ -752,4 +778,4 @@ MemberMouse(TM) (http://www.membermouse.com)
 	}
  }
  
-?>
+ ?>

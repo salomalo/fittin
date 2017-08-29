@@ -8,45 +8,7 @@ $time_log = get_user_meta( get_current_user_id(), 'time_list' );
 $recent = get_user_meta( get_current_user_id(), 'time_list_most_recent', true );
 $user_info = get_userdata( get_current_user_id() );
 
-foreach( $user_info->roles as $role ) {
-	if ( 'Group Leader' === $role ) { // if group leader
-
-		// get group leader's group id
-		$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . get_current_user_id() . "'";
-		$result	= $wpdb -> get_row($sql);
-		if ( count( $result ) > 0 ) {
-
-			// now get users from group
-			$gMemSql = "SELECT * FROM ".$wpdb -> prefix."group_sets_members WHERE group_id = '".$result->id."' ORDER BY createdDate";
-			$gMemResults = $wpdb -> get_results($gMemSql);
-
-			foreach( $gMemResults as $member ) { ?>
-				<div>
-					<?php $member_info = get_user_by( 'ID', $member->member_id  );
-
-					// echo '<h4>' . $member_info->display_name . '</h4>';
-					$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
-					<ul>
-						<?php
-						$stats_array = array();
-						foreach ( $member_stats[0] as $stat ) {
-							array_push( $stats_array[date('Y-m-d')][], $stat );
-
-							array_push( $stats_array[date('Y-m-d')][], $stat );
-
-							// echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
-						}
-						// var_dump($stats_array);
-						?>
-					</ul>
-				</div>
-			<?php }
-		}
-
-	} else {
-		// not a group leader
-	}
-}
+echo get_sub_users( $user_info );
 
 // ==================
 // Get data for chart
@@ -63,6 +25,7 @@ do_action( 'modify_dates_minutes' );
 // dummy data
 // ----------------------------------------
 // $minutes = "11, 5, 0, 5, 2, 5, 5, 3, 6";
+// $minutes2 = "11, 5, 0, 5, 2";
 // $dates = "10-07-2017, 11-07-2017, 12-07-2017, 13-07-2017, 14-07-2017, 15-07-2017, 16-07-2017, 17-07-2017, 18-07-2017, 19-07-2017";
 // -----------------------------------------
 
@@ -85,11 +48,19 @@ var fittinChart = new Chart(ctx, {
     type: 'line',
     data: {
 		labels : [<?php echo $dates ?>],
-		datasets : [{
-			label 			: "Video views (minutes)" ,
-			backgroundColor	: "#663ff2",
-			data 			: [<?php echo $minutes ?>]
-		}]
+		datasets : [
+			{
+				label 			: "Video views (minutes)" ,
+				// backgroundColor	: "#663ff2",
+				backgroundColor	: "rgba(255,0,0,0.3)",
+				data 			: [<?php echo $minutes ?>]
+			},
+			// {
+			// 	label 			: "Shubbadubba" ,
+			// 	backgroundColor	: "rgba(255,255,0,0.3)",
+			// 	data 			: [<?php echo $minutes2 ?>]
+			// },
+		]
     },
     options: {
 		lineTension: 1,

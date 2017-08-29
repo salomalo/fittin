@@ -14,7 +14,7 @@ function returnStatus($status, $message,$lockName="")
 	global $wpdb;
 	if (!empty($lockName))
 	{
-		$wpdb->query("SELECT RELEASE_LOCK('{$lockName}')");
+		$wpdb->query($wpdb->prepare("SELECT RELEASE_LOCK(%s)",$lockName));
 	}
 	echo json_encode(array('status'=>$status,'message'=>$message));
 	exit(0);
@@ -56,12 +56,12 @@ else
 global $wpdb;
 $eventId = $request['reference_id'];
 $eventLock = "mm-scheduler-event-lock-{$eventId}";
-$lockAcquired = $wpdb->get_var("SELECT IF(IS_FREE_LOCK('{$eventLock}'),COALESCE(GET_LOCK('{$eventLock}',0),0),0)");
+$lockAcquired = $wpdb->get_var($wpdb->prepare("SELECT IF(IS_FREE_LOCK(%s),COALESCE(GET_LOCK(%s,0),0),0)",$eventLock,$eventLock));
 if ($lockAcquired != "1")
 {
 	returnStatus("ok", "{$eventId} already being processed");
 }
-$eventType = $wpdb->get_var("SELECT event_type from ".MM_TABLE_SCHEDULED_EVENTS." where id='{$eventId}'");
+$eventType = $wpdb->get_var($wpdb->prepare("SELECT event_type from ".MM_TABLE_SCHEDULED_EVENTS." where id=%s",$eventId));
 
 switch ($eventType)
 {	

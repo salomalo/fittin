@@ -7,15 +7,15 @@
 
 function isLocalInstall($specificServer="localhost")
 {
-	 if(isset($_SERVER["SERVER_NAME"]) && strlen($_SERVER["SERVER_NAME"])>0)
-	 {
-		 if(preg_match("/(".$specificServer.")/", $_SERVER["SERVER_NAME"]))
-		 {
-		 	return true;
-		 }
-	 }
-	 
-	 return false;
+	if(isset($_SERVER["SERVER_NAME"]) && strlen($_SERVER["SERVER_NAME"])>0)
+	{
+		if(preg_match("/(".$specificServer.")/", $_SERVER["SERVER_NAME"]))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 define("MM_PREFIX", "mm_");   

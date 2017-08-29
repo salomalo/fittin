@@ -160,7 +160,7 @@ $dgHtml = $dataGrid->generateHtml();
 
 if($dgHtml == "")
 {
-	$dgHtml = "<p><em>No bundles applied.</em></p>";
+	$dgHtml = "<p><em>"._mmt("No bundles applied")."</em></p>";
 }
 ?>
 <div id="mm-grid-container">

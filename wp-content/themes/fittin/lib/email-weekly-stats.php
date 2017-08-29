@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'wp_footer', function() {
-	echo 'nabafbsdfbgbdgfbdgbfgb';
+	// echo 'nabafbsdfbgbdgfbdgbfgb';
 	$args = array(
 		 'fields' => 'all',
 		//  'fields' => 'id',
@@ -16,9 +16,6 @@ add_action( 'wp_footer', function() {
 		foreach ( $user_query->results as $user ) {
 			// print_r($user->data->user_email);
 			$send_email = false;
-			echo "<h1 style='color:#000'>$x</h1>";
-
-			echo "<pre>";
 
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
@@ -57,9 +54,7 @@ $last_day = date('U');
 
 			}
 
-			echo "</pre>";
-
-			echo  $output;
+			// echo  $output;
 			// get Log
 
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";

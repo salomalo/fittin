@@ -1,13 +1,13 @@
 <?php
 /**
  * @package MemberMouse
- * @version 2.2.6
+ * @version 2.2.7
  *
  * Plugin Name: MemberMouse Platform
  * Plugin URI: http://membermouse.com
  * Description: MemberMouse is an enterprise-level membership platform that allows you to quickly and easily manage a membership site or subscription business. MemberMouse is designed to deliver digital content, automate customer self-service and provide you with advanced marketing tools to maximize the profitability of your continuity business.
  * Author: MemberMouse, LLC
- * Version: 2.2.6
+ * Version: 2.2.7
  * Author URI: http://membermouse.com
  * Text Domain: membermouse
  * Domain Path: /languages/
@@ -49,7 +49,7 @@ if(!class_exists('MemberMouse',false))
 		private $defaults = array('count'=>10, 'append'=>1);
 		private $metaname = '_associated_membermouse';
 		private $installerRan = false;
-		private static $pluginVersion = "2.2.6";
+		private static $pluginVersion = "2.2.7";
 
 		public function __construct() 
 		{
