@@ -12,8 +12,8 @@ function display_chart( $dates, $minutes ) { ?>
 				datasets : [
 					{
 						label 			: "Video views (minutes)" ,
-						// backgroundColor	: "#663ff2",
-						backgroundColor	: "rgba(255,0,0,0.3)",
+						backgroundColor	: "#663ff2",
+						// backgroundColor	: "rgba(255,0,0,0.3)",
 						data 			: [<?php echo $minutes ?>]
 					},
 					// {
@@ -45,6 +45,6 @@ function display_chart( $dates, $minutes ) { ?>
 		</div>
 		<div class="hide chart-loading"></div>
 	</div><!-- fittin chart-->
-	
+
 	<?php
 }
