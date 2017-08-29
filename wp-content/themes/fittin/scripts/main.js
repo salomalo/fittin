@@ -44,6 +44,7 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.week-view').click(function(e){
+		$('.chart-nav').attr('data-week', 0); // reset prev/next week
 		weekView(e);
 	});
 	$('.prev').click(function(e){
@@ -71,7 +72,9 @@ jQuery(document).ready(function($){
 
 	function weekView(e,newTime) {
 		e.preventDefault();
+
 		state = 'week';
+
 		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
@@ -84,7 +87,7 @@ jQuery(document).ready(function($){
 			};
 
 			jQuery.post(ajax_object.ajax_url, weekData, function(response) {
-				console.log(response);
+				// console.log(response);
 				var datesMinutes = JSON.parse(response);
 
 				$('.fittin-chart .prev').removeClass('hide');
@@ -111,6 +114,7 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.month-view').click(function(e){
+		$('.chart-nav').attr('data-month', 0); // reset prev/next months
 		monthView(e);
 	});
 	$('.prev').click(function(e){
@@ -144,7 +148,7 @@ jQuery(document).ready(function($){
 
 			jQuery.post(ajax_object.ajax_url, monthData, function(response) {
 				var datesMinutes = JSON.parse(response);
-console.log(datesMinutes);
+// console.log(datesMinutes);
 				$('.chart-loading').addClass('hide');
 
 				$('.prev').removeClass('hide');
