@@ -8,7 +8,7 @@ function view_week( $time_log, $selected_week ) {
 	if ( $time_log && isset( $time_log ) ) {
 
 		$x = 0;
-		foreach ( $time_log[0] as $day_key => $day_log ) {
+		foreach ( $time_log as $day_key => $day_log ) {
 
 			if ( 0 == $x ) {
 

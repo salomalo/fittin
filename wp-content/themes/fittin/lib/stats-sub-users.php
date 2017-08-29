@@ -11,40 +11,41 @@ function get_sub_users( $user_info ) {
 			if ( count( $result ) > 0 ) {
 
 				// now get users from group
-				$gMemSql = "SELECT * FROM ".$wpdb -> prefix."group_sets_members WHERE group_id = '".$result->id."' ORDER BY createdDate";
+				$gMemSql = "SELECT * FROM ".$wpdb -> prefix . "group_sets_members WHERE group_id = '".$result->id."' ORDER BY createdDate";
 				$gMemResults = $wpdb -> get_results($gMemSql);
 
-$output = '';
-
+				$new_time_log = [];
 				foreach( $gMemResults as $member ) { ?>
 
 					<div>
 						<?php $member_info = get_user_by( 'ID', $member->member_id  );
-
-						// echo '<h4>' . $member_info->display_name . '</h4>';
-						$member_stats = get_user_meta( $member->member_id, 'time_list' ); ?>
+						$member_stats = get_user_meta( $member->member_id, 'time_list', true );
+						?>
 						<ul>
 							<?php
 							$stats_array = array();
-							foreach ( $member_stats[0] as $stat ) {
-								array_push( $stats_array[date('Y-m-d')][], $stat );
+							foreach ( $member_stats as $key => $stat ) {
+								if ( empty( $new_time_log[$key] ) ) {
+									$new_time_log[$key] = $stat;
+								} else {
+									foreach ( $stat as $single ) {
+										$new_time_log[$key][] = $single;
+									}
 
-								array_push( $stats_array[date('Y-m-d')][], $stat );
+								}
 
-print_r($stats_array);
-								// echo '<li>' . date( 'd-m-Y H:i', $stat ) . '</li>';
-							}
+							} // foreach memstat as $stat
 							?>
 						</ul>
 					</div>
-				<?php }
+				<?php } // foreach gmem as $member
 			}
 
-			return $output;
+			return $new_time_log;
 
 		} else {
 			// not a group leader
-			return 'not a group leader';
+			return false;
 		}
 	}
 }
