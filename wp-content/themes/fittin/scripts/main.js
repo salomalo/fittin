@@ -1,5 +1,8 @@
 jQuery(document).ready(function($){
 	var state = 'default';
+	var stateWeek = 0;
+	var stateMonth = 0;
+
 	// ============
 	// record stats
 	// ============
@@ -44,6 +47,10 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.week-view').click(function(e){
+		$('.chart-nav').attr('data-week', 0); // reset prev/next week
+		stateWeek = 0;
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
 		weekView(e);
 	});
 	$('.prev').click(function(e){
@@ -53,7 +60,7 @@ jQuery(document).ready(function($){
 
 			$('.chart-nav').attr('data-timestamp',newTime);
 			$('.chart-nav').attr('data-week', parseInt($('.chart-nav').attr('data-week')) -1 );
-
+			stateWeek -= 1;
 			weekView(e,newTime);
 		}
 	});
@@ -64,14 +71,16 @@ jQuery(document).ready(function($){
 
 			$('.chart-nav').attr('data-timestamp',newTime);
 			$('.chart-nav').attr('data-week', parseInt($('.chart-nav').attr('data-week'))+1 );
-
+			stateWeek += 1;
 			weekView(e,newTime);
 		}
 	});
 
-	function weekView(e,newTime) {
+	function weekView(e,newTime,subuser) {
 		e.preventDefault();
+
 		state = 'week';
+
 		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
@@ -80,10 +89,12 @@ jQuery(document).ready(function($){
 			var weekData = {
 				'action': 'week_view_button',
 				'user': ajax_object.user_id,
+				'subuser' : subuser,
 				'selected_week' : newTime
 			};
 
 			jQuery.post(ajax_object.ajax_url, weekData, function(response) {
+				// console.log(response);
 				var datesMinutes = JSON.parse(response);
 
 				$('.fittin-chart .prev').removeClass('hide');
@@ -110,11 +121,16 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.month-view').click(function(e){
+		$('.chart-nav').attr('data-month', 0); // reset prev/next months
+		stateMonth = 0;
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
 		monthView(e);
 	});
 	$('.prev').click(function(e){
 		if (state == 'month') {
 			var newTime = parseInt($('.chart-nav').attr('data-month')) -1;
+			stateMonth -= 1;
 			$('.chart-nav').attr('data-month', newTime);
 			monthView(e,newTime);
 		}
@@ -122,11 +138,12 @@ jQuery(document).ready(function($){
 	$('.next').click(function(e){
 		if (state == 'month' && $('.chart-nav').attr('data-month') < 0) {
 			var newTime = parseInt($('.chart-nav').attr('data-month'))+1;
+			stateMonth += 1;
 			$('.chart-nav').attr('data-month', newTime);
 			monthView(e,newTime);
 		}
 	});
-	function monthView(e,newTime) {
+	function monthView(e,newTime,subuser) {
 		e.preventDefault();
 		state = 'month';
 
@@ -138,12 +155,13 @@ jQuery(document).ready(function($){
 			var monthData = {
 				'action': 'month_view_button',
 				'user': ajax_object.user_id,
+				'subuser' : subuser,
 				'selected_month' : newTime
 			};
 
 			jQuery.post(ajax_object.ajax_url, monthData, function(response) {
 				var datesMinutes = JSON.parse(response);
-console.log(datesMinutes);
+// console.log(datesMinutes);
 				$('.chart-loading').addClass('hide');
 
 				$('.prev').removeClass('hide');
@@ -167,18 +185,23 @@ console.log(datesMinutes);
 	// ================
 
 	$('.default-view').click(function(e){
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
+		defaultView(e);
+	});
 
+	function defaultView(e,subuser) {
 		e.preventDefault();
 		state = 'default';
 
 		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
-			console.log('current');
 		} else {
 			var defaultData = {
 				'action': 'default_view_button',
-				'user': ajax_object.user_id
+				'user': ajax_object.user_id,
+				'subuser' : subuser
 			};
 
 			jQuery.post(ajax_object.ajax_url, defaultData, function(response) {
@@ -200,5 +223,36 @@ console.log(datesMinutes);
 
 			});
 		}
+	}
+
+	// ==========
+	// sub users
+	// ==========
+
+	$('.stats.subusers').click(function(e){
+
+		$('.stats.subusers').removeClass('current');
+		$(this).addClass('current');
+
+		if ( state == 'month' ) {
+			if (e.target.id == 'all-subusers') {
+				monthView(e,stateMonth);
+			} else {
+				monthView(e,stateMonth,e.target.attributes['data-id'].value);
+			}
+		} else if ( state == 'week' ) {
+			if (e.target.id == 'all-subusers') {
+				weekView(e,stateWeek);
+			} else {
+				weekView(e,stateWeek,e.target.attributes['data-id'].value);
+			}
+		} else if ( state == 'default' ) {
+			if (e.target.id == 'all-subusers') {
+				defaultView(e);
+			} else {
+				defaultView(e,e.target.attributes['data-id'].value);
+			}
+		}
 	});
+
 });

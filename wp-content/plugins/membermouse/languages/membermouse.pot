@@ -370,6 +370,9 @@ msgstr "Purchase Links"
 msgid "No bundles"
 msgstr "No bundles"
 
+msgid "No bundles applied"
+msgstr "No bundles applied"
+
 msgid "Create Bundle"
 msgstr "Create Bundle"
 
@@ -1665,9 +1668,3 @@ msgstr "Data saved successfully"
 
 msgid "Error saving data: you must be logged in"
 msgstr "Error saving data: you must be logged in"
-
-msgid "There was an error placing your order; please try again"
-msgstr "There was an error placing your order; please try again"
-
-msgid "You don't have permission to place an order for another user"
-msgstr "You don't have permission to place an order for another user"

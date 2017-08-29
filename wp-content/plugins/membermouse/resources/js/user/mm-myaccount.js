@@ -5,6 +5,10 @@
  */
 var MM_MyAccountView = MM_Core.extend({
 
+	usingTokenExchange : false,
+	
+	preUpdateCallbacks : [],
+	
 	createDialogContainer: function(id)
 	{
 		if(jQuery("#"+id).length == 0)
@@ -327,9 +331,24 @@ var MM_MyAccountView = MM_Core.extend({
 	       		return;
         	}
       	}
-		
-	    var ajax = new MM_Ajax(false, this.module, this.action, this.method);
-	    ajax.send(values, false, 'myaccount_js', "updateSubscriptionBillingCallback"); 
+      	
+      	if (this.callPreUpdateFunctions())
+      	{
+      		this.doSubscriptionBillingUpdate(values);
+      	} 
+	},
+	
+	//this method is responsible for form submission. Values contains the form values, and if blank the values will be fetched from the form
+	doSubscriptionBillingUpdate: function(values)
+	{
+		if (values === undefined)
+		{
+			var form = new MM_Form("mm-form-container");
+		    var values = form.getFields();
+			values.mm_action = "updateSubscriptionBilling";
+		}
+		var ajax = new MM_Ajax(false, this.module, this.action, this.method);
+	    ajax.send(values, false, 'myaccount_js', "updateSubscriptionBillingCallback");
 	},
 	
 	updateSubscriptionBillingCallback: function(data)
@@ -371,7 +390,72 @@ var MM_MyAccountView = MM_Core.extend({
 		values.mm_action = "unlinkSocialNetwork";
 		var ajax = new MM_Ajax(false, this.module, this.action, this.method);
 	    ajax.send(values, false, 'myaccount_js', "updateSubscriptionBillingCallback"); //callback performs the same needed actions despite the name, so reuse
-	}
+	},
+	
+	
+	callPreUpdateFunctions: function()
+    {
+    	if (jQuery("#mm_field_payment_service").length > 0)
+    	{
+    		var serviceToken = jQuery("#mm_field_payment_service").val();    	
+    	
+	    	for (var i = 0, len = this.preUpdateCallbacks.length; i < len; i++) 
+	        {
+	    		var callbackInfo = this.preUpdateCallbacks[i];
+	            if ((callbackInfo != null) && (typeof callbackInfo == 'object') && (callbackInfo.serviceToken) && (callbackInfo.callback))
+	            {
+	            	if (callbackInfo.callback() === false)
+	            	{
+	            			return false;
+	            	}
+	            }
+	        }
+    	}
+    	return true;
+    },
+    
+    
+    addPreUpdateCallback : function(serviceToken, callback) 
+    {
+    	if ((serviceToken !== undefined) && (serviceToken != "") && (callback !== undefined) && (typeof callback == 'function' || false))
+    	{
+    		this.preUpdateCallbacks.push({'serviceToken':serviceToken,'callback':callback});
+    	}
+    },
+    
+    
+    addPaymentTokenToForm: function(paymentToken) 
+    {
+    	if ((paymentToken !== undefined) && (paymentToken.length > 0))
+    	{
+    		if (jQuery('#mm_field_payment_token').length == 0)
+    		{
+	    		jQuery("#mm-form-container").append("<input type='hidden' name='mm_field_payment_token' id='mm_field_payment_token' value='" + paymentToken + "'>");
+    		}
+    		else 
+    		{
+    			jQuery('#mm_field_payment_token').val(paymentToken);
+    		}
+    		
+    		//mask the cc number
+    		var ccField = jQuery('#mm_field_cc_number');
+    		var ccVal = ccField.val();
+    		var ccLen = ccVal.length;
+    		var maskLen = (ccLen>4)?(ccLen-4):ccLen;
+    		var maskedVal = Array(maskLen+1).join("*");
+    		if (ccLen != maskLen)
+    		{
+    			maskedVal += ccVal.substring(maskLen,ccLen);
+    		}
+    		ccField.val(maskedVal);
+    		var cvvLen = jQuery('#mm_field_cc_cvv').val().length;
+    		if (cvvLen > 0)
+    		{
+    			var maskedCVV = Array(cvvLen+1).join("*");
+    			jQuery('#mm_field_cc_cvv').val(maskedCVV);
+    		}	    		
+    	}
+    }
 });
 
 

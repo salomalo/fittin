@@ -1,5 +1,8 @@
 var MM_StripeTokenExchanger = Class.extend({
 	
+	pageObject: {},
+	myAccount: false,
+	
 	doTokenExchange: function()
 	{
 		try
@@ -8,10 +11,10 @@ var MM_StripeTokenExchanger = Class.extend({
 			 * Check to see that a coupon with free type is not used.
 			 * If it is, no need to send information (or initiate tokenization process).
 			 */
-			if(mmjs.hasFreeCoupon())
+			if((mmStripeTokenExchanger.myAccount == false) && (mmStripeTokenExchanger.pageObject.hasFreeCoupon()))
 			{ 
-				mmjs.usingTokenExchange = false;
-				mmjs.submitCheckoutForm(false);
+				mmStripeTokenExchanger.pageObject.usingTokenExchange = false;
+				mmStripeTokenExchanger.pageObject.submitCheckoutForm(false);
 				return true;
 			}
 			
@@ -58,19 +61,40 @@ var MM_StripeTokenExchanger = Class.extend({
 		  if (response.error) 
 		  {
 			  // Show the errors on the form
-			  var errorMessage = (response.error.message)?response.error.message:"There was an error processing your payment information";
+			  var errorMessage = (response.error.message)?(response.error.message):(stripeJSInfo.improperStripeResponseErrorMsg);
 			  mmStripeTokenExchanger.errorHandler(errorMessage);
 			  return false;
 		  } 
 		  else 
 		  {
-			  // response contains id and card, which contains additional card details
-			  mmjs.usingTokenExchange = true;
-			  mmjs.addPaymentTokenToForm(response.id);
-			  mmjs.submitCheckoutForm(false);
+			  //response from Stripe.js contains 'id' and 'card' which contains additional card details
+			  if (mmStripeTokenExchanger.myAccount)
+			  {
+				  mmStripeTokenExchanger.pageObject.addPaymentTokenToForm(response.id);
+				  mmStripeTokenExchanger.pageObject.usingTokenExchange = true;
+				  mmStripeTokenExchanger.pageObject.doSubscriptionBillingUpdate(); 
+			  }
+			  else
+		      {
+				  mmStripeTokenExchanger.pageObject.addPaymentTokenToForm(response.id);
+				  mmStripeTokenExchanger.pageObject.usingTokenExchange = true;
+				  mmStripeTokenExchanger.pageObject.submitCheckoutForm(false);
+		      }
 			  return true;
 		  }
 	}
 });
 var mmStripeTokenExchanger = new MM_StripeTokenExchanger();
-mmjs.addPrecheckoutCallback('onsite',mmStripeTokenExchanger.doTokenExchange);
+if ((typeof myaccount_js !== 'undefined') && (myaccount_js instanceof MM_MyAccountView))
+{
+	//my account page
+	mmStripeTokenExchanger.myAccount = true;
+	mmStripeTokenExchanger.pageObject = myaccount_js;
+	myaccount_js.addPreUpdateCallback('onsite',mmStripeTokenExchanger.doTokenExchange);
+}
+else
+{
+	//checkout page
+	mmStripeTokenExchanger.pageObject = mmjs;
+	mmjs.addPrecheckoutCallback('onsite',mmStripeTokenExchanger.doTokenExchange);
+}

@@ -18,6 +18,9 @@ include( 'lib/view-default.php' );
 include( 'lib/view-week.php' );
 include( 'lib/view-month.php' );
 include( 'lib/email-weekly-stats.php' );
+include( 'lib/stats-sub-users.php' );
+include( 'lib/display-chart.php' );
+
 
 add_action( 'init', 'woo_custom_move_navigation', 10 );
 function woo_custom_move_navigation () {

@@ -58,7 +58,7 @@ $unsupportedCurrencyWarning = "<div style='background-color: #ff0000; color: #ff
 			
 			<p><strong><?php echo _mmt("IMPORTANT"); ?>:</strong> <?php echo _mmt("Once you've configured your payment settings, click the button below to run a diagnostic on your site to discover if there's any security settings on your server that will interfer with payment processing."); ?></p>
 			
-			<p><a href="http://membermouse.com/diagnostic/?url=<?php echo site_url(); ?>" class="mm-ui-button green" target="_blank"><?php echo _mmt("Run Diagnostic"); ?></a>
+			<p><a href="https://membermouse.com/diagnostic/?url=<?php echo site_url(); ?>" class="mm-ui-button green" target="_blank"><?php echo _mmt("Run Diagnostic"); ?></a>
 			
 			<?php if ($testService != null) { ?>
 			<p class="mm-section-header" style="padding-top:15px; padding-bottom:10px;"><?php echo $testService->getName(); ?></p>

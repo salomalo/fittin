@@ -1,6 +1,6 @@
 <div class="mm_report_datagrid_container">
 <?php echo isset($p->columnFilteringInputs)?$p->columnFilteringInputs:""; ?>
-
+<?php echo isset($p->inlineCSS)?$p->inlineCSS:""; ?>
 <table class="qlabs_grid_container">
 
 	<?php if (isset($p->showHeaderRow) && ($p->showHeaderRow == true)) { ?>

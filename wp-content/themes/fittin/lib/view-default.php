@@ -13,7 +13,7 @@ function view_default( $time_log ) {
 		// uksort( $time_log[0], 'datediff' );
 
 
-		foreach ( $time_log[0] as $day_key => $day_log ) {
+		foreach ( $time_log as $day_key => $day_log ) {
 
 			array_push( $dates, $day_key );
 

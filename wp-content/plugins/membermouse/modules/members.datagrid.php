@@ -316,18 +316,28 @@ foreach($data as $key=>$item)
 	if($doGenerateCsv)
 	{
 		$membershipRegistrationDate= "";
-		$membershipLevel = $user->getMembershipLevel();
-		if($membershipLevel instanceof MM_MembershipLevel)
-		{
-			if($membershipLevel->doesExpire())
-			{
-				$membershipRegistrationDate = $membershipLevel->getExpirationDate($user->getRegistrationDate());
-			}
-			else 
-			{
-				$membershipRegistrationDate = "N/A";
-			}
-		}
+		$membershipLevel = $user->getMembershipLevel(); 
+        if($membershipLevel instanceof MM_MembershipLevel)
+        {
+            if($membershipLevel->doesExpire())
+            {
+                $date = $user->getExpirationDate(true);
+                if(isset($item->expiration_date) &&
+                   !is_null($item->expiration_date) &&
+                   !empty($item->expiration_date))
+                {
+                    $membershipRegistrationDate = $item->expiration_date;
+                }
+                else
+                {
+                    $membershipRegistrationDate = $membershipLevel->getExpirationDate($user->getRegistrationDate());
+                }
+            }
+            else 
+            {
+                $membershipRegistrationDate = "N/A";
+            }
+        }
 		
 		$csvRow = array();
 			
