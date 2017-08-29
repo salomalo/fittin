@@ -45,6 +45,8 @@ jQuery(document).ready(function($){
 
 	$('.week-view').click(function(e){
 		$('.chart-nav').attr('data-week', 0); // reset prev/next week
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
 		weekView(e);
 	});
 	$('.prev').click(function(e){
@@ -70,7 +72,7 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	function weekView(e,newTime) {
+	function weekView(e,newTime,subuser) {
 		e.preventDefault();
 
 		state = 'week';
@@ -83,6 +85,7 @@ jQuery(document).ready(function($){
 			var weekData = {
 				'action': 'week_view_button',
 				'user': ajax_object.user_id,
+				'subuser' : subuser,
 				'selected_week' : newTime
 			};
 
@@ -115,6 +118,8 @@ jQuery(document).ready(function($){
 
 	$('.month-view').click(function(e){
 		$('.chart-nav').attr('data-month', 0); // reset prev/next months
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
 		monthView(e);
 	});
 	$('.prev').click(function(e){
@@ -131,7 +136,7 @@ jQuery(document).ready(function($){
 			monthView(e,newTime);
 		}
 	});
-	function monthView(e,newTime) {
+	function monthView(e,newTime,subuser) {
 		e.preventDefault();
 		state = 'month';
 
@@ -143,6 +148,7 @@ jQuery(document).ready(function($){
 			var monthData = {
 				'action': 'month_view_button',
 				'user': ajax_object.user_id,
+				'subuser' : subuser,
 				'selected_month' : newTime
 			};
 
@@ -172,18 +178,23 @@ jQuery(document).ready(function($){
 	// ================
 
 	$('.default-view').click(function(e){
+		$('.stats.subusers').removeClass('current');
+		$('#all-subusers').addClass('current');
+		defaultView(e);
+	});
 
+	function defaultView(e,subuser) {
 		e.preventDefault();
 		state = 'default';
 
 		$('.chart-loading').removeClass('hide');
 		if ($(this).hasClass('current')) {
 			return;
-			console.log('current');
 		} else {
 			var defaultData = {
 				'action': 'default_view_button',
-				'user': ajax_object.user_id
+				'user': ajax_object.user_id,
+				'subuser' : subuser
 			};
 
 			jQuery.post(ajax_object.ajax_url, defaultData, function(response) {
@@ -205,5 +216,36 @@ jQuery(document).ready(function($){
 
 			});
 		}
+	}
+
+	// ==========
+	// sub users
+	// ==========
+
+	$('.stats.subusers').click(function(e){
+
+		$('.stats.subusers').removeClass('current');
+		$(this).addClass('current');
+
+		if ( state == 'month' ) {
+			if (e.target.id == 'all-subusers') {
+				monthView(e);
+			} else {
+				monthView(e,null,e.target.attributes['data-id'].value);
+			}
+		} else if ( state == 'week' ) {
+			if (e.target.id == 'all-subusers') {
+				weekView(e);
+			} else {
+				weekView(e,null,e.target.attributes['data-id'].value);
+			}
+		} else if ( state == 'default' ) {
+			if (e.target.id == 'all-subusers') {
+				defaultView(e);
+			} else {
+				defaultView(e,e.target.attributes['data-id'].value);
+			}
+		}
 	});
+
 });

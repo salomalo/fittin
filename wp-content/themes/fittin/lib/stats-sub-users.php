@@ -15,9 +15,16 @@ function get_sub_users( $user_info ) {
 				$gMemResults = $wpdb -> get_results($gMemSql);
 
 				$new_time_log = [];
+				$subuser_info = [];
 				foreach( $gMemResults as $member ) {
 
-					$member_info = get_user_by( 'ID', $member->member_id  );
+					$subuser  = get_user_by( 'ID', $member->member_id  );
+					$subuser_info[]  = array(
+						'name' => $subuser->data->display_name,
+						'id' => $subuser->ID,
+
+					);
+
 					$member_stats = get_user_meta( $member->member_id, 'time_list', true );
 					$stats_array = array();
 					foreach ( $member_stats as $key => $stat ) {
@@ -32,7 +39,8 @@ function get_sub_users( $user_info ) {
 				} // foreach gmem as $member
 			} // if results counts > 0
 
-			return $new_time_log;
+			$output = array( 'time_log' => $new_time_log, "subuser_info" => $subuser_info );
+			return $output;
 
 		} else {
 			// not a group leader

@@ -1,7 +1,7 @@
 button.stats {
 	border: 0;
 	background: rgb(123,185,143);
-	margin: 10px 12px 24px 0;
+	margin: 10px 12px 12px 0;
 	padding: 3px 7px 5px;
 	color: #fff;
 	transition: all .2s;
@@ -20,6 +20,24 @@ button.stats.current {
 }
 button.stats.current:hover {
 	border: 1px solid rgb(123,185,143);
+}
+.subusers button {
+	margin: 0 12px 24px 0;
+	padding: 2px 5px 4px;
+	background: #663ff2;
+	border: 1px solid #663ff2;
+}
+.subusers button:hover {
+	background: rgb(123,185,143);
+	border: 1px solid rgb(123,185,143);
+}
+.subusers button.stats.current {
+	color: #663ff2;
+}
+.subusers button.stats.current:hover {
+	color: #663ff2;
+	background: transparent;
+	border: 1px solid #663ff2;
 }
 
 .prev,
