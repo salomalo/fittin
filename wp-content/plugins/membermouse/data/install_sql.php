@@ -11,7 +11,8 @@ data LONGTEXT NOT NULL,
 ip_address VARCHAR(191) NOT NULL,
 expiration_date DATETIME,
 PRIMARY KEY  (id),
-KEY mm_session_lookup_idx (id,ip_address)
+KEY mm_session_lookup_idx (id,ip_address),
+KEY mm_session_reap_idx (expiration_date)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
 
 $sql[] = "CREATE TABLE mm_bundles (

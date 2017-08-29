@@ -132,9 +132,15 @@ if(isset($_REQUEST[MM_Session::$PARAM_USER_ID]))
 		
 			<a onclick="mmjs.changeMembershipStatus('<?php echo $user->getId(); ?>', '<?php echo $membership->getId(); ?>', '<?php echo MM_Status::$LOCKED; ?>', false)" class="mm-ui-button"><?php echo MM_Status::getImage(MM_Status::$LOCKED, false); ?> Lock Account</a>
 		
-		<?php } else { ?>
+		<?php } else { 
+			$revertStatus = MM_Status::$ACTIVE;
+			if($user->getPendingStatus()==MM_Status::$CANCELED || $user->getPendingStatus()==MM_Status::$PAUSED)
+			{
+				$revertStatus = MM_Status::$PENDING_CANCELLATION;
+			}
+			?>
 			
-			<a onclick="mmjs.changeMembershipStatus('<?php echo $user->getId(); ?>', '<?php echo $membership->getId(); ?>', '<?php echo MM_Status::$ACTIVE; ?>', true)" class="mm-ui-button"><?php echo MM_Utils::getIcon('unlock-alt', 'yellow', '1.4em', '2px'); ?> Unlock Account</a>
+			<a onclick="mmjs.changeMembershipStatus('<?php echo $user->getId(); ?>', '<?php echo $membership->getId(); ?>', '<?php echo $revertStatus; ?>', true)" class="mm-ui-button"><?php echo MM_Utils::getIcon('unlock-alt', 'yellow', '1.4em', '2px'); ?> Unlock Account</a>
 			
 		<?php } ?>
 		
@@ -242,28 +248,25 @@ if(isset($_REQUEST[MM_Session::$PARAM_USER_ID]))
 		<?php } ?>
 	</form>
 	
+	<div style="width: 800px; margin-top: 15px;" class="mm-divider"></div>
+	<p><span class="mm-section-header">Bundles</span></p>
 	<!-- MANAGE BUNDLES -->
 	<?php 
 		$bundleOptions = MM_HtmlUtils::getBundles(null, true);
 		
 		if(!empty($bundleOptions))
 		{
-	?>
-	<div style="width: 800px; margin-top: 15px;" class="mm-divider"></div>
-	
-	<p><span class="mm-section-header">Bundles</span></p>
-			
+	?>		
 	<div style="margin-bottom:20px;">
 		<select id="bundle-selector" name="bundle-seletor">
 		<?php echo $bundleOptions; ?>
 		</select>
 		<a onclick="mmjs.applyBundle('<?php echo $user->getId(); ?>', '<?php echo MM_Status::$ACTIVE; ?>')" class="mm-ui-button"><?php echo MM_Utils::getIcon('plus-circle', '', '1.2em', '1px'); ?> Apply Bundle</a>
 	</div>
-	
+	<?php } ?>
 	<div id="mm-grid-container" style="width:800px;">
 		<?php include_once MM_MODULES."/details_access_rights.appliedbundles.php"; ?>
 	</div>
-	<?php } ?>
 </div>
 
 <script type='text/javascript'>

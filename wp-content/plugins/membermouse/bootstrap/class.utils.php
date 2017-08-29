@@ -537,7 +537,7 @@
 	        $regex = "^". $protocol . // must include the protocol
 	                         '(' . $allowed . '{1,63}\.)+'. // 1 or several sub domains with a max of 63 chars
 	                         '[a-z]' . '{2,6}'; // followed by a TLD
-	        if(eregi($regex, $url)===true)
+	        if(preg_match("/".$regex."/", $url)===true)
 	        {
 	        	return true;
 	        }
@@ -674,7 +674,7 @@
 	    }
 	    else
 	    {
-	      $ip = $_SERVER['REMOTE_ADDR'];
+	        $ip = isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"127.0.0.1";
 	    }
 	    
 	    //don't use ipv6 for local installs
@@ -892,6 +892,7 @@
  	public static function constructPageUrl() 
  	{
  		$pageURL = "http://";
+ 		$siteUrl = MM_OptionUtils::getOption("siteurl");
  		
  		if((MM_Utils::isSSL() == true) 
  			|| (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on"))
@@ -901,10 +902,17 @@
  			$pageURL = "https://";
  		}
 		
-		if ($_SERVER["SERVER_PORT"] != "80" && $_SERVER["SERVER_PORT"] != "443") {
+		if (isset($_SERVER["SERVER_PORT"]) && ($_SERVER["SERVER_PORT"] != "80") && ($_SERVER["SERVER_PORT"] != "443")) 
+		{
 			$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-		} else {
+		} 
+		else if (isset($_SERVER["SERVER_NAME"]) && isset($_SERVER["REQUEST_URI"])) 
+		{
 			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		}
+		else 
+		{
+		    $pageURL = $siteUrl;
 		}
 		
 		return $pageURL;

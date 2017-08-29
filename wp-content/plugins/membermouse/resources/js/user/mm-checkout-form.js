@@ -66,7 +66,7 @@ var MM_CheckoutView = MM_Core.extend({
             return "";
         }
     },
-    checkoutx: function(serviceToken, doSubmit) {
+    checkoutx: function(serviceToken, doSubmit) {  
         var isFree = (parseInt(jQuery("#mm_is_free").val()) == 1) ? true : false;
         if (isFree == true) {
             mmjs.checkout(doSubmit, "");
@@ -284,10 +284,11 @@ var MM_CheckoutView = MM_Core.extend({
         }
         
         // validate custom fields
-        var customFields = jQuery(':input[id^="mm_custom"]').serializeArray();
-        for (i = 0; i < customFields.length; i++) {
+        var customFields = jQuery('input[id^="mm_custom"]'); //.serializeArray();  
+ 
+        for (i = 0; i < customFields.length; i++) {  
             if (jQuery("#" + customFields[i].name + "_required").length > 0 && jQuery("#" + customFields[i].name + "_required").val() == "1") {
-                crntValue = mmjs.ltrim(customFields[i].value);
+                crntValue = mmjs.ltrim(customFields[i].value); 
                 // get the custom field type
                 if (jQuery("#" + customFields[i].name + "_type").length > 0) {
                     fieldType = jQuery("#" + customFields[i].name + "_type").val();
@@ -313,7 +314,18 @@ var MM_CheckoutView = MM_Core.extend({
                             return;
                         }
                     }
-                } else {
+                } if (fieldType == "radio") { 
+                	var radioObj = jQuery('input[name='+customFields[i].name+']:checked');
+                	if(radioObj!=null && radioObj!=undefined){ 
+                    	var selectedValue = radioObj.val(); 
+                    	if ((selectedValue == null) || (selectedValue == undefined) || (selectedValue == '') || (selectedValue == ' ') || (selectedValue.length == 0) || (selectedValue == '')) {
+                    		 doSubmit = false; 
+    		                 alert('This field is required'); 
+    		                 jQuery("#" + customFields[i].name).focus();
+    		                 return;
+                    	}	
+                	}  
+                }else {
                     if ((crntValue == '') || (crntValue == ' ') || (customFields[i].value.length == 0) || (customFields[i].value == null) || (customFields[i].value == '')) {
 							   doSubmit = false;
                         if (jQuery("#" + customFields[i].name + "_label").length > 0) {
@@ -326,7 +338,8 @@ var MM_CheckoutView = MM_Core.extend({
                     }
                 }
             }
-        }
+        }  
+        
         if (ccReq && jQuery('#mm_field_cc_number').length > 0) {
             if (jQuery('#mm_field_cc_number').val().length < 13) {
 					 doSubmit = false;
@@ -372,7 +385,19 @@ var MM_CheckoutView = MM_Core.extend({
                 jQuery.blockUI({ message: MemberMouseGlobal.checkoutProcessingPaidMessage });
             }
             jQuery(".blockMsg").addClass(MemberMouseGlobal.checkoutProcessingMessageCSS);
-            document.mm_checkout_form.submit();
+
+            // Safari fix?
+            var isSafari = navigator.userAgent.indexOf("Safari") > -1;
+            if(isSafari)
+            { 
+            	setTimeout(function(){
+            		document.mm_checkout_form.submit();
+            		}, 500);
+            }
+            else
+            {
+            	document.mm_checkout_form.submit();	
+            }
         }
     },
     isValidCreditCard: function(type, ccnum) {

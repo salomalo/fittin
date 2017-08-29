@@ -25,7 +25,7 @@ function view_month( $time_log, $selected_month ) {
 
 	if ( $time_log && isset( $time_log ) ) {
 
-		foreach ( $time_log[0] as $day_key => $day_log ) {
+		foreach ( $time_log as $day_key => $day_log ) {
 
 			$timestamp = strtotime($day_key);
 			if ( date( 'm', $timestamp ) == $current_month &&  date( 'Y', $timestamp ) == $current_year ) {

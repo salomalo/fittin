@@ -64,7 +64,7 @@ $fieldInfo[] = $field;
 $orderItem = new MM_OrderItem($p->orderItemId);
 $order = new MM_Order($orderItem->getOrderId());
 $billingAddress = $order->getBillingAddress();
-
+$paymentService = $order->getPaymentMethod();
 
 $data = array();
 	
@@ -89,6 +89,7 @@ echo $form->getJavascriptIncludes(false);
 
 <div id="mm-form-container">
 <input type="hidden" id="mm-order-item-id" value="<?php echo $p->orderItemId; ?>" />
+<input type="hidden" id="mm_field_payment_service" value="<?php echo $paymentService->getToken();?>" />
 <table>
 <?php 
 	foreach($fieldInfo as $field) 
@@ -132,4 +133,3 @@ echo $form->getJavascriptIncludes(false);
 <a href="javascript:myaccount_js.closeDialog();" class="mm-ui-button">Cancel</a>
 </div>
 </div>
-<?php echo $form->getInitJavascript($data); ?>

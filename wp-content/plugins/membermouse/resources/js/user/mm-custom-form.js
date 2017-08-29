@@ -38,7 +38,7 @@ var MM_CustomFormView = MM_Core.extend({
       	var customFields = jQuery(':input[id^="mm_custom"]').serializeArray();
       	
       	for(i = 0; i < customFields.length; i++)
-      	{
+      	{ 
       		if(jQuery("#" + customFields[i].name + "_required").length > 0 && jQuery("#" + customFields[i].name + "_required").val() == "1")
       		{
       			crntValue = customform_js.ltrim(customFields[i].value);
