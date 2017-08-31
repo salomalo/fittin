@@ -6,7 +6,7 @@
 
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
-add_action( 'fittin_weekly_email', function() {
+add_action( 'wp_footer', function() {
 // add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
@@ -18,7 +18,7 @@ add_action( 'fittin_weekly_email', function() {
 		 'fields' => 'all',
 		//  'fields' => 'id',
 		 'no_found_rows' => true,
-		 'role__in' => array( 'Group Leader', 'Subscriber' )
+		//  'role__in' => array( 'Group Leader', 'Subscriber' )
 	);
 	$user_query = new WP_User_Query( $args );
 
@@ -26,14 +26,14 @@ add_action( 'fittin_weekly_email', function() {
 	$x = 0; // counter
 	if ( ! empty( $user_query->results ) ) {
 		foreach ( $user_query->results as $user ) {
-			// print_r($user->data->user_email);
+
 			$send_email = false;
 
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
 			// get start/end day  (run this job on a sunday)
-			$first_day = date('d-m-Y', strtotime('last monday -7 days')); // mon
-			$last_day = date('d-m-Y', strtotime('last monday -2 days')); // sat
+			$first_day = date( 'd-m-Y', strtotime( 'last monday -7 days' )); // mon
+			$last_day = date( 'd-m-Y', strtotime( 'last monday -2 days' )); // sat
 
 
 // test value overrides
@@ -42,7 +42,37 @@ $last_day = date('U');
 
 			$y = 0; // counter
 
-			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p>";
+			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . ", please find your video views for this week below: </p>";
+			if ( 'Group Leader' == $user->roles[0] ) {
+
+
+
+				// $send_email = true;
+
+				// $output .= 'GROUP LEADER ATTACK';
+
+				// get group leader's group id
+				$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . $user->ID . "'";
+				$result	= $wpdb -> get_row($sql);
+				if ( count( $result ) > 0 ) {
+
+					// now get users from group
+					$gMemSql = "SELECT * FROM " . $wpdb -> prefix . "group_sets_members WHERE group_id = '" . $result->id . "' ORDER BY createdDate";
+					$gMemResults = $wpdb -> get_results($gMemSql);
+					foreach( $gMemResults as $member ) {
+
+						$output .= print_r($member, true);
+
+					}
+				} // if results
+
+
+
+
+
+
+
+			}
 			if ( !empty( $log ) ) {
 				$output .= "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
 				$total_time = 0;
@@ -52,6 +82,7 @@ $last_day = date('U');
 					// if falls within given week
 					if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
 						$send_email = true;
+
 						$time = 0;
 						foreach ( $value as $entry ) {
 							$time += $entry['video_duration'];
@@ -72,9 +103,11 @@ $last_day = date('U');
 
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
 			if ( true === $send_email ) {
+				echo '<pre>' . print_r($user->roles,true) . '</pre>';
+
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
-				// echo $output;
+				// wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
+				echo $output;
 			}
 
 			$x++;
