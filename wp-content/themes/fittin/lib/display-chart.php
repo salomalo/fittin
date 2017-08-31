@@ -19,7 +19,7 @@ function display_chart( $dates, $minutes ) { ?>
 					// {
 					// 	label 			: "Shubbadubba" ,
 					// 	backgroundColor	: "rgba(255,255,0,0.3)",
-					// 	data 			: [<?php echo $minutes2 ?>]
+					// 	data 			: [<?php //echo $minutes2 ?>]
 					// },
 				]
 		    },
