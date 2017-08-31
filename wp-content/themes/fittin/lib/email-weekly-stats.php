@@ -4,9 +4,10 @@
 // 	echo date( 'D' );
 // });
 
-wp_schedule_event( time() + 900, 'daily', 'fittin_weekly_email' );
+wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
 add_action( 'fittin_weekly_email', function() {
+// add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
 	// if ( 'Sun' !== date( 'D' ) ) {
@@ -73,6 +74,7 @@ $last_day = date('U');
 			if ( true === $send_email ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
 				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
+				// echo $output;
 			}
 
 			$x++;
