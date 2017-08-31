@@ -58,7 +58,7 @@ function group_leader_style() {
         wp_enqueue_style( 'group-leader', get_stylesheet_directory_uri() . '/group-leader-style.css', '1.0.0' );
     }
 }
-add_action('wp_enqueue_scripts', 'group_leader_style');
+add_action('admin_enqueue_scripts', 'group_leader_style');
 
 // ======
 // Scripts
