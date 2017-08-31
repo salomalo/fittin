@@ -1,7 +1,18 @@
 <?php
 
-add_action( 'wp_footer', function() {
-	// echo 'nabafbsdfbgbdgfbdgbfgb';
+// add_action( 'wp_footer', function() {
+// 	echo date( 'D' );
+// });
+
+wp_schedule_event( time() + 900, 'daily', 'fittin_weekly_email' );
+
+add_action( 'fittin_weekly_email', function() {
+
+	// check it's sunday
+	// if ( 'Sun' !== date( 'D' ) ) {
+	// 	return;
+	// }
+
 	$args = array(
 		 'fields' => 'all',
 		//  'fields' => 'id',
@@ -11,7 +22,7 @@ add_action( 'wp_footer', function() {
 	$user_query = new WP_User_Query( $args );
 
 	// User Loop
-	$x = 0;
+	$x = 0; // counter
 	if ( ! empty( $user_query->results ) ) {
 		foreach ( $user_query->results as $user ) {
 			// print_r($user->data->user_email);
@@ -24,10 +35,11 @@ add_action( 'wp_footer', function() {
 			$last_day = date('d-m-Y',strtotime('last monday -2 days')); // sat
 
 
-// test values
+// test value overrides
 $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 $last_day = date('U');
-			$y = 0;
+
+			$y = 0; // counter
 
 			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p>";
 			if ( !empty( $log ) ) {
@@ -60,7 +72,7 @@ $last_day = date('U');
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
 			if ( true === $send_email ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				// wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
+				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
 			}
 
 			$x++;
