@@ -17,7 +17,7 @@ add_action( 'fittin_weekly_email', function() {
 		 'fields' => 'all',
 		//  'fields' => 'id',
 		 'no_found_rows' => true,
-		//  'role__in' => array( 'Group Leader', 'Subscriber' )
+		 'role__in' => array( 'Group Leader', 'Subscriber' )
 	);
 	$user_query = new WP_User_Query( $args );
 
@@ -31,8 +31,8 @@ add_action( 'fittin_weekly_email', function() {
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
 			// get start/end day  (run this job on a sunday)
-			$first_day = date('d-m-Y',strtotime('last monday -7 days')); // mon
-			$last_day = date('d-m-Y',strtotime('last monday -2 days')); // sat
+			$first_day = date('d-m-Y', strtotime('last monday -7 days')); // mon
+			$last_day = date('d-m-Y', strtotime('last monday -2 days')); // sat
 
 
 // test value overrides
