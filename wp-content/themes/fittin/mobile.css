@@ -102,22 +102,21 @@ h1 {
 .sub-footer {
 	padding-left: 20px !important;
 	padding-right: 20px !important;
-	}
+}
 
-.page-template-login-logout .nav-toggle.icon, .single-fitt_in_videos .nav-toggle.icon{
-	/*display: none;*/
+.page-template-login-logout .nav-toggle.icon,
+.page-template-dashboard .nav-toggle.icon,
+.single-fitt_in_videos .nav-toggle.icon {
+	display: none;
 }
 
 html .page-template-login-logout-php #wrapper h3 {
-
 	font-size: 14px !important;
-
 	}
 
-	input {
-		width: 100%;
-
-		}
+input {
+	width: 100%;
+}
 
 	.mm-formField .mm-textField, .formhalf .mm-textField {
 		max-width: 80% !important;
