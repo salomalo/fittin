@@ -1,12 +1,8 @@
 <?php
 
-// add_action( 'wp_footer', function() {
-// 	echo date( 'D' );
-// });
-
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
-add_action( 'fittin_weekly_email', function() {
+add_action( 'wp_footer', function() {
 // add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
@@ -26,56 +22,77 @@ add_action( 'fittin_weekly_email', function() {
 	$x = 0; // counter
 	if ( ! empty( $user_query->results ) ) {
 		foreach ( $user_query->results as $user ) {
-			// print_r($user->data->user_email);
-			$send_email = false;
 
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
 			// get start/end day  (run this job on a sunday)
-			$first_day = date('d-m-Y', strtotime('last monday -7 days')); // mon
-			$last_day = date('d-m-Y', strtotime('last monday -2 days')); // sat
+			$first_day = date( 'd-m-Y', strtotime( 'last monday -7 days' )); // mon
+			$last_day = date( 'd-m-Y', strtotime( 'last monday -2 days' )); // sat
 
 
-// test value overrides
+// @todo remove: test value overrides
 $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 $last_day = date('U');
 
-			$y = 0; // counter
+			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . " (" . $user->roles[0] . "),</p>";
 
-			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Please find your video views for this week below: </p>";
-			if ( !empty( $log ) ) {
-				$output .= "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>Video views (mins)</td></tr>";
-				$total_time = 0;
-				foreach( $log as $key => $value ) {
-					$uni_key = strtotime($key);
+			// =============
+			// Group Leader
+			// =============
 
-					// if falls within given week
-					if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
-						$send_email = true;
-						$time = 0;
-						foreach ( $value as $entry ) {
-							$time += $entry['video_duration'];
-							$total_time += $entry['video_duration'];
-						}
+			if ( 'Group Leader' == $user->roles[0] ) {
+				$school_grand_total = 0;
+				$output .= '<p>Please find your school&#39;s video views for the week below.';
 
-						$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px;'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333; padding: 2px 4px;'>" . round( $time / 60 ) . " mins</td></tr>";
+				// ====================
+				// Group leader stats
+				// ====================
 
+				$added_log_times = add_log_times( $log, $first_day, $last_day, $user->data->display_name, true, $school_grand_total );  // put in grand total
+				$output .= $added_log_times['log_table'];
+
+				// ===================================
+				// Get group leader's sub users' stats
+				// ===================================
+
+				global $wpdb;
+				$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . $user->ID . "'";
+				$result	= $wpdb -> get_row($sql);
+				if ( count( $result ) > 0 ) {
+					// now get users from group
+					$gMemSql = "SELECT * FROM " . $wpdb -> prefix . "group_sets_members WHERE group_id = '" . $result->id . "' ORDER BY createdDate";
+					$gMemResults = $wpdb -> get_results($gMemSql);
+					foreach( $gMemResults as $member ) {
+						$member_details = get_user_by( 'ID', $member->member_id );
+						$member_log = get_user_meta( $member->member_id, 'time_list', true );
+						$added_log_times = add_log_times( $member_log, $first_day, $last_day, $member_details->data->display_name, false, $school_grand_total ); // put in grand total
+						$output .= $added_log_times['log_table'];
+						$school_grand_total = $added_log_times['grand_total']; // get out new g total
 					}
-					$y++;
-				}
-				$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>TOTAL</td><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>" . round( $total_time / 60 ) . " mins</td></tr></table><p>Kind regards,<br>Fitt-in</p>";
+				} else {
+					$output .= '<p>You don&#39;t have any teacher accounts associated with your school account.</p>';
+				} // if results
 
+				$output .= '<p>TOTAL VIDEO VIEWS for all users: ' . round( $added_log_times['grand_total'] / 60 ) . ' (mins).</p>'; // get out new g total
+			} else { // else if not group leader role
+				$added_log_times = add_log_times( $log, $first_day, $last_day, $user->data->display_name, true, null );
+				$output .= $added_log_times['log_table'];
 			}
 
-			// echo  $output;
-			// get Log
-
+			$output .= '<p>Kind regards,<br>Fitt-in</p>';
 			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
-			if ( true === $send_email ) {
+
+			// ==========
+			// Send email
+			// ==========
+
+			// if ( true === $send_email ) {
+				// echo '<pre>' . print_r($user->roles,true) . '</pre>';
+
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
-				// echo $output;
-			}
+				// wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
+				echo $output;
+			// }
 
 			$x++;
 		} // foreach user
@@ -85,3 +102,46 @@ $last_day = date('U');
 add_filter( 'wp_mail_content_type', function() {
 	return "text/html";
 });
+
+function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_total ) {
+
+	if ( !empty( $log ) ) {
+		$y = 0; // counter
+		$output = "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>". $name . "&#39;s Video views (mins)</td></tr>";
+
+		if ( true == $single ) {
+			$output .= '<p>Please find your video views for the week below.</p>';
+		}
+
+		$total_time = 0;
+		foreach( $log as $key => $value ) {
+			$uni_key = strtotime($key);
+
+			// if falls within given week
+			if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
+				$send_email = true; // @todo always send email, say 0 mins!
+
+				$time = 0;
+				foreach ( $value as $entry ) {
+					$time += $entry['video_duration'];
+					$total_time += $entry['video_duration'];
+					if ( is_int( $grand_total ) ) { $grand_total += $entry['video_duration']; }
+				}
+
+				$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px;'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333; padding: 2px 4px;'>" . round( $time / 60 ) . " mins</td></tr>";
+
+			}
+			$y++;
+		}
+		$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>TOTAL</td><td style='border:1px solid #333; padding: 2px 4px; font-weight:bold'>" . round( $total_time / 60 ) . " mins</td></tr></table>";
+
+	} else {
+		if ( true == $single ) {
+			$output = '<p>You haven&#39;t viewed any videos this week.</p>';
+		} else {
+			$output = '<p><b>' . $name . '</b> - No video views this week.</p>';
+		}
+	}
+	return [ 'log_table' => $output, 'grand_total' => $grand_total ];
+
+}
