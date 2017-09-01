@@ -41,17 +41,6 @@ function ikreativ_tinymce_fix( $init ) {
     return $init;
 }
 
-
-
-// Add Shortcode
-function favs_shortcode() {
-
-}
-add_shortcode( 'Favs', 'favs_shortcode' );
-
-
-
-
 // custom admin style sheet
 function group_leader_style() {
 	if ( !current_user_can( 'edit_themes' ) ) {
