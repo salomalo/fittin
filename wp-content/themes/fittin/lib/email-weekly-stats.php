@@ -2,13 +2,13 @@
 
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
-add_action( 'wp_footer', function() {
-// add_action( 'fittin_weekly_email', function() {
+// add_action( 'wp_footer', function() {
+add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
-	// if ( 'Sun' !== date( 'D' ) ) {
-	// 	return;
-	// }
+	if ( 'Sun' !== date( 'D' ) ) {
+		return;
+	}
 
 	$args = array(
 		 'fields' => 'all',
@@ -30,9 +30,9 @@ add_action( 'wp_footer', function() {
 			$last_day = date( 'd-m-Y', strtotime( 'last monday -2 days' )); // sat
 
 
-// @todo remove: test value overrides
-$first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
-$last_day = date('U');
+// test value overrides
+// $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
+// $last_day = date('U');
 
 			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . " (" . $user->roles[0] . "),</p>";
 
@@ -73,7 +73,7 @@ $last_day = date('U');
 					$output .= '<p>You don&#39;t have any teacher accounts associated with your school account.</p>';
 				} // if results
 
-				$output .= '<p>TOTAL VIDEO VIEWS for all users: ' . round( $added_log_times['grand_total'] / 60 ) . ' (mins).</p>'; // get out new g total
+				$output .= '<p><b>TOTAL VIDEO VIEWS for all users: ' . round( $added_log_times['grand_total'] / 60 ) . ' (mins).</b></p>'; // get out new g total
 			} else { // else if not group leader role
 				$added_log_times = add_log_times( $log, $first_day, $last_day, $user->data->display_name, true, null );
 				$output .= $added_log_times['log_table'];
@@ -86,13 +86,9 @@ $last_day = date('U');
 			// Send email
 			// ==========
 
-			// if ( true === $send_email ) {
-				// echo '<pre>' . print_r($user->roles,true) . '</pre>';
-
-				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				// wp_mail( 'cpd@loopmill.com', "Your video views this week(email: " . $user->data->user_email . ")", $output, $headers );
-				echo $output;
-			// }
+			// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
+			wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
+			// echo $output;
 
 			$x++;
 		} // foreach user
@@ -119,8 +115,6 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 			// if falls within given week
 			if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
-				$send_email = true; // @todo always send email, say 0 mins!
-
 				$time = 0;
 				foreach ( $value as $entry ) {
 					$time += $entry['video_duration'];
