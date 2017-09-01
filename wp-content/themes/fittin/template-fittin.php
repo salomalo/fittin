@@ -10,8 +10,6 @@
  * @subpackage Template
  */
 
-
-
 get_header();
 ?>
 
