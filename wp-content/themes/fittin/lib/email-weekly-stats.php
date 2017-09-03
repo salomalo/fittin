@@ -10,6 +10,16 @@ add_action( 'fittin_weekly_email', function() {
 		return;
 	}
 
+	// Force one per day! This was firing multiple times
+	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
+	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
+		return;
+	} else if ( empty( $emails_last_sent_date ) ) {
+		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ), $autoload );
+	}
+
+
+
 	$args = array(
 		 'fields' => 'all',
 		//  'fields' => 'id',
