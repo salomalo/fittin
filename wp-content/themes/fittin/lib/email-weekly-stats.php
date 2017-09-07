@@ -97,7 +97,7 @@ add_action( 'fittin_weekly_email', function() {
 			// ==========
 
 			// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-			wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
+			// wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
 			// echo $output;
 
 			$x++;
