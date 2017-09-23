@@ -1,24 +1,23 @@
 <?php
 
-wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
+wp_schedule_event( 1506247200, 'daily', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() {
 add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
-		// return; @TODO
+		return;
 	}
 
 	// Force one per day! This was firing multiple times
 	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
+
 	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
 		return;
-	} else if ( empty( $emails_last_sent_date ) ) {
-		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ), $autoload );
+	} else  {
+		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ) );
 	}
-
-
 
 	$args = array(
 		 'fields' => 'all',
@@ -127,7 +126,7 @@ add_action( 'fittin_weekly_email', function() {
 				if ( 'cpd@loopmill.com' == $user->data->user_email ) {
 					wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
 				}
-				echo $output;
+				// echo $output;
 			}
 
 			$x++;
@@ -140,7 +139,7 @@ add_action( 'fittin_weekly_email', function() {
 			if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
 				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
 			}
-			echo $admin_single_email_output;
+			// echo $admin_single_email_output;
 
 		}
 
