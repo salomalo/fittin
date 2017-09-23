@@ -3,11 +3,11 @@
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() {
-add_action( 'fittin_weekly_email', function() {
+add_action( 'fittin_weekly_email', function() { @TODO
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
-		return;
+		// return; @TODO
 	}
 
 	// Force one per day! This was firing multiple times
@@ -24,13 +24,17 @@ add_action( 'fittin_weekly_email', function() {
 		 'fields' => 'all',
 		//  'fields' => 'id',
 		 'no_found_rows' => true,
-		 'role__in' => array( 'Group Leader', 'Subscriber' )
+		 'role__in' => array( 'Group Leader', 'subscriber', 'administrator' )
 	);
 	$user_query = new WP_User_Query( $args );
 
 	// User Loop
 	$x = 0; // counter
 	if ( ! empty( $user_query->results ) ) {
+
+		$admin_email_output = '<table><tr><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">School account</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Video views</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Active teacher accounts</td></tr>';
+		$admin_emails = array();
+
 		foreach ( $user_query->results as $user ) {
 
 			$log = get_user_meta( $user->ID, 'time_list', true);
@@ -46,11 +50,12 @@ add_action( 'fittin_weekly_email', function() {
 
 			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . " (" . $user->roles[0] . "),</p>";
 
-			// =============
-			// Group Leader
-			// =============
-
 			if ( 'Group Leader' == $user->roles[0] ) {
+
+				// =============
+				// Group Leader
+				// =============
+
 				$school_grand_total = 0;
 				$output .= '<p>Please find your school&#39;s video views for the week below.';
 
@@ -68,6 +73,8 @@ add_action( 'fittin_weekly_email', function() {
 				global $wpdb;
 				$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . $user->ID . "'";
 				$result	= $wpdb -> get_row($sql);
+				$active_teacher_count = 0;
+				$all_teacher_count = 0;
 				if ( count( $result ) > 0 ) {
 					// now get users from group
 					$gMemSql = "SELECT * FROM " . $wpdb -> prefix . "group_sets_members WHERE group_id = '" . $result->id . "' ORDER BY createdDate";
@@ -78,15 +85,35 @@ add_action( 'fittin_weekly_email', function() {
 						$added_log_times = add_log_times( $member_log, $first_day, $last_day, $member_details->data->display_name, false, $school_grand_total ); // put in grand total
 						$output .= $added_log_times['log_table'];
 						$school_grand_total = $added_log_times['grand_total']; // get out new g total
+						$added_log_times['grand_total'] != 0 ? $active_teacher_count++ : '' ;
+						$all_teacher_count++;
 					}
 				} else {
 					$output .= '<p>You don&#39;t have any teacher accounts associated with your school account.</p>';
 				} // if results
 
 				$output .= '<p><b>TOTAL VIDEO VIEWS for all users: ' . round( $added_log_times['grand_total'] / 60 ) . ' (mins).</b></p>'; // get out new g total
-			} else { // else if not group leader role
+
+				$admin_email_output .= '<tr><td style="border: 1px solid #555; padding: 2px 4px">' . $user->data->display_name . '</td><td style="border: 1px solid #555; padding: 2px 4px">' . round( $added_log_times['grand_total'] / 60 ) . ' mins' . '</td><td style="border: 1px solid #555; padding: 2px 4px">' . $active_teacher_count . '/' . $all_teacher_count . '</td></tr>';
+
+			} else if ( 'subscriber' == $user->roles[0] ) {
+
+				// ==========
+				// Subscriber
+				// ==========
+
 				$added_log_times = add_log_times( $log, $first_day, $last_day, $user->data->display_name, true, null );
 				$output .= $added_log_times['log_table'];
+
+				// ==========
+				// Admin
+				// ==========
+
+			} else if ( 'administrator' == $user->roles[0] ) {
+				$admin_emails[] = array(
+					'email' => $user->data->user_email,
+					'name'  => $user->data->display_name
+				);
 			}
 
 			$output .= '<p>Kind regards,<br>Fitt-in</p>';
@@ -96,12 +123,25 @@ add_action( 'fittin_weekly_email', function() {
 			// Send email
 			// ==========
 
-			// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-			// wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
-			// echo $output;
+			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
+				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
+				wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
+				// echo $output;
+			}
 
 			$x++;
 		} // foreach user
+
+		foreach( $admin_emails as $admin_email ) {
+
+			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
+
+			// wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+			wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $admin_email['email'] . ")", $admin_single_email_output, $headers );
+			// echo $admin_single_email_output;
+
+		}
+
 	}
 });
 
