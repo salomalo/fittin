@@ -3,7 +3,7 @@
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() {
-add_action( 'fittin_weekly_email', function() { @TODO
+add_action( 'fittin_weekly_email', function() { 
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
