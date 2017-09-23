@@ -3,7 +3,7 @@
 wp_schedule_event( time(), 'daily', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() {
-add_action( 'fittin_weekly_email', function() { 
+add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
@@ -125,8 +125,8 @@ add_action( 'fittin_weekly_email', function() {
 
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
-				// echo $output;
+				// wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $user->data->user_email . ")", $output, $headers );
+				echo $output;
 			}
 
 			$x++;
@@ -137,8 +137,8 @@ add_action( 'fittin_weekly_email', function() {
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
 			// wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
-			wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $admin_email['email'] . ")", $admin_single_email_output, $headers );
-			// echo $admin_single_email_output;
+			// wp_mail( 'cpd@loopmill.com', "Your video views this week (first_day=$first_day last_day=$last_day) (email: " . $admin_email['email'] . ")", $admin_single_email_output, $headers );
+			echo $admin_single_email_output;
 
 		}
 
