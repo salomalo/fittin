@@ -125,9 +125,9 @@ add_action( 'fittin_weekly_email', function() {
 
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
+					// wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
 				}
-				echo $output;
+				// echo $output;
 			}
 
 			$x++;
@@ -138,9 +138,9 @@ add_action( 'fittin_weekly_email', function() {
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
 			if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
-				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+				// wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
 			}
-			echo $admin_single_email_output;
+			// echo $admin_single_email_output;
 
 		}
 
