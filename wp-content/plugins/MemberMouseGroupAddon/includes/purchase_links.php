@@ -27,7 +27,7 @@ if(count($_POST) > 0):
 		</h2>
 		<div id="group_popup_main">
 			<p><span class="group_section_header">Purchase link for '<?php echo $itemResult -> name;?>'</span></p>
-			<p>Use the link below to allow customers to create a new '<?php echo $itemResult -> name;?>' group:</p>
+			<p>Copy the link below into an email to invite teachers to sign up to Fitt-in:</p>
 			<input type="text" onclick="jQuery('#mm-static-link').focus(); jQuery('#mm-static-link').select();" style="width:440px; font-family:courier; font-size:11px;" value="<?php echo $purchaseUrl;?>" readonly="" id="mm-static-link">
 		</div>
 	</div>	

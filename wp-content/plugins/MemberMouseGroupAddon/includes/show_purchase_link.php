@@ -40,7 +40,7 @@ if(count($_POST) > 0):
 			<span class="group_close"><a href="javascript:MGROUP.closeGroupPopup();" title="Close">Close</a></span>
 		</h2>
 		<div id="group_popup_main">
-			<p>Use the link below to allow customers to join this group:</p>
+			<p>Copy the link below into an email to invite teachers to sign up to Fitt-in:</p>
 			<input type="text" onclick="jQuery('#mm-static-link').focus(); jQuery('#mm-static-link').select();" style="width:440px; font-family:courier; font-size:11px;" value="<?php echo $purchaseUrl;?>" readonly="" id="mm-static-link">
 		</div>
 	</div>	
