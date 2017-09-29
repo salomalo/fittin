@@ -1,6 +1,6 @@
 <?php
 
-wp_schedule_event( 1506247200, 'daily', 'fittin_weekly_email' );
+wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() {
 add_action( 'fittin_weekly_email', function() {
@@ -47,7 +47,7 @@ add_action( 'fittin_weekly_email', function() {
 // $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 // $last_day = date('U');
 
-			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . " (" . $user->roles[0] . "),</p>";
+			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . ",</p>";
 
 			if ( 'Group Leader' == $user->roles[0] ) {
 
@@ -56,7 +56,7 @@ add_action( 'fittin_weekly_email', function() {
 				// =============
 
 				$school_grand_total = 0;
-				$output .= '<p>Please find your school&#39;s video views for the week below.';
+				$output .= '<p>Please find your Fitt-in usage for the week:</p>';
 
 				// ====================
 				// Group leader stats
@@ -115,17 +115,25 @@ add_action( 'fittin_weekly_email', function() {
 				);
 			}
 
-			$output .= '<p>Kind regards,<br>Fitt-in</p>';
-			$headers = 'From: Fitt-In <no-reply@fitt-in.co.uk>' . "\r\n";
+			$output .= '<p>Here are some ideas for using Fitt-in in the classroom:</p>
+						Morning wake-up - after registration<br/>
+						Re-focusing the class - after a long/intense lesson<br/>
+						Incentive - to help further improve good behaviour<br/>
+						Reward - as pupils enjoy the habit of moving and help to reduce pupil sedentary time<br/>
+						Wet-play or when pollution levels are too high to play outside<br/>
+						Before or after a test';
+			$headers = 'From: Fitt-in <no-reply@fitt-in.co.uk>' . "\r\n";
 
 			// ==========
 			// Send email
 			// ==========
-
+// echo $output;
+// echo '<hr><hr>';
+// echo $admin_single_email_output;
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
-				if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					wp_mail( $user->data->user_email, 'Your video views this week', $output, $headers );
-				}
+				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
+					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+				// }
 				// echo $output;
 			}
 
@@ -136,9 +144,9 @@ add_action( 'fittin_weekly_email', function() {
 
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
-			if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
+			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
 				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
-			}
+			// }
 			// echo $admin_single_email_output;
 
 		}
@@ -157,7 +165,7 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 		$output = "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>". $name . "&#39;s Video views (mins)</td></tr>";
 
 		if ( true == $single ) {
-			$output .= '<p>Please find your video views for the week below.</p>';
+			$output .= '<p>Please find your Fitt-in usage for the week:</p>';
 		}
 
 		$total_time = 0;
