@@ -2,19 +2,19 @@
 
 wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 
-// add_action( 'wp_footer', function() {
+// add_action( 'wp_footer', function() { // @DEBUG_INFO
 add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
-		return;
+		return; // @DEBUG_INFO
 	}
 
 	// Force one per day! This was firing multiple times
 	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
 
 	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
-		return;
+		return; // @DEBUG_INFO
 	} else  {
 		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ) );
 	}
@@ -42,8 +42,7 @@ add_action( 'fittin_weekly_email', function() {
 			$first_day = date( 'd-m-Y', strtotime( 'last monday -7 days' )); // mon
 			$last_day = date( 'd-m-Y', strtotime( 'last monday -2 days' )); // sat
 
-
-// test value overrides
+// @DEBUG_INFO test value overrides
 // $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 // $last_day = date('U');
 
@@ -134,7 +133,7 @@ add_action( 'fittin_weekly_email', function() {
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
 					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
-				// echo $output;
+				// echo $output; // @DEBUG_INFO
 			}
 
 			$x++;
@@ -147,7 +146,7 @@ add_action( 'fittin_weekly_email', function() {
 			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
 				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
 			// }
-			// echo $admin_single_email_output;
+			// echo $admin_single_email_output; // @DEBUG_INFO
 
 		}
 
@@ -173,7 +172,8 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 			$uni_key = strtotime($key);
 
 			// if falls within given week
-			if ( date( 'U', $uni_key ) > $first_day && date( 'U', $uni_key ) < $last_day ) {
+			if ( date( 'U', $uni_key ) > strtotime( $first_day ) && date( 'U', $uni_key ) < strtotime( $last_day ) ) {
+			// @DEBUG_INFO echo '<span style="background:green">PASS</span>';
 				$time = 0;
 				foreach ( $value as $entry ) {
 					$time += $entry['video_duration'];
@@ -183,6 +183,14 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 				$output .= "<tr><td style='border:1px solid #333; padding: 2px 4px;'>". date( 'D jS F, Y', $uni_key ) . "</td><td style='border:1px solid #333; padding: 2px 4px;'>" . round( $time / 60 ) . " mins</td></tr>";
 
+			} else {
+				// @DEBUG_INFO
+				// echo '<span style="background:red">FAIL<br>';
+				// echo date( 'U', $uni_key ) .'<br>';
+				// echo strtotime( $first_day ) .'<br>' ;
+				// echo date( 'U', $uni_key ) . '<br>' ;
+				// echo strtotime( $last_day  ). '<br>';
+				// echo '</span>';
 			}
 			$y++;
 		}
