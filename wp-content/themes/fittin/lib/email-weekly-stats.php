@@ -6,7 +6,7 @@ wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
-	if ( 'Sun' !== date( 'D' ) ) {
+	if ( 'Mon' !== date( 'D' ) ) {
 		return; // @DEBUG_INFO
 	}
 
@@ -31,7 +31,7 @@ add_action( 'fittin_weekly_email', function() {
 	$x = 0; // counter
 	if ( ! empty( $user_query->results ) ) {
 
-		$admin_email_output = '<table><tr><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">School account</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Video views</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Active teacher accounts</td></tr>';
+		$admin_email_output = '<table><tr><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">School account</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Video views</td><td style="border: 1px solid #555; padding: 2px 4px; font-weight:bold">Active teacher sub accounts</td></tr>';
 		$admin_emails = array();
 
 		foreach ( $user_query->results as $user ) {
@@ -39,9 +39,10 @@ add_action( 'fittin_weekly_email', function() {
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
 			// get start/end day  (run this job on a sunday)
-			$first_day = date( 'd-m-Y', strtotime( 'last monday -7 days' )); // mon
-			$last_day = date( 'd-m-Y', strtotime( 'last monday -2 days' )); // sat
+			$first_day = date( 'd-m-Y', strtotime( 'last monday -1 days' )); // mon
+			$last_day = date( 'd-m-Y', strtotime( 'last monday +6 days' )); // sat
 
+// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
 // @DEBUG_INFO test value overrides
 // $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 // $last_day = date('U');
@@ -55,7 +56,7 @@ add_action( 'fittin_weekly_email', function() {
 				// =============
 
 				$school_grand_total = 0;
-				$output .= '<p>Please find your Fitt-in usage for the week:</p>';
+				$output .= "<p>Please find your Fitt-in usage for the week ($first_day -> $last_day):</p>";
 
 				// ====================
 				// Group leader stats
@@ -131,7 +132,7 @@ add_action( 'fittin_weekly_email', function() {
 // echo $admin_single_email_output;
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+					// wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
 				// echo $output; // @DEBUG_INFO
 			}
@@ -164,7 +165,7 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 		$output = "<table style='margin-bottom:20px; border-collapse: collapse' cellspacing='0' cellpadding='0'><tr><td style='font-weight: bold'>Date</td><td style='font-weight: bold'>". $name . "&#39;s Video views (mins)</td></tr>";
 
 		if ( true == $single ) {
-			$output .= '<p>Please find your Fitt-in usage for the week:</p>';
+			$output .= "<p>Please find your Fitt-in usage for the week (" . date( 'jS M Y', strtotime( $first_day ) ) . " to " . date( 'jS M Y', strtotime ( $last_day ) ) . "):</p>";
 		}
 
 		$total_time = 0;
@@ -173,7 +174,10 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 			// if falls within given week
 			if ( date( 'U', $uni_key ) > strtotime( $first_day ) && date( 'U', $uni_key ) < strtotime( $last_day ) ) {
-			// @DEBUG_INFO echo '<span style="background:green">PASS</span>';
+			 //@DEBUG_INFO
+			// echo '<span style="background:green">CURRENT</span>  ';
+			// echo date( 'd-m-Y', $uni_key);
+
 				$time = 0;
 				foreach ( $value as $entry ) {
 					$time += $entry['video_duration'];
@@ -185,12 +189,11 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 			} else {
 				// @DEBUG_INFO
-				// echo '<span style="background:red">FAIL<br>';
-				// echo date( 'U', $uni_key ) .'<br>';
-				// echo strtotime( $first_day ) .'<br>' ;
-				// echo date( 'U', $uni_key ) . '<br>' ;
-				// echo strtotime( $last_day  ). '<br>';
-				// echo '</span>';
+				// echo "<br><br><br>$name<br>";
+				// echo date( 'd-m-Y', $uni_key ) .'<br>';
+				// echo $first_day .'<br>' ;
+				// echo date( 'd-m-Y', $uni_key ) . '<br>' ;
+				// echo $last_day . '<br>';
 			}
 			$y++;
 		}
