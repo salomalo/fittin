@@ -2,19 +2,19 @@
 
 wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 
-// add_action( 'wp_footer', function() { // @DEBUG_INFO
-add_action( 'fittin_weekly_email', function() {
+add_action( 'wp_footer', function() { // @DEBUG_INFO
+// add_action( 'fittin_weekly_email', function() {
 
 	// check it's sunday
 	if ( 'Sun' !== date( 'D' ) ) {
-		return; // @DEBUG_INFO
+		// return; // @DEBUG_INFO
 	}
 
 	// Force one per day! This was firing multiple times
 	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
 
 	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
-		return; // @DEBUG_INFO
+		// return; // @DEBUG_INFO
 	} else  {
 		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ) );
 	}
@@ -42,7 +42,7 @@ add_action( 'fittin_weekly_email', function() {
 			$first_day = date( 'd-m-Y', strtotime( 'last monday -1 days' )); // mon
 			$last_day = date( 'd-m-Y', strtotime( 'last monday +6 days' )); // sat
 
-// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
+echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
 // @DEBUG_INFO test value overrides
 // $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 // $last_day = date('U');
@@ -132,9 +132,9 @@ add_action( 'fittin_weekly_email', function() {
 // echo $admin_single_email_output;
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+					// wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
-				// echo $output; // @DEBUG_INFO
+				echo $output; // @DEBUG_INFO
 			}
 
 			$x++;
@@ -145,9 +145,9 @@ add_action( 'fittin_weekly_email', function() {
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
 			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
-				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+				// wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
 			// }
-			// echo $admin_single_email_output; // @DEBUG_INFO
+			echo $admin_single_email_output; // @DEBUG_INFO
 
 		}
 
@@ -175,8 +175,8 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 			// if falls within given week
 			if ( date( 'U', $uni_key ) > strtotime( $first_day ) && date( 'U', $uni_key ) < strtotime( $last_day ) ) {
 			 //@DEBUG_INFO
-			// echo '<span style="background:green">CURRENT</span>  ';
-			// echo date( 'd-m-Y', $uni_key);
+			echo '<span style="background:green">CURRENT</span>  ';
+			echo date( 'd-m-Y', $uni_key);
 
 				$time = 0;
 				foreach ( $value as $entry ) {
@@ -189,11 +189,11 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 			} else {
 				// @DEBUG_INFO
-				// echo "<br><br><br>$name<br>";
-				// echo date( 'd-m-Y', $uni_key ) .'<br>';
-				// echo $first_day .'<br>' ;
-				// echo date( 'd-m-Y', $uni_key ) . '<br>' ;
-				// echo $last_day . '<br>';
+				echo "<br><br><br>$name<br>";
+				echo date( 'd-m-Y', $uni_key ) .'<br>';
+				echo $first_day .'<br>' ;
+				echo date( 'd-m-Y', $uni_key ) . '<br>' ;
+				echo $last_day . '<br>';
 			}
 			$y++;
 		}
