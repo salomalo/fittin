@@ -2,19 +2,19 @@
 
 wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 
-add_action( 'wp_footer', function() { // @DEBUG_INFO
-// add_action( 'fittin_weekly_email', function() {
+// add_action( 'wp_footer', function() { // @DEBUG_INFO
+add_action( 'fittin_weekly_email', function() {
 
-	// check it's sunday
-	if ( 'Sun' !== date( 'D' ) ) {
-		// return; // @DEBUG_INFO
+	// check it's saturday
+	if ( 'Sat' !== date( 'D' ) ) {
+		return; // @DEBUG_INFO
 	}
 
 	// Force one per day! This was firing multiple times
 	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
 
 	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
-		// return; // @DEBUG_INFO
+		return; // @DEBUG_INFO
 	} else  {
 		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ) );
 	}
@@ -127,12 +127,10 @@ add_action( 'wp_footer', function() { // @DEBUG_INFO
 			// ==========
 			// Send email
 			// ==========
-// echo $output;
-// echo '<hr><hr>';
-// echo $admin_single_email_output;
+
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					// wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
 				// echo $output; // @DEBUG_INFO
 			}
@@ -145,9 +143,9 @@ add_action( 'wp_footer', function() { // @DEBUG_INFO
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
 			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
-				// wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
 			// }
-			echo $admin_single_email_output; // @DEBUG_INFO
+			// echo $admin_single_email_output; // @DEBUG_INFO
 
 		}
 
