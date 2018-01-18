@@ -5,8 +5,8 @@ wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
 // add_action( 'wp_footer', function() { // @DEBUG_INFO
 add_action( 'fittin_weekly_email', function() {
 
-	// check it's sunday
-	if ( 'Sun' !== date( 'D' ) ) {
+	// check it's saturday
+	if ( 'Sat' !== date( 'D' ) ) {
 		return; // @DEBUG_INFO
 	}
 
@@ -127,9 +127,7 @@ add_action( 'fittin_weekly_email', function() {
 			// ==========
 			// Send email
 			// ==========
-// echo $output;
-// echo '<hr><hr>';
-// echo $admin_single_email_output;
+
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
 					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
