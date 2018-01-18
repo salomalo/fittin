@@ -42,7 +42,7 @@ add_action( 'wp_footer', function() { // @DEBUG_INFO
 			$first_day = date( 'd-m-Y', strtotime( 'last monday -1 days' )); // mon
 			$last_day = date( 'd-m-Y', strtotime( 'last monday +6 days' )); // sat
 
-echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
+// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
 // @DEBUG_INFO test value overrides
 // $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
 // $last_day = date('U');
@@ -134,7 +134,7 @@ echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
 					// wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
-				echo $output; // @DEBUG_INFO
+				// echo $output; // @DEBUG_INFO
 			}
 
 			$x++;
@@ -175,8 +175,8 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 			// if falls within given week
 			if ( date( 'U', $uni_key ) > strtotime( $first_day ) && date( 'U', $uni_key ) < strtotime( $last_day ) ) {
 			 //@DEBUG_INFO
-			echo '<span style="background:green">CURRENT</span>  ';
-			echo date( 'd-m-Y', $uni_key);
+			// echo '<span style="background:green">CURRENT</span>  ';
+			// echo date( 'd-m-Y', $uni_key);
 
 				$time = 0;
 				foreach ( $value as $entry ) {
@@ -189,11 +189,11 @@ function add_log_times( $log, $first_day, $last_day, $name, $single, $grand_tota
 
 			} else {
 				// @DEBUG_INFO
-				echo "<br><br><br>$name<br>";
-				echo date( 'd-m-Y', $uni_key ) .'<br>';
-				echo $first_day .'<br>' ;
-				echo date( 'd-m-Y', $uni_key ) . '<br>' ;
-				echo $last_day . '<br>';
+				// echo "<br><br><br>$name<br>";
+				// echo date( 'd-m-Y', $uni_key ) .'<br>';
+				// echo $first_day .'<br>' ;
+				// echo date( 'd-m-Y', $uni_key ) . '<br>' ;
+				// echo $last_day . '<br>';
 			}
 			$y++;
 		}
