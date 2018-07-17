@@ -21,7 +21,7 @@
 
            <div class="footer-logo">
                <img src="/wp-content/uploads/2017/03/logo.png" alt="Fitt-In" width="120"><br><br>
-               <p><strong>Movement breaks for mind and body</strong></p>
+               <p><strong>Movement breaks for the classroom</strong></p>
            </div>
 
            <div class="footer-menu">
