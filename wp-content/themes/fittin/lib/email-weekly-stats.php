@@ -1,6 +1,6 @@
 <?php
 
-wp_schedule_event( 1506855600, 'daily', 'fittin_weekly_email' );
+wp_schedule_event( time(), 'hourly', 'fittin_weekly_email' );
 
 // add_action( 'wp_footer', function() { // @DEBUG_INFO
 add_action( 'fittin_weekly_email', function() {
@@ -42,10 +42,10 @@ add_action( 'fittin_weekly_email', function() {
 			$first_day = date( 'd-m-Y', strtotime( 'last monday -1 days' )); // mon
 			$last_day = date( 'd-m-Y', strtotime( 'last monday +6 days' )); // sat
 
-// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
-// @DEBUG_INFO test value overrides
-// $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
-// $last_day = date('U');
+			// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
+			// @DEBUG_INFO test value overrides
+			// $first_day = date( 'U', strtotime( 'last monday -9999 days' ) );
+			// $last_day = date('U');
 
 			$output = "<img width='80' src='https://www.fitt-in.co.uk/wp-content/uploads/2017/03/logo.png' alt='Fitt-In' style='margin-bottom: 20px'><p>Hello " . $user->data->display_name . ",</p>";
 
@@ -129,8 +129,11 @@ add_action( 'fittin_weekly_email', function() {
 			// ==========
 
 			if ( 'Group Leader' == $user->roles[0] || 'subscriber' == $user->roles[0] ) {
+
+				wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+
 				// if ( 'cpd@loopmill.com' == $user->data->user_email ) {
-					wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
+					// wp_mail( $user->data->user_email, 'Your Fitt-in usage this week', $output, $headers );
 				// }
 				// echo $output; // @DEBUG_INFO
 			}
@@ -138,18 +141,24 @@ add_action( 'fittin_weekly_email', function() {
 			$x++;
 		} // foreach user
 
-		foreach( $admin_emails as $admin_email ) {
+		foreach( $admin_emails as $admin_email ) :
 
 			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
 
+			// wp_mail( 'cpd@loopmill.com', $admin_email['email'] . ' Fitt in video views this week', $admin_single_email_output, $headers );
 			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
-				wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+				// wp_mail( 'cpd@loopmill.com', 'Fitt in video views this week', $admin_single_email_output, $headers );
 			// }
+			// echo $admin_email['email'];
+			// echo $headers;
 			// echo $admin_single_email_output; // @DEBUG_INFO
 
-		}
 
-	}
+			wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+
+		endforeach;
+
+	} // if there are users
 });
 
 add_filter( 'wp_mail_content_type', function() {
