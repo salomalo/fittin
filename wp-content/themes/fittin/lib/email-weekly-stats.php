@@ -143,7 +143,7 @@ add_action( 'fittin_weekly_email', function() {
 
 		foreach( $admin_emails as $admin_email ) :
 
-			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt In</div>';
+			$admin_single_email_output = '<div>Hi ' . $admin_email['name'] . ', please find the video view stats below.' . $admin_email_output . '</table> Kind regards, Fitt-in</div>';
 
 			// wp_mail( 'cpd@loopmill.com', $admin_email['email'] . ' Fitt in video views this week', $admin_single_email_output, $headers );
 			// if ( 'cpd@loopmill.com' == $admin_email['email'] ) {
@@ -154,11 +154,26 @@ add_action( 'fittin_weekly_email', function() {
 			// echo $admin_single_email_output; // @DEBUG_INFO
 
 
-			wp_mail( $admin_email['email'], 'Fitt in video views this week', $admin_single_email_output, $headers );
+			wp_mail( $admin_email['email'], 'Fitt-in video views this week', $admin_single_email_output, $headers );
 
 		endforeach;
 
+
+		// @DEBUG INFO email cpd
+		// Force one per day! This was firing multiple times
+		$debug_emails_last_sent_date = get_option( 'fittin_debug_emails_last_sent_date' );
+		if ( date( 'd-m-Y' ) == $debug_emails_last_sent_date  ) {
+			return; 
+		} else  {
+			update_option( 'fittin_debug_emails_last_sent_date',  date( 'd-m-Y' ) );
+			wp_mail( 'cpd@loopmill.com', '@DEBUG Fitt-in video views this week', print_r( $admin_emails ), $headers );
+		}
+
+
+
 	} // if there are users
+
+
 });
 
 add_filter( 'wp_mail_content_type', function() {
