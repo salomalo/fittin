@@ -208,6 +208,11 @@ class Essential_Grid_Meta {
 			$text = $meta_link->get_link_meta_value_by_handle($post_id, $handle);
 		}
 		
+		/* 2.1.6 allows for shortcodes inside custom meta */
+		if(strpos($text, '[') !== false && strpos($text, ']') !== false) {
+			$text = preg_replace('/"/', "'", $text);
+		}
+		
 		$text = str_replace('","', ',', str_replace(array('["', '"]'), '', $text));
 		
 		return apply_filters('essgrid_get_meta_value_by_handle', $text, $post_id, $handle);
@@ -301,9 +306,39 @@ class Essential_Grid_Meta {
 								case 'link':
 									$meta_value = get_permalink($my_post['ID']);
 									break;
+								case 'likespost':
+									if(!empty($my_post['ID'])){
+										$count = get_post_meta($my_post['ID'], "eg_votes_count", '');
+										$count[0] = isset($count[0]) ? $count[0] : 0;
+										$meta_value = '<span class="eg-post-count">'.$count[0].'</span>';
+									}
+									else{
+										$meta_value = '';
+									}
+									break;
 								case 'date':
 									$postDate = $base->getVar($my_post, "post_date_gmt");
 									$meta_value = $base->convert_post_date($postDate);
+									break;
+								case 'date_day':
+									$postDate = $base->getVar($my_post, "post_date_gmt");	
+									$meta_value = date('d',strtotime($postDate));
+									break;
+								case 'date_month':
+									$postDate = $base->getVar($my_post, "post_date_gmt");	
+									$meta_value = date('m',strtotime($postDate));
+									break;
+								case 'date_month_abbr':
+									$postDate = $base->getVar($my_post, "post_date_gmt");	
+									$meta_value = date('M',strtotime($postDate));
+									break;
+								case 'date_year':
+									$postDate = $base->getVar($my_post, "post_date_gmt");	
+									$meta_value = date('Y',strtotime($postDate));
+									break;
+								case 'date_year_abbr':
+									$postDate = $base->getVar($my_post, "post_date_gmt");	
+									$meta_value = date('y',strtotime($postDate));
 									break;
 								case 'date_modified':
 									$dateModified = $base->getVar($my_post, "post_modified");
@@ -312,6 +347,30 @@ class Essential_Grid_Meta {
 								case 'author_name':
 									$authorID = $base->getVar($my_post, 'post_author');
 									$meta_value =  get_the_author_meta('display_name', $authorID);
+									break;
+								case 'author_posts':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value = get_author_posts_url( $authorID );
+									break;
+								case 'author_profile':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value =  get_the_author_meta('url', $authorID);
+									break;
+								case 'author_avatar_32':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value =  get_avatar( $authorID, 32);
+									break;
+								case 'author_avatar_64':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value =  get_avatar( $authorID, 64);
+									break;
+								case 'author_avatar_96':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value =  get_avatar( $authorID, 96);
+									break;
+								case 'author_avatar_512':
+									$authorID = $base->getVar($my_post, 'post_author');
+									$meta_value =  get_avatar( $authorID, 512);
 									break;
 								case 'num_comments':
 									$meta_value = $base->getVar($my_post, 'comment_count');
@@ -338,6 +397,21 @@ class Essential_Grid_Meta {
 									break;
 								case 'tag_list':
 									$meta_value = $base->get_tags_html_list($my_post['ID']);	
+									break;
+								case 'taxonomy':
+									$terms = get_the_terms($my_post['ID'] , $taxonomy);
+
+									$terms_length = sizeof($terms);			
+									if(is_array($terms)){
+										foreach ($terms as $term) {
+											$text_array[] = '<a href="'.get_term_link($term->term_id).'">'.$term->name.'</a>';
+										}
+									}
+									else{
+										$text_array[] = '';
+									}
+
+									$meta_value = implode($separator , $text_array);
 									break;
 								default:
 									$meta_value = apply_filters('essgrid_post_meta_content', $meta_value, $meta, $my_post['ID'], $my_post);

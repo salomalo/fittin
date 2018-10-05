@@ -57,12 +57,14 @@ class Essential_Grid_Global_Css {
 		if(function_exists('is_multisite') && is_multisite() && $networkwide){ //do for each existing site
 			global $wpdb;
 			
-			$old_blog = $wpdb->blogid;
+			// 2.2.5
+			// $old_blog = $wpdb->blogid;
 			
             // Get all blog ids and create tables
 			$blogids = $wpdb->get_col("SELECT blog_id FROM ".$wpdb->blogs);
 			
             foreach($blogids as $blog_id){
+				
 				switch_to_blog($blog_id);
 				
 				if(get_option('tp_eg_custom_css_imported', 'false') == 'true') continue;
@@ -71,9 +73,13 @@ class Essential_Grid_Global_Css {
 				
 				self::set_global_css_styles(apply_filters('essgrid_propagate_default_global_css_multisite', $css, $blog_id));
 				
+				// 2.2.5
+				restore_current_blog();
+				
             }
 			
-            switch_to_blog($old_blog); //go back to correct blog
+			// 2.2.5
+            // switch_to_blog($old_blog); //go back to correct blog
 			
 		}else{
 			if(get_option('tp_eg_custom_css_imported', 'false') == 'false'){
@@ -117,7 +123,7 @@ a.eg-henryharrison-element-2 {
             padding:30px 30px 0px 30px;
 }
 
-.eg-harding-wrapper .esg-entry-media img { overflow:hidden; 
+.eg-harding-wrapper .esg-media-poster { overflow:hidden; 
             border-radius:50%;
             -webkit-border-radius:50%;
             -moz-border-radius:50%;
@@ -131,7 +137,7 @@ a.eg-henryharrison-element-2 {
             padding:30px 30px 0px 30px;
 }
 
-.eg-ulysses-s-grant-wrapper .esg-entry-media img { overflow:hidden; 
+.eg-ulysses-s-grant-wrapper .esg-media-poster { overflow:hidden; 
             border-radius:50%;
             -webkit-border-radius:50%;
             -moz-border-radius:50%;
@@ -145,7 +151,7 @@ a.eg-henryharrison-element-2 {
             padding:30px 30px 0px 30px;
 }
 
-.eg-richard-nixon-wrapper .esg-entry-media img { overflow:hidden; 
+.eg-richard-nixon-wrapper .esg-media-poster { overflow:hidden; 
             border-radius:50%;
             -webkit-border-radius:50%;
             -moz-border-radius:50%;
@@ -153,25 +159,25 @@ a.eg-henryharrison-element-2 {
 
 
 /* HERBERT HOOVER */
-.eg-herbert-hoover-wrapper .esg-entry-media img{
+.eg-herbert-hoover-wrapper .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale\"); /* Firefox 10+, Firefox on Android */
     filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
 
-.eg-herbert-hoover-wrapper:hover .esg-entry-media img{
+.eg-herbert-hoover-wrapper:hover .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0'/></filter></svg>#grayscale\");
     -webkit-filter: grayscale(0%);}
 
 
 /* JOOHNSON */
-.eg-lyndon-johnson-wrapper .esg-entry-media img{
+.eg-lyndon-johnson-wrapper .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale\"); /* Firefox 10+, Firefox on Android */
     filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
 
-.eg-lyndon-johnson-wrapper:hover .esg-entry-media img{
+.eg-lyndon-johnson-wrapper:hover .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0'/></filter></svg>#grayscale\");
     -webkit-filter: grayscale(0%);}
 
@@ -222,7 +228,7 @@ background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.35) 0%,rgba
 background: radial-gradient(ellipse at center,  rgba(0,0,0,0.35) 0%,rgba(18,18,18,0) 96%,rgba(19,19,19,0) 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#59000000', endColorstr='#00131313',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
  }
-.eg-wilbert-wrapper .esg-entry-media img{
+.eg-wilbert-wrapper .esg-media-poster{
   -webkit-transition: 0.4s ease-in-out;
     -moz-transition:  0.4s ease-in-out;
     -o-transition:  0.4s ease-in-out;
@@ -232,7 +238,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#59000000', e
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
 }
 
-.eg-wilbert-wrapper:hover .esg-entry-media img{
+.eg-wilbert-wrapper:hover .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0'/></filter></svg>#grayscale\");
     -webkit-filter: grayscale(0%);}
 
@@ -248,12 +254,12 @@ left:50%;
 margin-left:-5px; bottom:-5px; position:absolute; }
 
 /*HOWARD TAFT*/
-.eg-howardtaft-wrapper .esg-entry-media img, .eg-howardtaft-wrapper .esg-media-poster{
+.eg-howardtaft-wrapper .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0'/></filter></svg>#grayscale\");
     -webkit-filter: grayscale(0%);
 }
 
-.eg-howardtaft-wrapper:hover .esg-entry-media img, .eg-howardtaft-wrapper:hover .esg-media-poster{
+.eg-howardtaft-wrapper:hover .esg-media-poster{
     filter: url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale\"); /* Firefox 10+, Firefox on Android */
     filter: gray; /* IE6-9 */
     -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */

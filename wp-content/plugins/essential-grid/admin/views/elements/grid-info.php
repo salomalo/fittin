@@ -59,10 +59,11 @@ if(!$EssentialAsTheme){
 	<div style="width:100%;height:50px"></div>
 
 	<div class="title_line nobgnopd">
-		<div class="view_title"><span style="margin-right:10px"><?php _e("Need Premium Support and Auto Updates ?", EG_TEXTDOMAIN); ?></span><a style="vertical-align:middle" class='button-primary revblue' href='#' id="benefitsbutton"><?php _e("Why is this Important ?", EG_TEXTDOMAIN); ?> </a></div>
+		<div class="view_title"><span style="margin-right:10px"><?php _e("Purchase Code Registration", EG_TEXTDOMAIN); ?></span>
 	</div>
-
-	<div id="benefitscontent" style="margin-top:10px;margin-bottom:10px;display:none;border:1px solid #e5e5e5; padding:15px 15px 15px 80px; border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;position:relative;overflow:hidden;background-color:#fff;">		
+	
+	<?php $displs = $validated !== 'true' ? 'block' : 'none'; ?>
+	<div id="benefitscontent" style="margin-top:10px;margin-bottom:10px;border:1px solid #e5e5e5; padding:15px 15px 15px 80px; border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;position:relative;overflow: hidden;background-color:#fff;display:<?php echo $displs; ?>">		
 		<div class="revblue" style="left:0px;top:0px;position:absolute;height:100%;padding:27px 10px;"><i style="color:#fff;font-size:25px" class="eg-icon-doc"></i></div>
 		<h3> <?php _e("Benefits", EG_TEXTDOMAIN); ?>:</h3>
 		<p>
@@ -92,12 +93,12 @@ if(!$EssentialAsTheme){
 		}
 		?>
 
-		<div id="rs-validation-wrapper" style="display:<?php echo $displ; ?>">
+		<div id="rs-validation-wrapper">
 			
 			<div class="validation-label"><?php _e('Purchase code:', EG_TEXTDOMAIN); ?></div> 
 			<div class="validation-input">
 				<input type="text" name="eg-validation-token" value="<?php echo $code; ?>" <?php echo ($validated === 'true') ? ' readonly="readonly"' : ''; ?> style="width: 350px;" />
-				<p class="validation-description"><?php _e('Please enter your ', EG_TEXTDOMAIN); ?><strong style="color:#000"><?php _e('CodeCanyon Essential Grid purchase code / license key', EG_TEXTDOMAIN); ?></strong><?php _e('. You can find your key by following the instructions on', EG_TEXTDOMAIN); ?><a target="_blank" href="http://www.themepunch.com/home/plugins/wordpress-plugins/revolution-slider-wordpress/where-to-find-the-purchase-code/"><?php _e(' this page.', EG_TEXTDOMAIN); ?></a></p>
+				<p class="validation-description"><?php _e('Please enter your ', EG_TEXTDOMAIN); ?><strong style="color:#000"><?php _e('CodeCanyon Essential Grid purchase code / license key', EG_TEXTDOMAIN); ?></strong><?php _e('. You can find your key by following the instructions on', EG_TEXTDOMAIN); ?><a target="_blank" href="http://www.themepunch.com/home/plugins/wordpress-plugins/revolution-slider-wordpress/where-to-find-the-purchase-code/"><?php _e(' this page.', EG_TEXTDOMAIN); ?></a><br><?php _e('Have no regular license for this installation? Grab a fresh one at <a target="_blank" href="https://codecanyon.net/item/essential-grid-wordpress-plugin/7563340?ref=themepunch">CodeCanyon</a>!', EG_TEXTDOMAIN); ?></p>
 			</div>
 			<div class="clear"></div>
 			
@@ -124,9 +125,9 @@ if(!$EssentialAsTheme){
 		<?php if($validated === 'true') {
 			?> 
 			<div style="height:15px"></div>
-			<h3> <?php _e("How to get Support ?", EG_TEXTDOMAIN); ?>:</h3>
+			<h3> <?php _e("How to get Support ?", EG_TEXTDOMAIN); ?></h3>
 			<p>
-			<?php _e("Please feel free to contact us via our ", EG_TEXTDOMAIN); ?><a href='http://themepunch.ticksy.com'><?php _e("Support Forum ", EG_TEXTDOMAIN); ?></a><?php _e("and/or via the ", EG_TEXTDOMAIN); ?><a href='http://codecanyon.net/item/tp_eg_pro-responsive-teaser-wordpress-plugin/4720988'><?php _e("Item Disscussion Forum", EG_TEXTDOMAIN); ?></a><br />
+			<?php _e("Visit our ", EG_TEXTDOMAIN); ?><a href='https://www.themepunch.com/support-center/' target="_blank"><?php _e("Support Center ", EG_TEXTDOMAIN); ?></a><?php _e("and/or the ", EG_TEXTDOMAIN); ?><a href='https://codecanyon.net/item/essential-grid-wordpress-plugin/7563340/comments'><?php _e("Item Disscussion Forum", EG_TEXTDOMAIN); ?></a><br />
 			</p> 	
 			<?php 	
 		} else {
@@ -157,7 +158,7 @@ if(!$EssentialAsTheme){
 
 <!-- NEWSLETTER PART -->
 <div class="title_line nobgnopd" style="margin-top:45px">
-	<div class="view_title"><span style="margin-right:10px"><?php _e('Newsletter', EG_TEXTDOMAIN); ?></span><a style="vertical-align:middle" class='button-primary revred' href='#' id="why-subscrbie"><?php _e("Why subscribe?", EG_TEXTDOMAIN); ?></a></div>
+	<div class="view_title"><span style="margin-right:10px"><?php _e('Newsletter', EG_TEXTDOMAIN); ?></span>
 </div>		
 
 <div id="eg-newsletter-wrapper">		
@@ -171,7 +172,7 @@ if(!$EssentialAsTheme){
 		</span>
 	</div>
 	<a href="javascript:void(0);" id="activate-unsubscribe" style="font-size: 12px; color: #999; text-decoration: none;"><?php _e('unsubscibe from newsletter', EG_TEXTDOMAIN); ?></a>
-	<div id="why-subscribe-wrapper" style="display: none;">
+	<div id="why-subscribe-wrapper">
 		<div class="star_red"><strong style="font-weight:700"><?php _e('Perks of subscribing to our Newsletter', EG_TEXTDOMAIN); ?></strong></div>
 		<ul>
 			<li><?php _e('Receive info on the latest ThemePunch product updates', EG_TEXTDOMAIN); ?></li>
@@ -197,18 +198,6 @@ if(!$EssentialAsTheme){
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-
-	jQuery('#benefitsbutton').hover(function() {
-		jQuery('#benefitscontent').slideDown(200);
-	}, function() {
-		jQuery('#benefitscontent').slideUp(200);				
-	});
-	
-	jQuery('#why-subscrbie').hover(function() {
-		jQuery('#why-subscribe-wrapper').slideDown(200);
-	}, function() {
-		jQuery('#why-subscribe-wrapper').slideUp(200);				
-	});
 	
 	jQuery('#tp-validation-box').click(function() {
 		jQuery(this).css({cursor:"default"});

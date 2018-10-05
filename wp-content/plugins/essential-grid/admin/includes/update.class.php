@@ -13,9 +13,9 @@ if( !defined( 'ABSPATH') ) exit();
 
 class Essential_Grid_Update {
 
-	private $plugin_url			= 'http://codecanyon.net/item/essential-grid-wordpress-plugin/7563340';
-	private $remote_url			= 'http://updates.themepunch.tools/check_for_updates.php';
-	private $remote_url_info	= 'http://updates.themepunch.tools/essential-grid/essential-grid.php';
+	private $plugin_url			= 'https://codecanyon.net/item/essential-grid-wordpress-plugin/7563340';
+	private $remote_url			= 'https://updates.themepunch.tools/check_for_updates.php';
+	private $remote_url_info	= 'https://updates.themepunch.tools/essential-grid/essential-grid.php';
 	private $plugin_slug		= 'essential-grid';
 	private $plugin_path		= 'essential-grid/essential-grid.php';
 	private $version;
@@ -67,7 +67,7 @@ class Essential_Grid_Update {
 				$result = $this->data->full;
 			}
 		}
-		
+
 		return $result;
 	}
 
@@ -151,7 +151,7 @@ class Essential_Grid_Update {
 	
 	public function _retrieve_version_info($force = false) {
 		global $wp_version;
-		
+
 		$last_check = get_option('tp_eg_update-check-short');
 		if($last_check == false){
 			$last_check = time();
@@ -193,10 +193,12 @@ class Essential_Grid_Update {
 			if(isset($version_info->dashboard)){
 				update_option('essential-dashboard', $version_info->dashboard);
 			}
-
+			
+			/*
 			if(isset($version_info->addons)){
 				update_option('essential-addons', $version_info->addons);
 			}
+			*/
 			
 			update_option('tp_eg_latest-version', $version_info->version);
 			

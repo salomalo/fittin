@@ -161,7 +161,9 @@ class Essential_Grid_Woocommerce {
 	 */
 	public static function check_if_on_sale($post_id){
 	
-		$product = get_product($post_id);
+		$is_30 = self::version_check('3.0');
+		
+		$product = ($is_30) ? wc_get_product($post_id) : get_product($post_id);
 		
 		$is_on_sale = ($product !== false) ? $product->is_on_sale() : false;
 		
@@ -175,7 +177,9 @@ class Essential_Grid_Woocommerce {
 	 */
 	public static function check_if_is_featured($post_id){
 	
-		$product = get_product($post_id);
+		$is_30 = self::version_check('3.0');
+		
+		$product = ($is_30) ? wc_get_product($post_id) : get_product($post_id);
 		
 		$is_featured = ($product !== false) ? $product->is_featured() : false;
 		
@@ -187,12 +191,14 @@ class Essential_Grid_Woocommerce {
 	/**
 	 * get sortby function including standart wp sortby array
 	 */
-	public static function get_value_by_meta($post_id, $meta, $separator = ','){
+	public static function get_value_by_meta($post_id, $meta, $separator = ',', $catmax = false){
 		
 		$meta_value = '';
 		
-		$product = get_product($post_id);
+		$is_30 = self::version_check('3.0');
 		
+		$product = ($is_30) ? wc_get_product($post_id) : get_product($post_id);
+
 		if($product !== false){
 			switch($meta){
 				case 'wc_price':
@@ -205,18 +211,42 @@ class Essential_Grid_Woocommerce {
 					$meta_value = $product->get_price_html();
 				break;
 				case 'wc_stock':
-					$meta_value = $product->get_total_stock();
+					if($is_30){
+						$meta_value = $product->get_stock_quantity();
+					}else{
+						$meta_value = $product->get_total_stock();
+					}
 				break;
 				case 'wc_rating':
-					$meta_value = $product->get_rating_html();
+					if($is_30){
+						$meta_value = @wc_get_rating_html( $product->get_average_rating() );
+					}else{
+						$meta_value = $product->get_rating_html();
+					}
 				break;
 				case 'wc_star_rating':
-					$cur_rating = $product->get_rating_html();
+					if($is_30){
+						$cur_rating = @wc_get_rating_html( $product->get_average_rating() );//$product->wc_get_rating_html();
+					}else{
+						$cur_rating = $product->get_rating_html();
+					}
 					if($cur_rating !== '')
 						$meta_value = '<div class="esg-starring">'.$cur_rating.'</div>';
 				break;
 				case 'wc_categories':
-					$categories = $product->get_categories($separator);
+					if($is_30){
+						$categories = wc_get_product_category_list($post_id, $separator);// $product->wc_get_product_category_list($separator);
+						
+						// new catmax option only available for WC v3.0+
+						if($catmax !== false) {
+							$categories = explode($separator, $categories);
+							$categories = array_slice($categories, 0, $catmax, true);
+							$categories = implode($separator, $categories);
+						}
+						
+					}else{
+						$categories = $product->get_categories($separator);
+					}
 					$meta_value = $categories;
 				break;
 				case 'wc_add_to_cart':
@@ -245,14 +275,17 @@ class Essential_Grid_Woocommerce {
 							$wc_is_localized = true;
 						}
 					}
+
+					$product_type = $is_30 ? $product->get_type() : $product->product_type;
+
 					$meta_value = apply_filters( 'woocommerce_loop_add_to_cart_link',
 										sprintf( '<a href="%s" rel="nofollow" data-product_id="%s" data-product_sku="%s" class="button %s %s product_type_%s">%s</a>',
 											esc_url( $product->add_to_cart_url() ),
-											esc_attr( $product->id ),
+											esc_attr( $post_id ),
 											esc_attr( $product->get_sku() ),
 											$product->is_purchasable() ? 'add_to_cart_button' : '',
-											$product->is_purchasable() && $ajax_cart_en && esc_attr( $product->product_type ) !="variable" ? 'ajax_add_to_cart' : '',
-											esc_attr( $product->product_type ),
+											$product->is_purchasable() && $ajax_cart_en && esc_attr( $product_type ) !="variable" ? 'ajax_add_to_cart' : '',
+											esc_attr( $product_type ),
 											esc_html( $product->add_to_cart_text() )
 										),
 									$product );
@@ -293,8 +326,9 @@ class Essential_Grid_Woocommerce {
 	 * @since: 1.5.4
 	 */
 	public static function get_image_attachements($post_id, $url = false){
-	
-		$product = get_product($post_id);
+		$is_30 = self::version_check('3.0');
+		
+		$product = ($is_30) ? wc_get_product($post_id) : get_product($post_id);
 		
 		$ret_img = '';
 		
@@ -330,6 +364,19 @@ class Essential_Grid_Woocommerce {
 	  <?php
 	  $fragments['span.ess-cart-content'] = ob_get_clean();
 	  return $fragments;
+	}
+	
+	/**
+	 * compare wc current version to given version
+	 */
+	public static function version_check( $version = '1.0' ) {
+		if(self::is_woo_exists()){
+			global $woocommerce;
+			if(version_compare($woocommerce->version, $version, '>=')){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

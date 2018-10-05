@@ -9,6 +9,7 @@
 if( !defined( 'ABSPATH') ) exit();
 
 wp_enqueue_script($this->plugin_slug . '-essential-grid-script', EG_PLUGIN_URL.'public/assets/js/jquery.themepunch.essential.min.js', array('jquery'), Essential_Grid::VERSION );
+
 wp_enqueue_style($this->plugin_slug .'-admin-settings-styles', EG_PLUGIN_URL.'public/assets/css/settings.css', array(), Essential_Grid::VERSION );
 ?>
 

@@ -315,33 +315,52 @@ class Essential_Grid_Item_Element {
 	public static function getPostElementsArray(){
 		
 		$post = array(
-			'post_id' => array('name' => __('ID', EG_TEXTDOMAIN)),
-			'post_url' => array('name' => __('URL', EG_TEXTDOMAIN)),
-			'title' => array('name' => __('Title', EG_TEXTDOMAIN)),
-			'excerpt' => array('name' => __('Excerpt', EG_TEXTDOMAIN)),
-			'meta' => array('name' => __('Meta', EG_TEXTDOMAIN)),
-			'alias' => array('name' => __('Alias', EG_TEXTDOMAIN)),
-			'content' => array('name' => __('Content', EG_TEXTDOMAIN)),
-			'date' => array('name' => __('Date', EG_TEXTDOMAIN)),
-			'date_modified' => array('name' => __('Date Modified', EG_TEXTDOMAIN)),
-			'author_name' => array('name' => __('Author Name', EG_TEXTDOMAIN)),
-			'num_comments' => array('name' => __('Num. Comments', EG_TEXTDOMAIN)),
-			'cat_list' => array('name' => __('Cat. List', EG_TEXTDOMAIN)),
-			'tag_list' => array('name' => __('Tag List', EG_TEXTDOMAIN)),
-			'caption' => array('name' => __('Caption', EG_TEXTDOMAIN)),
-			'likes' => array('name' => __('Likes (Facebook,Twitter,YouTube,Vimeo,Instagram)', EG_TEXTDOMAIN)),
-			'likes_short' => array('name' => __('Likes Short (Facebook,Twitter,YouTube,Vimeo,Instagram)', EG_TEXTDOMAIN)),
-			'dislikes' => array('name' => __('Dislikes (YouTube)', EG_TEXTDOMAIN)),
-			'dislikes_short' => array('name' => __('Dislikes Short (YouTube)', EG_TEXTDOMAIN)),
-			'favorites' => array('name' => __('Favorites (YouTube, flickr)', EG_TEXTDOMAIN)),
-			'favorites_short' => array('name' => __('Favorites Short (YouTube, flickr)', EG_TEXTDOMAIN)),
-			'retweets' => array('name' => __('Retweets (Twitter)', EG_TEXTDOMAIN)),
-			'retweets_short' => array('name' => __('Retweets Short (Twitter)', EG_TEXTDOMAIN)),
-			'views'	=> array('name' => __('Views (flickr,YouTube, Vimeo)', EG_TEXTDOMAIN)),
-			'views_short'	=> array('name' => __('Views Short (flickr,YouTube, Vimeo)', EG_TEXTDOMAIN)),
-			'itemCount' => array('name' => __('Playlist Item Count (YouTube)', EG_TEXTDOMAIN)),
-			'channel_title' => array('name' => __('Channel Title (YouTube)', EG_TEXTDOMAIN)),
-			'duration' => array('name' => __('Duration (Vimeo)', EG_TEXTDOMAIN)),
+			'title' => array('name' => __('Title', EG_TEXTDOMAIN), 'type' => 'text'),
+			'cat_list' => array('name' => __('Cat. List', EG_TEXTDOMAIN), 'type' => 'text'),
+			'tag_list' => array('name' => __('Tag List', EG_TEXTDOMAIN), 'type' => 'text'),
+			'excerpt' => array('name' => __('Excerpt', EG_TEXTDOMAIN), 'type' => 'text'),
+			'meta' => array('name' => __('Meta', EG_TEXTDOMAIN), 'type' => 'text'),
+			'num_comments' => array('name' => __('Num. Comments', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date' => array('name' => __('Date', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_day' => array('name' => __('Date Day', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_month' => array('name' => __('Date Month', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_month_abbr' => array('name' => __('Date Month Abbr.', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_year' => array('name' => __('Date Year', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_year_abbr' => array('name' => __('Date Year Abbr.', EG_TEXTDOMAIN), 'type' => 'text'),
+			'date_modified' => array('name' => __('Date Modified', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_name' => array('name' => __('Author Name', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_name' => array('name' => __('Author Name', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_profile' => array('name' => __('Author Website', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_posts' => array('name' => __('Author Posts Page', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_avatar_32' => array('name' => __('Author Avatar 32px', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_avatar_64' => array('name' => __('Author Avatar 64px', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_avatar_96' => array('name' => __('Author Avatar 96px', EG_TEXTDOMAIN), 'type' => 'text'),
+			'author_avatar_512' => array('name' => __('Author Avatar 512px', EG_TEXTDOMAIN), 'type' => 'text'),
+			'post_id' => array('name' => __('Post ID', EG_TEXTDOMAIN), 'type' => 'text'),
+			'post_url' => array('name' => __('Post URL', EG_TEXTDOMAIN), 'type' => 'text'),
+			'content' => array('name' => __('Post Content', EG_TEXTDOMAIN), 'type' => 'text'),
+			'alternate-image' => array('name' => __('Alt. Image', EG_TEXTDOMAIN), 'type' => 'image'),
+			'alias' => array('name' => __('Alias', EG_TEXTDOMAIN), 'type' => 'text'),
+			'taxonomy' => array('name' => __('Taxonomy List', EG_TEXTDOMAIN), 'type' => 'text'),
+			'caption' => array('name' => __('Caption', EG_TEXTDOMAIN), 'type' => 'text'),
+			'likespost' => array('name' => __('Likes (Posts)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'likes' => array('name' => __('Likes (Facebook,Twitter,YouTube,Vimeo,Instagram)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'likes_short' => array('name' => __('Likes Short (Facebook,Twitter,YouTube,Vimeo,Instagram)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'dislikes' => array('name' => __('Dislikes (YouTube)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'dislikes_short' => array('name' => __('Dislikes Short (YouTube)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'favorites' => array('name' => __('Favorites (YouTube, flickr)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'favorites_short' => array('name' => __('Favorites Short (YouTube, flickr)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'retweets' => array('name' => __('Retweets (Twitter)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'retweets_short' => array('name' => __('Retweets Short (Twitter)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'views'	=> array('name' => __('Views (flickr,YouTube, Vimeo)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'views_short'	=> array('name' => __('Views Short (flickr,YouTube, Vimeo)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'itemCount' => array('name' => __('Playlist Item Count (YouTube)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'channel_title' => array('name' => __('Channel Title (YouTube)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'duration' => array('name' => __('Duration (Vimeo)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'iframe' => array('name' => __('iFrame (url)', EG_TEXTDOMAIN), 'type' => 'text'),
+			'revslider' => array('name' => __('Slider Revolution', EG_TEXTDOMAIN), 'type' => 'revslider'),
+			'essgrid' => array('name' => __('Essential Grid', EG_TEXTDOMAIN), 'type' => 'essgrid'),
+			'wistia' => array('name' => __('Wistia Video (ID)', EG_TEXTDOMAIN), 'type' => 'wistia')
 		);
 		
 		$post = apply_filters('essgrid_post_meta_handle', $post); //stays for backwards compatibility
@@ -550,6 +569,7 @@ class Essential_Grid_Item_Element {
 	 * Get Array of Elements
 	 */
 	public static function getElementsForDropdown(){
+		
 		$post = self::getPostElementsArray();
 		//$event = self::getEventElementsArray();
 		
@@ -911,6 +931,24 @@ class Essential_Grid_Item_Element {
                                              'values' => array('default' =>','),
                                              'style' => 'attribute',
                                              'unit' => ''),
+											 
+				'source-catmax'	    => array('value' => 'string',
+                                             'type' => 'text',
+                                             'values' => array('default' =>'-1'),
+                                             'style' => 'attribute',
+                                             'unit' => ''),
+											 
+				'always-visible-desktop' => array('value' => 'string',
+                                             'type' => 'checkbox',
+                                             'values' => array('default' =>''),
+                                             'style' => 'false',
+                                             'unit' => ''),
+											 
+				'always-visible-mobile' => array('value' => 'string',
+                                             'type' => 'checkbox',
+                                             'values' => array('default' =>''),
+                                             'style' => 'false',
+                                             'unit' => ''),
                 
                 'source-function'	=> array('value' => 'string',
                                              'type' => 'select',
@@ -1187,7 +1225,8 @@ class Essential_Grid_Item_Element {
 					'type' => 'color',
 					'default' => '#FFFFFF',
 					'container' => 'style',
-					'hover' => 'true'
+					'hover' => 'true',
+					'cpmode' => 'single'
 				),
 				array(
 					'name' => array('handle' => 'font-style', 'text' => __('Font Style', EG_TEXTDOMAIN)),
@@ -1218,7 +1257,8 @@ class Essential_Grid_Item_Element {
 					'type' => 'color',
 					'default' => '#FFFFFF',
 					'container' => 'style',
-					'hover' => 'true'
+					'hover' => 'true',
+					'cpmode' => 'single'
 				),
 				array(
 					'name' => array('handle' => 'border-style', 'text' => __('Border Style', EG_TEXTDOMAIN)),
@@ -1230,10 +1270,11 @@ class Essential_Grid_Item_Element {
 				),
 				array(
 					'name' => array('handle' => 'background', 'text' => __('Background Color', EG_TEXTDOMAIN)),
-					'type' => 'text',
-					'default' => 'repeat center center #FFFFFF',
+					'type' => 'color',
+					'default' => '#FFFFFF',
 					'container' => 'style',
-					'hover' => 'true'
+					'hover' => 'true',
+					'cpmode' => 'full'
 				),
 				array(
 					'name' => array('handle' => 'box-shadow', 'text' => __('Box Shadow', EG_TEXTDOMAIN)),
@@ -1260,25 +1301,30 @@ class Essential_Grid_Item_Element {
 					'name' => array('handle' => 'cover-bg-color', 'text' => __('Cover BG Color', EG_TEXTDOMAIN)),
 					'type' => 'color',
 					'default' => '#FFFFFF',
-					'container' => 'layout'
+					'container' => 'layout',
+					'cpmode' => 'full'
 				),
+				/*
 				array(
 					'name' => array('handle' => 'cover-bg-opacity', 'text' => __('Cover BG Opacity', EG_TEXTDOMAIN)),
 					'type' => 'number',
 					'default' => '100',
 					'container' => 'layout'
 				),
+				*/
 				array(
 					'name' => array('handle' => 'item-bg-color', 'text' => __('Item BG Color', EG_TEXTDOMAIN)),
 					'type' => 'color',
 					'default' => '#FFFFFF',
-					'container' => 'layout'
+					'container' => 'layout',
+					'cpmode' => 'full'
 				),
 				array(
 					'name' => array('handle' => 'content-bg-color', 'text' => __('Content BG Color', EG_TEXTDOMAIN)),
 					'type' => 'color',
 					'default' => '#FFFFFF',
-					'container' => 'layout'
+					'container' => 'layout',
+					'cpmode' => 'full'
 				)
 				
 			)

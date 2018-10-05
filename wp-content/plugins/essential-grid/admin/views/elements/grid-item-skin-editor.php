@@ -50,6 +50,16 @@ $meta_keys = array_merge($meta_keys, $meta_link_keys);
 $transitions_cover = $base->get_hover_animations();
 $transitions_media = $base->get_media_animations();
 
+/* 2.1.6 - for the new home-image option */
+$transitions_hover = array_slice($transitions_cover, 0, count($transitions_cover), true);
+if(isset($transitions_hover['turn'])) unset($transitions_hover['turn']);
+if(isset($transitions_hover['covergrowup'])) unset($transitions_hover['covergrowup']);
+
+/* 2.2.4.2 */
+$transitions_elements = array_slice($transitions_cover, 0, count($transitions_cover), true);
+if(isset($transitions_elements['rotatescale'])) unset($transitions_elements['rotatescale']);
+if(isset($transitions_elements['covergrowup'])) unset($transitions_elements['covergrowup']);
+
 if(!isset($skin['params'])) $skin['params'] = array(); //fallback if skin does not exist
 if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does not exist
 
@@ -83,9 +93,10 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 		<div style="float:left; width:600px;margin-right:15px;">
 			<!-- START OF SETTINGS ON THE LEFT SIDE  border: 2px solid #27AE60; -->
 			<form id="eg-form-item-skin-layout-settings">
+				
 				<input type="hidden" value="<?php echo $base->getVar($skin['params'], 'eg-item-skin-element-last-id', 0, 'i'); ?>" name="eg-item-skin-element-last-id" />
 				<div class="postbox eg-postbox" style=""><h3 style="padding:10px"><span><i style="background-color:#27AE60; padding:3px; margin-right:10px;border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;color:#fff;" class="eg-icon-menu"></i><?php _e('Layout Composition', EG_TEXTDOMAIN); ?></span><div class="postbox-arrow"></div></h3>
-					<div class="inside" style="padding:0px;margin:0px;height:415px">
+					<div class="inside" style="padding:0px;margin:0px;height:455px">
 
 						<div class="eg-lc-menu-wrapper" style="height:100%;">
 							<div class="eg-lc-vertical-menu" style="height:100%;">
@@ -186,13 +197,28 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 								</div>
 
 								<div class="clear"></div>
+								
+								<!-- 2.1.6 -->
+								<!-- SPLITTED ITEMS -->
+								<div style="margin-top:15px">
+									<label style="float: left;" class="eg-group-setter eg-tooltip-wrap" title="<?php _e('Display Media and Content side-by-side', EG_TEXTDOMAIN); ?>"><?php _e('Split Item', EG_TEXTDOMAIN); ?></label>
+									<div class="select_wrapper" style="float: left;">
+										<div class="select_fake"><span><?php _e('Split Item', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
+										<select name="splitted-item">
+											<option value="none" <?php selected($base->getVar($skin['params'], 'splitted-item', 'none'), 'none'); ?>><?php _e('No Split', EG_TEXTDOMAIN); ?></option>
+											<option value="left" <?php selected($base->getVar($skin['params'], 'splitted-item', 'none'), 'left'); ?>><?php _e('Media Left', EG_TEXTDOMAIN); ?></option>
+											<option value="right" <?php selected($base->getVar($skin['params'], 'splitted-item', 'none'), 'right'); ?>><?php _e('Media Right', EG_TEXTDOMAIN); ?></option>
+										</select>
+									</div>
+								</div>
+								<div class="clear"></div>
 
 							</div>
 							<!-- THE COVER SETTINGS -->
 							<div id="eg-lc-cover" class="esg-lc-settings-container">
 								<!-- COVER LAYOUT -->
 								<div style="margin-top:15px">
-									<label style="float:left" class="eg-group-setter eg-tooltip-wrap" title="<?php _e('Dynamic Covering Content Type. Show Cover Background on full Media, or only under Cover Contents ?', EG_TEXTDOMAIN); ?>"><?php _e('Cover Type', EG_TEXTDOMAIN); ?></label>
+									<label style="float:left; width:180px" class="eg-group-setter eg-tooltip-wrap" title="<?php _e('Dynamic Covering Content Type. Show Cover Background on full Media, or only under Cover Contents ?', EG_TEXTDOMAIN); ?>"><?php _e('Cover Type', EG_TEXTDOMAIN); ?></label>
 									<div class="select_wrapper" style="float:left;">
 										<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
 										<select name="cover-type">
@@ -202,15 +228,29 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									</div>
 								</div>
 								<div class="clear"></div>
-
+								
 								<p>
-									<label style="float:left; width:150px" class="eg-cover-setter eg-tooltip-wrap" title="<?php _e('Background Color of Covers', EG_TEXTDOMAIN); ?>"><?php _e('Background Color', EG_TEXTDOMAIN); ?></label>
-									<input class="element-setting" type="text" name="container-background-color" id="container-background-color" data-default-color="#363839" value="<?php echo $base->getVar($skin['params'], 'container-background-color', '#363839', 's'); ?>" />
+									<label style="float:left; width:180px" class="eg-cover-setter eg-tooltip-wrap" title="<?php _e('Background Color of Covers', EG_TEXTDOMAIN); ?>"><?php _e('Background Color', EG_TEXTDOMAIN); ?></label>
+									<input class="element-setting" type="text" name="container-background-color" id="container-background-color" value="<?php echo $base->getVar($skin['params'], 'container-background-color', '#363839', 's'); ?>" />
 								</p>
+								
+								<?php /*
 								<p>
-									<label style="float:left; width:150px" class="eg-cover-setter"><?php _e('Opacity', EG_TEXTDOMAIN); ?></label>
+									<label style="float:left; width:180px" class="eg-cover-setter"><?php _e('Opacity', EG_TEXTDOMAIN); ?></label>
 									<span id="element-container-background-color-opacity" class="slider-settings eg-tooltip-wrap" title="<?php _e('Cover Background Color opacity', EG_TEXTDOMAIN); ?>"></span>
 									<input class="input-settings-small element-setting" type="text" name="element-container-background-color-opacity" value="<?php echo $base->getVar($skin['params'], 'element-container-background-color-opacity', '85', 'i'); ?>" />
+								</p>
+								*/ ?>
+								
+								<!-- 2.1.6 -->
+								<p>
+									<label style="float:left; width:180px" class="eg-cover-setter eg-tooltip-wrap" title="<?php _e('Show without a Hover on Desktop', EG_TEXTDOMAIN); ?>"><?php _e('Always Visible on Desktop', EG_TEXTDOMAIN); ?></label>
+									<input type="checkbox" name="cover-always-visible-desktop" <?php checked($base->getVar($skin['params'], 'cover-always-visible-desktop', ''), 'true'); ?> />
+								</p>
+								<!-- 2.1.6 -->
+								<p>
+									<label style="float:left; width:180px" class="eg-cover-setter eg-tooltip-wrap" title="<?php _e('Show without a Tap on Mobile', EG_TEXTDOMAIN); ?>"><?php _e('Always Visible on Mobile', EG_TEXTDOMAIN); ?></label>
+									<input type="checkbox" name="cover-always-visible-mobile" <?php checked($base->getVar($skin['params'], 'cover-always-visible-mobile', ''), 'true'); ?> />
 								</p>
 
 								<div style="display:none">
@@ -266,7 +306,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									<!-- THE PADDING, BORDER AND BG COLOR -->
 									<div style="margin-top:15px">
 										<label class="eg-tooltip-wrap" title="<?php _e('Background Color of Full Item', EG_TEXTDOMAIN); ?>"><?php _e('Item BG Color', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="full-bg-color" type="text" id="full-bg-color" value="<?php echo $base->getVar($skin['params'], 'full-bg-color', '#ffffff'); ?>" data-default-color="#ffffff">
+										<input class="element-setting" name="full-bg-color" type="text" id="full-bg-color" value="<?php echo $base->getVar($skin['params'], 'full-bg-color', '#ffffff'); ?>">
 									</div>
 									<p>
 										<?php
@@ -300,7 +340,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									</p>
 									<p>
 										<label><?php _e('Border Color', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting"  name="full-border-color" type="text" id="full-border-color" value="<?php echo $base->getVar($skin['params'], 'full-border-color', 'transparent'); ?>" data-default-color="transparent">
+										<input class="element-setting"  name="full-border-color" type="text" id="full-border-color" value="<?php echo $base->getVar($skin['params'], 'full-border-color', 'transparent'); ?>" data-mode="single">
 									</p>
 									<div style="margin-top:10px">
 										<label style="float:left" class="eg-tooltip-wrap" title="<?php _e('Border Line Style', EG_TEXTDOMAIN); ?>"><?php _e('Border Style', EG_TEXTDOMAIN); ?></label>
@@ -326,7 +366,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									<!-- THE PADDING, BORDER AND BG COLOR -->
 									<div style="margin-top:15px">
 										<label><?php _e('Content BG Color', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="content-bg-color" type="text" id="content-bg-color" value="<?php echo $base->getVar($skin['params'], 'content-bg-color', '#ffffff'); ?>" data-default-color="#ffffff">
+										<input class="element-setting" name="content-bg-color" type="text" id="content-bg-color" value="<?php echo $base->getVar($skin['params'], 'content-bg-color', '#ffffff'); ?>">
 									</div>
 									<p>
 										<?php
@@ -360,7 +400,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									</p>
 									<p>
 										<label><?php _e('Border Color', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="content-border-color" type="text" id="content-border-color" value="<?php echo $base->getVar($skin['params'], 'content-border-color', 'transparent'); ?>" data-default-color="transparent">
+										<input class="element-setting" name="content-border-color" type="text" id="content-border-color" value="<?php echo $base->getVar($skin['params'], 'content-border-color', 'transparent'); ?>" data-mode="single">
 									</p>
 									<div style="margin-top:10px">
 										<label class="eg-tooltip-wrap" title="<?php _e('Border Line Style', EG_TEXTDOMAIN); ?>" style="float:left"><?php _e('Border Style', EG_TEXTDOMAIN); ?></label>
@@ -397,15 +437,19 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									</div>
 									<div class="clear"></div>
 								</div>
+								
 								<p>
 									<label><?php _e('Shadow Color', EG_TEXTDOMAIN); ?></label>
-									<input class="element-setting" name="content-shadow-color" type="text" id="content-shadow-color" value="<?php echo $base->getVar($skin['params'], 'content-shadow-color', '#000000'); ?>" data-default-color="#000000">
+									<input class="element-setting" name="content-shadow-color" type="text" id="content-shadow-color" value="<?php echo $base->getVar($skin['params'], 'content-shadow-color', '#000000'); ?>" data-mode="single">
 								</p>
+								
+								<?php /*
 								<p>
 									<label class="eg-tooltip-wrap" title="<?php _e('Shadow Opacity', EG_TEXTDOMAIN); ?>"><?php _e('Shadow Alpha', EG_TEXTDOMAIN); ?></label>
 									<span id="content-shadow-alpha" class="slider-settings eg-tooltip-wrap" title="<?php _e('Shadow Opacity', EG_TEXTDOMAIN); ?>"></span>
 									<input class="input-settings-small element-setting" type="text" name="content-shadow-alpha" value="<?php echo $base->getVar($skin['params'], 'content-shadow-alpha', '100', 'i'); ?>" />
 								</p>
+								*/ ?>
 								<p>
 									<?php
 									$shadow = $base->getVar($skin['params'], 'content-box-shadow');
@@ -519,8 +563,9 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											?>
 										</select>
 									</div>
+									<div class="clear"></div>
 								</div>
-								<div class="clear"></div>
+								
 								<!-- MEDIA ANIMATION -->
 								<div style="margin-top:15px">
 									<label style="float:left; width:150px;" class="eg-tooltip-wrap" title="<?php _e('Animation of Media on Hover. All Media animation hide, or partly hide the Media on hover.', EG_TEXTDOMAIN); ?>"><?php _e('Media Animation', EG_TEXTDOMAIN); ?></label>
@@ -535,8 +580,43 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											}
 											?>
 										</select>
-										<span id="media-animation-delay" class="slider-settings eg-slider-small eg-tooltip-wrap" title="<?php _e('Delay before the Animation starts', EG_TEXTDOMAIN); ?>"></span>
+										<span id="media-animation-delay" class="slider-settings eg-slider-small eg-tooltip-wrap" style="margin-left: 10px" title="<?php _e('Delay before the Animation starts', EG_TEXTDOMAIN); ?>"></span>
 										<input class="input-settings-small element-setting" type="text" name="media-animation-delay" value="<?php echo $base->getVar($skin['params'], 'media-animation-delay', '0', 'i'); ?>" />
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<!-- 2.1.6 -->
+								<!-- SHOW ALTERNATIVE IMAGE ON HOVER -->
+								<?php 
+									$hoverImg = $base->getVar($skin['params'], 'element-hover-image', '');
+									$hoverImg = !empty($hoverImg) && $hoverImg !== 'false' ? ' checked' : '';
+								?>
+								<div style="margin-top:15px; line-height: 25px">
+									<label style="float:left; width:150px" class="eg-tooltip-wrap" title="<?php _e('Show the item\'s Alternative Image on mouse hover', EG_TEXTDOMAIN); ?>"><?php _e('Alt Image on Hover', EG_TEXTDOMAIN); ?></label>
+									<input type="checkbox" name="element-hover-image" id="element-hover-image" class="element-setting"<?php echo $hoverImg; ?> />	
+								</div>
+								
+								<!-- ALTERNATIVE IMAGE ANIMATION -->
+								<?php
+									$hoverImgActive = empty($hoverImg) ? 'none' : 'block';
+								?>
+								<div id="eg-hover-img-animation" style="margin-top:15px; display: <?php echo $hoverImgActive; ?>">
+									<label style="float:left; width:150px;" class="eg-tooltip-wrap" title="<?php _e('Animation of Alt Image on Hover.', EG_TEXTDOMAIN); ?>"><?php _e('Alt Image Animation', EG_TEXTDOMAIN); ?></label>
+									<div class="select_wrapper" style="float:left;">
+										<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
+										<select name="hover-image-animation">
+											<?php
+
+											foreach($transitions_hover as $handle => $name){
+												?>
+												<option value="<?php echo $handle; ?>" <?php selected($base->getVar($skin['params'], 'hover-image-animation', 'fade'), $handle); ?>><?php echo $name; ?></option>
+												<?php
+											}
+											?>
+										</select>
+										<span id="hover-image-animation-delay" class="slider-settings eg-slider-small eg-tooltip-wrap" style="margin-left: 10px" title="<?php _e('Delay before the Animation starts', EG_TEXTDOMAIN); ?>"></span>
+										<input class="input-settings-small element-setting" type="text" name="hover-image-animation-delay" value="<?php echo $base->getVar($skin['params'], 'hover-image-animation-delay', '0', 'i'); ?>" />
 									</div>
 									<div class="clear"></div>
 								</div>
@@ -606,6 +686,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 						</div>
 					</div>
 				</div>
+				
 			</form>
 
 			<!--
@@ -684,9 +765,16 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												<div class="clear"></div>
 
 												<!-- CAT & TAG SEPERATOR -->
-												<div id="eg-source-seperate-wrap" style="margin-top:10px;line-height:25px">
+												<div id="eg-source-seperate-wrap" class="esg-cat-tag-settings" style="margin-top:10px;line-height:25px">
 													<label style="float: left" class="eg-tooltip-wrap" title="<?php _e('Separator Char in the Listed element', EG_TEXTDOMAIN); ?>"><?php _e('Separate By', EG_TEXTDOMAIN); ?></label>
 													<input type="text" value="" name="element-source-separate" class="input-settings-small element-setting firstinput">
+													<div class="clear"></div>
+												</div>
+												
+												<!-- CAT & TAG MAX -->
+												<div id="eg-source-catmax-wrap" class="esg-cat-tag-settings" style="margin-top:10px;line-height:25px">
+													<label style="float: left" class="eg-tooltip-wrap" title="<?php _e('Max Categories/Tags to show (use -1 for unlimited)', EG_TEXTDOMAIN); ?>"><?php _e('Max Items', EG_TEXTDOMAIN); ?></label>
+													<input type="text" value="" name="element-source-catmax" class="input-settings-small element-setting firstinput">
 													<div class="clear"></div>
 												</div>
 
@@ -697,12 +785,33 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 														<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
 														<select name="element-source-function" style="width:180px" class="elements-select-wrap">
 															<option value="none"><?php _e('None', EG_TEXTDOMAIN); ?></option>
-															<option value="link"><?php _e('Link To Post', EG_TEXTDOMAIN); ?></option>
+															<option value="link"><?php _e('Link', EG_TEXTDOMAIN); ?></option>
 															<option value="filter"><?php _e('Trigger Filter', EG_TEXTDOMAIN); ?></option>
 														</select>
 													</div>
 													<div class="clear"></div>
 												</div>
+
+												<!-- CHOOSE TAX -->
+												<div id="eg-source-taxonomy-wrap" class="eg-layer-toolbar-box" style="margin-top:10px;line-height:25px">
+													<label style="float: left" class="eg-tooltip-wrap" title="<?php _e('Choose from all Taxonomies available', EG_TEXTDOMAIN); ?>"><?php _e('Taxonomy', EG_TEXTDOMAIN); ?></label>
+													<div class="select_wrapper" style="float: left">
+														<div class="select_fake"><span><?php _e('None', EG_TEXTDOMAIN); ?></span><i class="eg-icon-arrow-combo"></i></div>
+														<select name="element-source-taxonomy">
+															<?php
+																$args = array(
+																  'public'   => true
+																); 
+																$taxonomies = get_taxonomies($args,'objects'); 
+																foreach ($taxonomies as $taxonomy_name => $taxonomy) {
+																	echo '<option value="'.$taxonomy_name.'">'.$taxonomy->labels->name.'</option>';
+																}
+															?>
+														</select>
+													</div>
+													<div class="clear"></div>
+												</div>
+
 
 												<!-- META TAG -->
 												<div id="eg-source-meta-wrap" style="margin-top:10px;line-height:25px">
@@ -723,6 +832,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 															<option value="none"><?php _e('None', EG_TEXTDOMAIN); ?></option>
 															<option value="words"><?php _e('Words', EG_TEXTDOMAIN); ?></option>
 															<option value="chars"><?php _e('Characters', EG_TEXTDOMAIN); ?></option>
+															<option value="sentence"><?php _e('End Sentence Words', EG_TEXTDOMAIN); ?></option>
 														</select>
 													</div>
 
@@ -797,7 +907,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												</p>
 												<p>
 													<label><?php _e('Font Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-color" type="text" id="element-color" value="" data-default-color="#000">
+													<input class="element-setting" name="element-color" type="text" id="element-color" value="" data-mode="single">
 												</p>
 												<p>
 													<label><?php _e('Font Family', EG_TEXTDOMAIN); ?></label>
@@ -992,13 +1102,15 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											<div id="eg-el-bg" class="esg-el-settings-container">
 												<p>
 													<label><?php _e('Background Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-background-color" type="text" id="element-background-color" value="" data-default-color="transparent">
+													<input class="element-setting" name="element-background-color" type="text" id="element-background-color" value="">
 												</p>
+												<?php /*
 												<p>
 													<label><?php _e('Background Alpha', EG_TEXTDOMAIN); ?></label>
 													<span id="element-bg-alpha" class="slider-settings"></span>
 													<input class="input-settings-small element-setting" type="text" name="element-bg-alpha" value="100" />
 												</p>
+												*/ ?>
 												<?php /*
 												<div>
 													<label style="float:left"><?php _e('Background Fit', EG_TEXTDOMAIN); ?></label>
@@ -1037,13 +1149,15 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											<div id="eg-el-shadow" class="esg-el-settings-container">
 												<p>
 													<label><?php _e('Shadow Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-shadow-color" type="text" id="element-shadow-color" value="" data-default-color="#000000">
+													<input class="element-setting" name="element-shadow-color" type="text" id="element-shadow-color" value="" data-mode="single">
 												</p>
+												<?php /*
 												<p>
 													<label><?php _e('Shadow Alpha', EG_TEXTDOMAIN); ?></label>
 													<span id="element-shadow-alpha" class="slider-settings"></span>
 													<input class="input-settings-small element-setting" type="text" name="element-shadow-alpha" value="100" />
 												</p>
+												*/ ?>
 												<p>
 													<label class="eg-tooltip-wrap" title="<?php _e('Position of horizontal shadow(Negative values possible)', EG_TEXTDOMAIN) ?>, <?php _e('blur distance', EG_TEXTDOMAIN) ?>, <?php _e('size of shadow', EG_TEXTDOMAIN) ?>"><?php _e('Shadow', EG_TEXTDOMAIN); ?></label>
 													<input class="input-settings-small element-setting firstinput" type="text" name="element-box-shadow[]" value="0" />
@@ -1081,7 +1195,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												</div>
 												<p>
 													<label><?php _e('Border Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-border-color" type="text" id="element-border-color" value="" data-default-color="transparent">
+													<input class="element-setting" name="element-border-color" type="text" id="element-border-color" value="" data-mode="single">
 												</p>
 												<div style="margin-top:10px">
 													<label style="float:left"><?php _e('Border Style', EG_TEXTDOMAIN); ?></label>
@@ -1126,7 +1240,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												</p>
 												<p>
 													<label><?php _e('Font Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-color-hover" type="text" id="element-color-hover" value="" data-default-color="#000">
+													<input class="element-setting" name="element-color-hover" type="text" id="element-color-hover" value="" data-mode="single">
 												</p>
 												<p>
 													<label><?php _e('Font Family', EG_TEXTDOMAIN); ?></label>
@@ -1187,13 +1301,15 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											<div id="eg-el-bg-hover" class="esg-el-settings-container">
 												<p>
 													<label><?php _e('Background Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-background-color-hover" type="text" id="element-background-color-hover" value="" data-default-color="transparent">
+													<input class="element-setting" name="element-background-color-hover" type="text" id="element-background-color-hover" value="">
 												</p>
+												<?php /*
 												<p>
 													<label><?php _e('Background Alpha', EG_TEXTDOMAIN); ?></label>
 													<span id="element-bg-alpha-hover" class="slider-settings"></span>
 													<input class="input-settings-small element-setting" type="text" name="element-bg-alpha-hover" value="100" />
 												</p>
+												*/ ?>
 												<?php /*
 												<div>
 													<label style="float:left"><?php _e('Background Fit', EG_TEXTDOMAIN); ?></label>
@@ -1232,13 +1348,15 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											<div id="eg-el-shadow-hover" class="esg-el-settings-container">
 												<p>
 													<label><?php _e('Shadow Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-shadow-color-hover" type="text" id="element-shadow-color-hover" value="" data-default-color="#000000">
+													<input class="element-setting" name="element-shadow-color-hover" type="text" id="element-shadow-color-hover" value="" data-mode="single">
 												</p>
+												<?php /*
 												<p>
 													<label><?php _e('Shadow Alpha', EG_TEXTDOMAIN); ?></label>
 													<span id="element-shadow-alpha-hover" class="slider-settings"></span>
 													<input class="input-settings-small element-setting" type="text" name="element-shadow-alpha-hover" value="100" />
 												</p>
+												*/ ?>
 												<p>
 													<label class=" eg-tooltip-wrap" title="<?php _e('Position horizontal shadow(Negative values possible)', EG_TEXTDOMAIN) ?>, <?php _e('blur distance', EG_TEXTDOMAIN) ?>, <?php _e('Shadow size', EG_TEXTDOMAIN) ?>"><?php _e('Shadow', EG_TEXTDOMAIN); ?></label>
 													<input class="input-settings-small element-setting firstinput" type="text" name="element-box-shadow-hover[]" value="0" />
@@ -1277,7 +1395,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												</div>
 												<p>
 													<label><?php _e('Border Color', EG_TEXTDOMAIN); ?></label>
-													<input class="element-setting" name="element-border-color-hover" type="text" id="element-border-color-hover" value="" data-default-color="transparent">
+													<input class="element-setting" name="element-border-color-hover" type="text" id="element-border-color-hover" value="" data-mode="single">
 												</p>
 												<div style="margin-top:10px">
 													<label style="float:left"><?php _e('Border Style', EG_TEXTDOMAIN); ?></label>
@@ -1304,6 +1422,19 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 								HIDE UNDER
 								-->
 								<div id="eg-element-hide">
+									
+									<!-- 2.1.6 -->
+									<div id="always-visible-options">
+										<p>
+											<label style="width:250px" class="eg-tooltip-wrap" title="<?php _e('Show the Element by default without a Mouse Hover', EG_TEXTDOMAIN); ?>"><?php _e('Show without Hover on Desktop', EG_TEXTDOMAIN); ?></label>
+											<input type="checkbox" name="element-always-visible-desktop"  value="true" />
+										</p>
+										<!-- 2.1.6 -->
+										<p>
+											<label style="width:250px" class="eg-tooltip-wrap" title="<?php _e('Show the Element by default without a Screen-Touch/Tap', EG_TEXTDOMAIN); ?>"><?php _e('Show without Tap on Mobile', EG_TEXTDOMAIN); ?></label>
+											<input type="checkbox" name="element-always-visible-mobile"  value="true" />
+										</p>
+									</div>
 									<p>
 										<label style="width:250px" class="eg-tooltip-wrap" title="<?php _e('Dont Show Element if Item Width is smaller than:', EG_TEXTDOMAIN); ?>"><?php _e('Hide Under Width', EG_TEXTDOMAIN); ?></label>
 										<input class="input-settings-small element-setting firstinput" type="text" name="element-hideunder" value="0" /> px
@@ -1345,6 +1476,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											</select>
 										</div><div class="clear"></div>
 									</p>
+
 									<?php
 									if(!Essential_Grid_Woocommerce::is_woo_exists()){
 										echo '<div style="display: none;">';
@@ -1379,7 +1511,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
 											<select name="element-transition" class="eg-tooltip-wrap" title="<?php _e('Select Animation of Element on Hover', EG_TEXTDOMAIN); ?>" >
 												<?php
-												foreach($transitions_cover as $handle => $name){
+												foreach($transitions_elements as $handle => $name){
 												?>
 												<option value="<?php echo $handle; ?>"><?php echo $name; ?></option>
 												<?php
@@ -1387,15 +1519,19 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												?>
 											</select>
 										</div>
-										<div class="select_wrapper" style="float:left;width:120px;">
+										<div class="select_wrapper eg-hideable-no-transition" style="float:left;width:120px;">
 											<div class="select_fake" style="width: 95px;overflow: hidden;white-space: nowrap;"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
 											<select name="element-transition-type" class="eg-tooltip-wrap" title="<?php _e('Hide or Show element on hover. In = Show, Out = Hide', EG_TEXTDOMAIN); ?>" >
 												<option value=""><?php _e('in', EG_TEXTDOMAIN); ?></option>
 												<option value="out"><?php _e('out', EG_TEXTDOMAIN); ?></option>
-												<option value="always"><?php _e('always visible', EG_TEXTDOMAIN); ?></option>
+												<!-- 2.1.6 -->
+												<!-- <option value="always"><?php _e('always visible', EG_TEXTDOMAIN); ?></option>-->
 											</select>
 										</div>
-										<div id="groupanimwarning"><?php _e('Dont forget to set the <strong>Group Animation</strong> to "none" !', EG_TEXTDOMAIN); ?></div>
+										<div id="groupanimwarning"><?php 
+											/* 2.1.6 */ 
+											// _e('Dont forget to set the <strong>Group Animation</strong> to "none" !', EG_TEXTDOMAIN); 
+										?></div>
 										<div class="clear"></div>
 									</div>
 									<!--div style="margin-top:10px">
@@ -1411,7 +1547,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 										</div>
 										<div class="clear"></div>
 									</div-->
-									<p>
+									<p class="eg-hideable-no-transition">
 										<label><?php _e('Delay', EG_TEXTDOMAIN); ?></label>
 										<span id="element-delay" class="slider-settings eg-tooltip-wrap" title="<?php _e('Delay before Element Animation starts', EG_TEXTDOMAIN) ?>" ></span>
 										<input class="input-settings-small element-setting" type="text" name="element-delay" value="0" />
@@ -1436,6 +1572,9 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 												<option value="embedded_video"><?php _e('Play Embedded Video', EG_TEXTDOMAIN); ?></option>
 												<option value="sharefacebook"><?php _e('Share on Facebook', EG_TEXTDOMAIN); ?></option>
 												<option value="sharetwitter"><?php _e('Share on Twitter', EG_TEXTDOMAIN); ?></option>
+												<option value="sharegplus"><?php _e('Share on Google+', EG_TEXTDOMAIN); ?></option>
+												<option value="sharepinterest"><?php _e('Share on Pinterest', EG_TEXTDOMAIN); ?></option>
+												<option value="likepost"><?php _e('Like Post', EG_TEXTDOMAIN); ?></option>
 											</select>
 										</div><div class="clear"></div>
 									</div>
@@ -1488,7 +1627,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 									</div>
 									
 									<!-- Facebook Fields -->
-									<div class="eg-element-facebook-wrap">
+									<div class="eg-element-facebook-wrap" id="eg-element-facebook-wrap">
 										<div style="margin-top:10px">
 											<label style="float:left"><?php _e('Link Target', EG_TEXTDOMAIN); ?></label>
 											<div class="select_wrapper" style="float:left;">
@@ -1507,22 +1646,81 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 											</div><div class="clear"></div>
 										</div>
 									</div>
-									<?php
-									/*
-									<p>
-										<label><?php _e('Attribute', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="element-attribute" type="text" value="">
-									</p>
-									<p>
-										<label><?php _e('Class', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="element-class" type="text" value="">
-									</p>
-									<p>
-										<label><?php _e('Rel', EG_TEXTDOMAIN); ?></label>
-										<input class="element-setting" name="element-rel" type="text" value="">
-									</p>
-									*/
-									?>
+									<!-- Gplus Fields -->
+									<div class="eg-element-gplus-wrap" id="eg-element-gplus-wrap">
+										<div style="margin-top:10px">
+											<label style="float:left"><?php _e('Link Target', EG_TEXTDOMAIN); ?></label>
+											<div class="select_wrapper" style="float:left;">
+												<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
+												<select name="element-gplus-sharing-link">
+													<option value="site"><?php _e("Parent Site URL",EG_TEXTDOMAIN); ?></option>
+													<option value="post"><?php _e("Post URL",EG_TEXTDOMAIN); ?></option>
+													<option value="custom"><?php _e("Custom URL",EG_TEXTDOMAIN); ?></option>
+												</select>
+											</div><div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<div class="eg-element-gplus_link_custom">
+												<label style="float:left"><?php _e("URL",EG_TEXTDOMAIN); ?></label>
+												<input type="text" style="width:250px;" name="element-gplus-link-url" value="">
+											</div><div class="clear"></div>
+										</div>
+									</div>
+									<!-- Pinterest Fields -->
+									<div class="eg-element-pinterest-wrap" id="eg-element-pinterest-wrap">
+										<div style="margin-top:10px">
+											<label style="float:left"><?php _e('Link Target', EG_TEXTDOMAIN); ?></label>
+											<div class="select_wrapper" style="float:left;">
+												<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
+												<select name="element-pinterest-sharing-link">
+													<option value="site"><?php _e("Parent Site URL",EG_TEXTDOMAIN); ?></option>
+													<option value="post"><?php _e("Post URL",EG_TEXTDOMAIN); ?></option>
+													<option value="custom"><?php _e("Custom URL",EG_TEXTDOMAIN); ?></option>
+												</select>
+											</div><div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<div class="eg-element-pinterest_link_custom">
+												<label style="float:left"><?php _e("URL",EG_TEXTDOMAIN); ?></label>
+												<input type="text" style="width:250px;" name="element-pinterest-link-url" value="">
+											</div><div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<label style="float:left" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>"><?php _e("Description",EG_TEXTDOMAIN); ?></label>
+											<textarea type="text" style="width:250px;" name="element-pinterest-description" value="" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>"></textarea>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<!-- Twitter Fields -->
+									<div class="eg-element-twitter-wrap" id="eg-element-twitter-wrap">
+										<div style="margin-top:10px">
+											<label style="float:left" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>"><?php _e("Text before Link",EG_TEXTDOMAIN); ?></label>
+											<input type="text" style="width:250px;" name="element-twitter-text-before" value="" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>">
+											<div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<label style="float:left"><?php _e('Link Target', EG_TEXTDOMAIN); ?></label>
+											<div class="select_wrapper" style="float:left;">
+												<div class="select_fake"><span><?php _e('Not uppercased', EG_TEXTDOMAIN); ?></span><i class="eg-icon-sort"></i></div>
+												<select name="element-twitter-sharing-link">
+													<option value="site"><?php _e("Parent Site URL",EG_TEXTDOMAIN); ?></option>
+													<option value="post"><?php _e("Post URL",EG_TEXTDOMAIN); ?></option>
+													<option value="custom"><?php _e("Custom URL",EG_TEXTDOMAIN); ?></option>
+												</select>
+											</div><div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<div class="eg-element-twitter_link_custom">
+												<label style="float:left"><?php _e("URL",EG_TEXTDOMAIN); ?></label>
+												<input type="text" style="width:250px;" name="element-twitter-link-url" value="">
+											</div><div class="clear"></div>
+										</div>
+										<div style="margin-top:10px">
+											<label style="float:left" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>"><?php _e("Text after Link",EG_TEXTDOMAIN); ?></label>
+											<input type="text" style="width:250px;" name="element-twitter-text-after" value="" class="eg-tooltip-wrap" title="<?php _e('Use placeholder %title%,%excerpt% for replacement', EG_TEXTDOMAIN); ?>">
+											<div class="clear"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 							<p id="dz-delete" class="eg-delete-wrapper">
@@ -1672,7 +1870,7 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 		<div class="inside" style="margin:0; padding:0;">
 
 			<!-- GRID WRAPPER FOR CONTAINER SIZING   HERE YOU CAN SET THE CONTAINER SIZE AND CONTAINER SKIN-->
-			<article class="backend-flat">
+			<article id="eg-elements-container-grid-wrap" class="backend-flat myportfolio-container eg-startheight">
 
 				<!-- THE GRID ITSELF WITH FILTERS, PAGINATION,  SORTING ETC... -->
 				<div id="eg-elements-container-grid" class="esg-grid" style="text-align:center;">
@@ -1704,6 +1902,13 @@ if(!isset($skin['layers'])) $skin['layers'] = array(); //fallback if skin does n
 					<!-- The Pagination Container. Page Buttons will be added on demand Automatically !! -->
 					<article style="background: #FFF;z-index: 100;-webkit-backface-visibility: hidden;" class="esg-pagination"></article>
 				</div>
+				
+				<!-- 2.2.5 -->
+				<style type="text/css">
+				
+					#eg-elements-container-grid-wrap.eg-startheight {height: 351px};
+				
+				</style>
 
 			</article>
 

@@ -1,6 +1,6 @@
 window.VcEssentialGrid = vc.shortcode_view.extend({
 	render: function () {
-		
+		jQuery('#eg-create-wp-gallery').hide();
 		cur_vc_obj = this;
 		var params = this.model.get('params');
 		

@@ -505,7 +505,10 @@ if (isset($_FILES['import_file'])) {
 			}
 			?>
 			<div style="display: inline-block;">
-				<a href="javascript:void(0);" class="button-primary revgreen" id="esg-import-demo-posts-210"><?php _e('Import 2.1.0 Demo Grids', EG_TEXTDOMAIN); ?></a>
+				<a href="javascript:void(0);" class="button-primary revgreen" id="esg-import-demo-posts-210"><?php _e('Import Social Media Demo Grids', EG_TEXTDOMAIN); ?></a>
+			</div>
+			<div style="display: inline-block;">
+				<a href="https://essential.themepunch.com/example-skins-download/" class="button-primary revgreen" target="_blank" id="esg-download-skins"><?php _e('Download Fresh Skins', EG_TEXTDOMAIN); ?></a>
 			</div>
 		</div>
 	</div>

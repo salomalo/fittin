@@ -138,6 +138,27 @@ if(!class_exists('ThemePunch_Fonts')) {
 			}
 			
 		}
+
+		/**
+		 * register all fonts
+		 */
+		public function register_icon_fonts($focus){
+			$enable_fontello = get_option('tp_eg_global_enable_fontello', 'backfront');
+			$enable_font_awesome = get_option('tp_eg_global_enable_font_awesome', 'false');
+			$enable_pe7 = get_option('tp_eg_global_enable_pe7', 'false');
+			
+			if($focus=="admin"){
+				if($enable_fontello!="false") wp_enqueue_style('tp-fontello', EG_PLUGIN_URL . 'public/assets/font/fontello/css/fontello.css', array(), Essential_Grid::VERSION );
+				if($enable_pe7!="false") wp_enqueue_style('tp-stroke-7', EG_PLUGIN_URL . 'public/assets/font/pe-icon-7-stroke/css/pe-icon-7-stroke.css', array(), Essential_Grid::VERSION );	
+				if($enable_font_awesome!="false") wp_enqueue_style('tp-font-awesome', EG_PLUGIN_URL . 'public/assets/font/font-awesome/css/font-awesome.css', array(), Essential_Grid::VERSION );
+			}
+			else{
+				if($enable_fontello=="backfront") wp_enqueue_style('tp-fontello', EG_PLUGIN_URL . 'public/assets/font/fontello/css/fontello.css', array(), Essential_Grid::VERSION );
+				if($enable_font_awesome=="backfront") wp_enqueue_style('tp-font-awesome', EG_PLUGIN_URL . 'public/assets/font/font-awesome/css/font-awesome.css', array(), Essential_Grid::VERSION );
+				if($enable_pe7=="backfront") wp_enqueue_style('tp-stroke-7', EG_PLUGIN_URL . 'public/assets/font/pe-icon-7-stroke/css/pe-icon-7-stroke.css', array(), Essential_Grid::VERSION );	
+			}
+			
+		}
 		
 		
 		/**
@@ -157,7 +178,8 @@ if(!class_exists('ThemePunch_Fonts')) {
 			if(function_exists('is_multisite') && is_multisite() && $networkwide){ //do for each existing site
 				global $wpdb;
 				
-				$old_blog = $wpdb->blogid;
+				// 2.2.5
+				// $old_blog = $wpdb->blogid;
 				
 				// Get all blog ids and create tables
 				$blogids = $wpdb->get_col("SELECT blog_id FROM ".$wpdb->blogs);
@@ -165,9 +187,13 @@ if(!class_exists('ThemePunch_Fonts')) {
 				foreach($blogids as $blog_id){
 					switch_to_blog($blog_id);
 					self::_propagate_default_fonts($default);
+					
+					// 2.2.5
+					restore_current_blog();
 				}
 				
-				switch_to_blog($old_blog); //go back to correct blog
+				// 2.2.5
+				// switch_to_blog($old_blog); //go back to correct blog
 				
 			}else{
 			

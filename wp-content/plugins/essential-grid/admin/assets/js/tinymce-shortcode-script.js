@@ -20,21 +20,29 @@
 					
 					//reset all options and settings
 					esg_tiny_reset_all();
-					
+					jQuery('#eg-create-wp-gallery').show();
 					jQuery('#ess-grid-tiny-dialog-step-1').show();
 					jQuery('#ess-grid-tiny-dialog-step-2').hide();
 					jQuery('#ess-grid-tiny-dialog-step-3').hide();
 					
-					editor.windowManager.open({
-						id       : 'ess-grid-tiny-mce-dialog',
-						title	 : eg_lang.shortcode_generator,
-						width    : 720,
-						height   : 'auto',
-						wpDialog : true
-					},
-					{
-						plugin_url : url // Plugin absolute URL
-					});
+					// 2.1.5 wpDialog not playing nicely with tinymce anymore
+					// supressing warning message for now
+					var console = window.console;
+					window.console = function() {};
+					try {
+						editor.windowManager.open({
+							id       : 'ess-grid-tiny-mce-dialog',
+							title	 : eg_lang.shortcode_generator,
+							width    : 720,
+							height   : 'auto',
+							wpDialog : true
+						},
+						{
+							plugin_url : url // Plugin absolute URL
+						});
+					}
+					catch(e){}
+					window.console = console;
 				}
 			});
 			

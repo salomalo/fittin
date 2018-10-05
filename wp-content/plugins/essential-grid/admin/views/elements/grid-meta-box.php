@@ -22,18 +22,20 @@ $values = get_post_custom($post->ID);
 $eg_sources_html5_mp4 = isset($values['eg_sources_html5_mp4']) ? esc_attr($values['eg_sources_html5_mp4'][0]) : "";
 $eg_sources_html5_ogv = isset($values['eg_sources_html5_ogv']) ? esc_attr($values['eg_sources_html5_ogv'][0]) : "";
 $eg_sources_html5_webm = isset($values['eg_sources_html5_webm']) ? esc_attr($values['eg_sources_html5_webm'][0]) : "";
-$eg_vimeo_ratio = isset($values['eg_vimeo_ratio']) ? esc_attr($values['eg_vimeo_ratio'][0]) : "0";
-$eg_youtube_ratio = isset($values['eg_youtube_ratio']) ? esc_attr($values['eg_youtube_ratio'][0]) : "0";
-$eg_wistia_ratio = isset($values['eg_wistia_ratio']) ? esc_attr($values['eg_wistia_ratio'][0]) : "0";
-$eg_html5_ratio = isset($values['eg_html5_ratio']) ? esc_attr($values['eg_html5_ratio'][0]) : "0";
-$eg_soundcloud_ratio = isset($values['eg_soundcloud_ratio']) ? esc_attr($values['eg_soundcloud_ratio'][0]) : "0";
+$eg_vimeo_ratio = isset($values['eg_vimeo_ratio']) ? esc_attr($values['eg_vimeo_ratio'][0]) : "1";
+$eg_youtube_ratio = isset($values['eg_youtube_ratio']) ? esc_attr($values['eg_youtube_ratio'][0]) : "1";
+$eg_wistia_ratio = isset($values['eg_wistia_ratio']) ? esc_attr($values['eg_wistia_ratio'][0]) : "1";
+$eg_html5_ratio = isset($values['eg_html5_ratio']) ? esc_attr($values['eg_html5_ratio'][0]) : "1";
+$eg_soundcloud_ratio = isset($values['eg_soundcloud_ratio']) ? esc_attr($values['eg_soundcloud_ratio'][0]) : "1";
 $eg_sources_youtube = isset($values['eg_sources_youtube']) ? esc_attr($values['eg_sources_youtube'][0]) : "";
 $eg_sources_wistia = isset($values['eg_sources_wistia']) ? esc_attr($values['eg_sources_wistia'][0]) : "";
 $eg_sources_vimeo = isset($values['eg_sources_vimeo']) ? esc_attr($values['eg_sources_vimeo'][0]) : "";
 $eg_sources_image = isset($values['eg_sources_image']) ? esc_attr($values['eg_sources_image'][0]) : "";
 $eg_sources_iframe = isset($values['eg_sources_iframe']) ? esc_attr($values['eg_sources_iframe'][0]) : "";
 $eg_sources_soundcloud = isset($values['eg_sources_soundcloud']) ? esc_attr($values['eg_sources_soundcloud'][0]) : "";
+$eg_sources_essgrid = isset($values['eg_sources_essgrid']) ? esc_attr($values['eg_sources_essgrid'][0]) : "";
 
+$eg_featured_grid = isset($values['eg_featured_grid']) ? esc_attr($values['eg_featured_grid'][0]) : "";
 
 $eg_image_fit = isset($values['eg_image_fit']) ? esc_attr($values['eg_image_fit'][0]) : "";
 $eg_image_align_h = isset($values['eg_image_align_h']) ? esc_attr($values['eg_image_align_h'][0]) : "";
@@ -83,7 +85,8 @@ if(!isset($disable_advanced) || $disable_advanced == false){
 				$settings = $layer['settings'];
 				if(!empty($settings) && isset($settings['special']) && $settings['special'] == 'true') continue;
 				
-				$advanced[$skin['id']]['layers'][] = $layer['id'];
+				/* 2.1.6 */
+				if(isset($layer['id'])) $advanced[$skin['id']]['layers'][] = $layer['id'];
 			}
 		}
 	}
@@ -150,8 +153,11 @@ wp_nonce_field('eg_meta_box_nonce', 'essential_grid_meta_box_nonce');
 	#eg-meta-box .button-primary,
 	#button_upload_plugin		{	border:none !important; text-shadow: none !important; border: none !important; outline: none !important;box-shadow: none !important;
 											line-height: 26px !important; height: 27px !important; margin:2px 3px 2px 0px!important;color:#fff !important;
-											background:transparent !important;
+											background:transparent !important; vertical-align: middle;
 										}
+	
+	/* 2.1.6 */
+	.rev-colorpickerspan {display: inline-block; line-height: 0; vertical-align: middle; margin-left: 1px}
 	
 	#eg-meta-box .button-primary.button-fixed
 								{	height: auto !important;}
@@ -247,9 +253,9 @@ wp_nonce_field('eg_meta_box_nonce', 'essential_grid_meta_box_nonce');
 	.eg-options-tab.selected	{	display:block;}
 	
 	.eg-option-tabber			{	display:inline-block; margin:0px 5px 0px 0px;padding:10px 15px; line-height: 18px; background:#d1d1d1; cursor: pointer;}
-	.eg-option-tabber.selected 	{	background:#fff;}
+	.eg-option-tabber.selected 	{	background:#FFF }
 	
-	.eg-option-tabber-wrapper	{	 margin: -7px -12px 30px; background: #F1F1F1;padding-top:10px;}
+	.eg-option-tabber-wrapper	{margin: -7px -12px 30px; background: #F1F1F1; padding-top: 10px}
 </style>
 
 <ul class="eg-option-tabber-wrapper">
@@ -257,7 +263,7 @@ wp_nonce_field('eg_meta_box_nonce', 'essential_grid_meta_box_nonce');
 	$selectedtab = "selected";
 	if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are in preview mode
 		?>
-		<li class="eg-option-tabber selected" data-target="#eg-my-cobbles-options"><span style="font-size: 18px;line-height: 18px;margin-right: 10px;" class="dashicons dashicons-align-center"></span><?php _e('Cobbles Element Size', EG_TEXTDOMAIN); ?></li>
+		<li class="eg-option-tabber selected" data-target="#eg-my-cobbles-options"><span style="font-size: 18px;line-height: 18px;margin-right: 10px;" class="dashicons dashicons-align-center"></span><?php _e('Item Settings', EG_TEXTDOMAIN); ?></li>
 		<?php
 		$selectedtab = "";
 	}
@@ -271,6 +277,7 @@ wp_nonce_field('eg_meta_box_nonce', 'essential_grid_meta_box_nonce');
 	<?php
 	}
 	?>
+	<li class="eg-option-tabber" data-target="#eg-featured-grid-options" style="margin-right: 0"><span style="font-size: 18px;line-height: 18px;margin-right: 10px;" class="dashicons dashicons-screenoptions"></span><?php _e('Featured Grid', EG_TEXTDOMAIN); ?></li>
 </ul>
 <?php
 $selectedtab = "selected";
@@ -440,21 +447,49 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<a href="<?php echo Essential_Grid_Admin::getSubViewUrl(Essential_Grid_Admin::VIEW_SUB_CUSTOM_META_AJAX); ?>" class="button-primary revblue" style="margin-top:20px !important; margin-bottom:20px !important;" target="_blank"><?php _e('Create New Meta Keys', EG_TEXTDOMAIN); ?></a>
 	</div>
 </div> <!-- END OF EG OPTION TAB -->
+
+<div id="eg-featured-grid-options" class="eg-options-tab">
+	<div class="eg-notifcation">
+		<div class="dashicons dashicons-lightbulb" style="float:left;margin-right:10px;"></div>
+		<div style="float:left; "><?php _e('The selected grid will be displayed instead of the featured image on the single post and in the blog overviews.<br>If this feature does not work in your theme please check out this <a href="https://www.themepunch.com/revslider-doc/add-on-featured-slider/#theme_not_support">short tutorial</a> to code in manually.', EG_TEXTDOMAIN); ?></div>
+		<div style="clear:both"></div>
+	</div>
+	<p style="margin-top:10px">
+		<strong style="font-size:14px"><?php _e('Select Grid', EG_TEXTDOMAIN); ?></strong>
+	</p>
+	<div class="eg-cs-row" style="float:left">		
+		<label class="eg-mb-label eg-tooltip-wrap" title="<?php _e('Choose the grid to display', EG_TEXTDOMAIN); ?>"><?php _e('Grid:', EG_TEXTDOMAIN); ?></label>
+		<select id="eg-featured-grid" name="eg_featured_grid">
+			<option value=""><?php _e("No Featured Essential Grid",EG_TEXTDOMAIN); ?></option>
+			<?php 
+
+					$grids = new Essential_Grid(); 
+					$arrGrids = $grids->get_essential_grids(); 
+					foreach($arrGrids as $grid){
+						echo '<option value="'.$grid->handle.'" '. selected( $eg_featured_grid, $grid->handle, false ) .'>'. $grid->name . '</option>';
+					}
+				?>
+		</select>
+	</div>
+	<div style="clear:both"></div>
+</div> <!-- END OF EG FEATURED TAB -->
+
+
 <div id="eg-source-options" class="eg-options-tab">
 	<p style="margin-top:10px">
 		<strong style="font-size:14px"><?php _e('HTML5 Video & Audio Source`s', EG_TEXTDOMAIN); ?></strong>
 	</p>
 	<p>
 		<div class="eg-cs-row" style="float:left"><label class="eg-mb-label"><?php _e('MP4 / Audio', EG_TEXTDOMAIN); ?></label> <input type="text" name="eg_sources_html5_mp4" id="eg_sources_html5_mp4" style="margin-right:20px" value="<?php echo $eg_sources_html5_mp4; ?>" /></div>
-		<div class="eg-cs-row" style="float:left"><label class="eg-mb-label"><?php _e('OGV', EG_TEXTDOMAIN); ?></label> <input type="text" name="eg_sources_html5_ogv" id="eg_sources_html5_ogv" style="margin-right:20px" value="<?php echo $eg_sources_html5_ogv; ?>" /></div>
-		<div class="eg-cs-row" style="float:left"><label class="eg-mb-label"><?php _e('WEBM', EG_TEXTDOMAIN); ?></label> <input type="text" name="eg_sources_html5_webm" id="eg_sources_html5_webm" style="margin-right:20px" value="<?php echo $eg_sources_html5_webm; ?>" /></div>
 		<div class="eg-cs-row" style="float:left">		
 			<label class="eg-mb-label eg-tooltip-wrap" title="<?php _e('Choose the Video Ratio', EG_TEXTDOMAIN); ?>"><?php _e('Video Ratio:', EG_TEXTDOMAIN); ?></label>
 			<select id="eg-html5-ratio" name="eg_html5_ratio">
+				<option value="1"<?php selected($eg_html5_ratio, '1'); ?>>16:9</option>	
 				<option value="0"<?php selected($eg_html5_ratio, '0'); ?>>4:3</option>
-				<option value="1"<?php selected($eg_html5_ratio, '1'); ?>>16:9</option>					
 			</select>
 		</div>
+		<div class="eg-cs-row" style="clear: both"><label class="eg-mb-label"><?php _e('OGV', EG_TEXTDOMAIN); ?></label> <input type="text" name="eg_sources_html5_ogv" id="eg_sources_html5_ogv" style="margin-right:20px" value="<?php echo $eg_sources_html5_ogv; ?>" /></div>
+		<div class="eg-cs-row"><label class="eg-mb-label"><?php _e('WEBM', EG_TEXTDOMAIN); ?></label> <input type="text" name="eg_sources_html5_webm" id="eg_sources_html5_webm" style="margin-right:20px" value="<?php echo $eg_sources_html5_webm; ?>" /></div>
 		
 		<div style="clear:both"></div>
 	</p>
@@ -468,8 +503,9 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<div class="eg-cs-row" style="float:left">		
 			<label class="eg-mb-label"  class="eg-tooltip-wrap" title="<?php _e('Choose the Video Ratio', EG_TEXTDOMAIN); ?>"><?php _e('Video Ratio:', EG_TEXTDOMAIN); ?></label>
 			<select id="eg-youtube-ratio" name="eg_youtube_ratio">
+				<option value="1"<?php selected($eg_youtube_ratio, '1'); ?>>16:9</option>
 				<option value="0"<?php selected($eg_youtube_ratio, '0'); ?>>4:3</option>
-				<option value="1"<?php selected($eg_youtube_ratio, '1'); ?>>16:9</option>					
+									
 			</select>
 		</div>
 		<div style="clear:both"></div>		
@@ -477,8 +513,9 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<div class="eg-cs-row" style="float:left">		
 			<label class="eg-mb-label eg-tooltip-wrap" title="<?php _e('Choose the Video Ratio', EG_TEXTDOMAIN); ?>"><?php _e('Video Ratio:', EG_TEXTDOMAIN); ?></label>
 			<select id="eg-vimeo-ratio" name="eg_vimeo_ratio">
+				
+				<option value="1"<?php selected($eg_vimeo_ratio, '1'); ?>>16:9</option>	
 				<option value="0"<?php selected($eg_vimeo_ratio, '0'); ?>>4:3</option>
-				<option value="1"<?php selected($eg_vimeo_ratio, '1'); ?>>16:9</option>					
 			</select>
 		</div>
 		<div style="clear:both"></div>		
@@ -486,8 +523,9 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<div class="eg-cs-row" style="float:left">		
 			<label class="eg-mb-label eg-tooltip-wrap" title="<?php _e('Choose the Video Ratio', EG_TEXTDOMAIN); ?>"><?php _e('Video Ratio:', EG_TEXTDOMAIN); ?></label>
 			<select id="eg-vimeo-ratio" name="eg_wistia_ratio" >
+				
+				<option value="1"<?php selected($eg_wistia_ratio, '1'); ?>>16:9</option>
 				<option value="0"<?php selected($eg_wistia_ratio, '0'); ?>>4:3</option>
-				<option value="1"<?php selected($eg_wistia_ratio, '1'); ?>>16:9</option>					
 			</select>
 		</div>
 		<div style="clear:both"></div>		
@@ -503,8 +541,9 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<div class="eg-cs-row" style="float:left">		
 			<label class="eg-mb-label eg-tooltip-wrap" title="<?php _e('Choose the SoundCloud iFrame Ratio', EG_TEXTDOMAIN); ?>"><?php _e('Frame Ratio:', EG_TEXTDOMAIN); ?></label>
 			<select id="eg-soundcloud-ratio" name="eg_soundcloud_ratio">
+				<option value="1"<?php selected($eg_soundcloud_ratio, '1'); ?>>16:9</option>
 				<option value="0"<?php selected($eg_soundcloud_ratio, '0'); ?>>4:3</option>
-				<option value="1"<?php selected($eg_soundcloud_ratio, '1'); ?>>16:9</option>					
+									
 			</select>
 		</div>
 		<div style="clear:both"></div>		
@@ -530,6 +569,31 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		<textarea type="text" style="width:100%;background:#f1f1f1;min-height:150px;" name="eg_sources_iframe" id="eg_sources_iframe"><?php echo $eg_sources_iframe; ?></textarea>
 	</p>
 	
+	<p style="margin-top:10px">
+		<strong style="font-size:14px"><?php _e('Choose Essential Grid', EG_TEXTDOMAIN); ?></strong>
+	</p>
+	<p>
+		<select id="eg_sources_essgrid" name="eg_sources_essgrid">
+			
+			<option value="">--- Choose Grid ---</option>
+			<?php 
+							
+				$_grids = Essential_Grid::get_essential_grids();
+				foreach($_grids as $_grid) {
+					
+					$_alias = $_grid -> handle;
+					$_shortcode = '[ess_grid alias="' . $_alias . '"]';
+					$_shortcode = str_replace('"', '', $_shortcode)
+					
+					?><option <?php selected($eg_sources_essgrid, $_alias); ?> value="<?php echo $_alias; ?>"><?php echo $_shortcode; ?></option>
+					
+				<?php }
+		
+			?>
+				
+		</select>
+	</p>
+	
 	<?php
 	do_action('essgrid_add_meta_options', $values);
 	
@@ -553,15 +617,36 @@ if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are
 		</div>
 		
 		<?php
-	}
-	
-	if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are in preview mode
+	}  
+		if(isset($disable_advanced) && $disable_advanced == true){ //only show if we are in preview mode
 		?>
 		</form>
 		<?php
 	}
 	?>
 </div>
+
+<!-- ESG 2.1.6 -->
+<?php
+	$eg_custom_meta_216 = isset($values['eg_custom_meta_216']) ? esc_attr($values['eg_custom_meta_216'][0]) : 'false';
+	if($eg_custom_meta_216 != 'true') { ?>
+	<script type="text/javascript">
+		var eg_skin_color_values = {
+		<?php
+			$skins = Essential_Grid_Item_Skin::get_essential_item_skins('all', false);
+			foreach($skins as $skin) {
+				if(isset($skin['params']) && !empty($skin['params']) && is_string($skin['params'])) {
+					$params = json_decode($skin['params'], true);
+					if(!empty($params) && isset($params['container-background-color']) && !empty($params['container-background-color'])) {
+						echo '"' . $skin['id'] . '": "' . $params['container-background-color'] . '",';
+					}
+				}	
+			}
+		?>
+};
+	</script>
+	<?php } ?>
+<input type="hidden" name="eg_custom_meta_216" value="true" />
 
 <script type="text/javascript">
 	jQuery(function(){

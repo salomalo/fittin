@@ -110,6 +110,10 @@ Step 1 ShortCode Generator
 
 .ess-customgridwrap:hover .ess-customonbutton		{	background:#2ecc71 !important}
 
+.ess-rowdivider { clear:both; margin-top:5px; }
+
+.esg-wp-gallery .media-frame:not(.hide-router) .media-menu .media-menu-item {pointer-events: none; opacity: 0.5}
+.esg-wp-gallery .media-menu .media-menu-item:nth-child(2) {opacity: 1 !important}
 
 /***
 STEP 2

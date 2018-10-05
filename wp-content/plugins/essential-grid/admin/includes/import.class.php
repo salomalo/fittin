@@ -94,9 +94,9 @@ class Essential_Grid_Import {
 				}
 				
 				$append = true;
-				if($exist){ //skin exists - append or overwrite
+				if($exist){ //grid exists - append or overwrite
 					if($check_append){ //check in data if append or overwrite
-						$do = $base->getVar($this->overwrite_data, 'element-overwrite-'.$i_grid['id'], 'append');
+						$do = $base->getVar($this->overwrite_data, 'grid-overwrite-'.$i_grid['id'], 'append');
 						$append = ($do == 'append') ? true : false;
 					}
 				}

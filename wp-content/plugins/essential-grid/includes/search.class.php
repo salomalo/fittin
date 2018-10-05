@@ -242,6 +242,10 @@ class Essential_Grid_Search {
 	 * @since: 2.0
 	 */
 	public function enqueue_scripts(){
+		
+		wp_enqueue_script('tp-tools');
+		wp_enqueue_script('essential-grid-essential-grid-script');
+		
 		$globals = $this->base->getVar($this->settings, 'global', array());
 		$shortcode = $this->base->getVar($this->settings, 'shortcode', array());
 		

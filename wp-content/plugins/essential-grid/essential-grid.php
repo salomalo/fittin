@@ -3,15 +3,15 @@
  * @package   Essential_Grid
  * @author    ThemePunch <info@themepunch.com>
  * @link      http://codecanyon.net/item/essential-grid-wordpress-plugin/7563340
- * @copyright 2014 ThemePunch
+ * @copyright 2018 ThemePunch
  *
  * @wordpress-plugin
  * Plugin Name:       Essential Grid
- * Plugin URI:        http://www.themepunch.com/essential/
- * Description:       Essential Grid - Premium grid plugin
- * Version:           2.1.0.2
+ * Plugin URI:        https://essential.themepunch.com
+ * Description:       Essential Grid - The Original Premium Grid Plugin
+ * Version:           2.2.5
  * Author:            ThemePunch
- * Author URI:        http://themepunch.com
+ * Author URI:        https://themepunch.com
  * Text Domain:       essential-grid
  * Domain Path:       /languages
  */
@@ -38,6 +38,9 @@ $wc_is_localized = false; //used to determinate if already done for cart button 
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
+ /* 2.1.6 */
+require_once(EG_PLUGIN_PATH . '/includes/colorpicker.class.php');
+ 
 require_once(EG_PLUGIN_PATH . '/includes/base.class.php');
 
 require_once(EG_PLUGIN_PATH . '/public/essential-grid.class.php');
@@ -95,17 +98,10 @@ add_shortcode('ess_grid_nav', array('Essential_Grid', 'register_shortcode_filter
 add_shortcode('ess_grid_search', array('Essential_Grid_Search', 'register_shortcode_search'));
 
 add_action('widgets_init', array('Essential_Grid', 'register_custom_sidebars'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget");'));
+add_action('widgets_init', array('Essential_Grid', 'register_custom_widget'));
 
-/* //ToDo Widget part
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Filter");'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Pagination");'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Pagination_Left");'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Pagination_Right");'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Sorting");'));
-add_action('widgets_init', create_function('', 'return register_widget("Essential_Grids_Widget_Cart");'));
-*/
-
+// Featured Grid
+add_filter( 'post_thumbnail_html', array('Essential_Grid','post_thumbnail_replace'), 20, 5);
 
 /*----------------------------------------------------------------------------*
  * FrontEnd Special Functionality
@@ -152,6 +148,7 @@ if(is_admin()){ // && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX )
 	$EssentialAsTheme = false;
 	
 	function set_ess_grid_as_theme(){
+		/*
 		global $EssentialAsTheme;
 		
 		if(defined('ESS_GRID_AS_THEME')){
@@ -160,7 +157,7 @@ if(is_admin()){ // && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX )
 		}else{
 			if(get_option('EssentialAsTheme', 'true') == 'true')
 				$EssentialAsTheme = true;
-		}
+		}*/
 	}
 	/*****************
 	 * END: Developer Part for deactivation of the Activation Area
@@ -184,6 +181,8 @@ if(is_admin()){ // && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX )
 	require_once(EG_PLUGIN_PATH . '/admin/includes/plugin-update.class.php');
 	
 	require_once(EG_PLUGIN_PATH . '/admin/includes/newsletter.class.php');
+
+	// require_once(EG_PLUGIN_PATH . 'admin/includes/addon-admin.class.php');
 	
 	add_action('plugins_loaded', array( 'Essential_Grid_Admin', 'do_update_checks' )); //add update checks
 	
@@ -192,16 +191,6 @@ if(is_admin()){ // && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX )
 	add_action('plugins_loaded', array( 'Essential_Grid_Admin', 'visual_composer_include' )); //VC functionality
 	//add_action('init', array('Essential_Grid_Admin', 'visual_composer_include')); //VC functionality
 	
-    
-
- 
-add_filter('essgrid_set_cpt', 'remove_ess_grid_cpt', 10, 2);
- 
-function remove_ess_grid_cpt($val){
- return false;
-}
-
-    
 }
 
 

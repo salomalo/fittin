@@ -81,12 +81,11 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles'));
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts_language'));
+
 		
-		// Add the meta box to post/pages
+        // Add the meta box to post/pages
 		add_action('registered_post_type', array($this, 'prepare_add_plugin_meta_box'), 10, 2);
-		
 		add_action('save_post', array($this, 'add_plugin_meta_box_save'));
-		
 		add_action('wp_ajax_Essential_Grid_request_ajax', array($this, 'on_ajax_action'));
 		
 		if(!$EssentialAsTheme){
@@ -120,12 +119,44 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		
 		add_action('admin_head', array($this, 'add_tinymce_editor'));
 
-		$gallery = get_option('tp_eg_overwrite_gallery','');
-		if( !empty($gallery) && $gallery != "off"  ){
-			add_action( 'print_media_templates', array($this, 'ess_grid_addon_media_form' ) );
-		}
+		add_action( 'print_media_templates', array($this, 'ess_grid_addon_media_form' ) );
+		
+
+		// Privacy
+		add_action( 'admin_init', array( $this, 'add_suggested_privacy_content'), 15 );
+
+
 	}
 	
+	/**
+	 * Return the default suggested privacy policy content.
+	 *
+	 * @return string The default policy content.
+	 */
+	public function get_default_privacy_content() {
+		return
+		__('<h2>Essential Grid core itself does not collect any data from website visitors. In case you’re using things like Google Web Fonts (default) or connect to external sources in your Essential Grid please add the corresponding text phrase to your privacy police:</h2>
+		<h3>Google Web Fonts</h3> <p>For uniform representation of fonts, this page uses web fonts provided by Google. When you open a page, your browser loads the required web fonts into your browser cache to display texts and fonts correctly.</p> <p>For this purpose your browser has to establish a direct connection to Google servers. Google thus becomes aware that our web page was accessed via your IP address. The use of Google Web fonts is done in the interest of a uniform and attractive presentation of our plugin. This constitutes a justified interest pursuant to Art. 6 (1) (f) DSGVO.</p> <p>If your browser does not support web fonts, a standard font is used by your computer.</p> <p>Further information about handling user data, can be found at <a href="https://developers.google.com/fonts/faq" target="_blank">https://developers.google.com/fonts/faq</a> and in Google\'s privacy policy at <a href="https://www.google.com/policies/privacy/" target="_blank">https://www.google.com/policies/privacy/</a>.</p>
+		<h3>YouTube</h3> <p>Our website uses plugins from YouTube, which is operated by Google. The operator of the pages is YouTube LLC, 901 Cherry Ave., San Bruno, CA 94066, USA.</p> <p>If you visit one of our pages featuring a YouTube plugin, a connection to the YouTube servers is established. Here the YouTube server is informed about which of our pages you have visited.</p> <p>If you\'re logged in to your YouTube account, YouTube allows you to associate your browsing behavior directly with your personal profile. You can prevent this by logging out of your YouTube account.</p> <p>YouTube is used to help make our plugin appealing. This constitutes a justified interest pursuant to Art. 6 (1) (f) DSGVO.</p> <p>Further information about handling user data, can be found in the data protection declaration of YouTube under <a href="https://www.google.de/intl/de/policies/privacy" target="_blank">https://www.google.de/intl/de/policies/privacy</a>.</p>
+		<h3>Vimeo</h3> <p>Our website uses features provided by the Vimeo video portal. This service is provided by Vimeo Inc., 555 West 18th Street, New York, New York 10011, USA.</p> <p>If you visit one of our pages featuring a Vimeo plugin, a connection to the Vimeo servers is established. Here the Vimeo server is informed about which of our pages you have visited. In addition, Vimeo will receive your IP address. This also applies if you are not logged in to Vimeo when you visit our plugin or do not have a Vimeo account. The information is transmitted to a Vimeo server in the US, where it is stored.</p> <p>If you are logged in to your Vimeo account, Vimeo allows you to associate your browsing behavior directly with your personal profile. You can prevent this by logging out of your Vimeo account.</p> <p>For more information on how to handle user data, please refer to the Vimeo Privacy Policy at <a href="https://vimeo.com/privacy" target="_blank">https://vimeo.com/privacy</a>.</p>
+		<h3>SoundCloud</h3><p>On our pages, plugins of the SoundCloud social network (SoundCloud Limited, Berners House, 47-48 Berners Street, London W1T 3NF, UK) may be integrated. The SoundCloud plugins can be recognized by the SoundCloud logo on our site.</p>
+			<p>When you visit our site, a direct connection between your browser and the SoundCloud server is established via the plugin. This enables SoundCloud to receive information that you have visited our site from your IP address. If you click on the “Like” or “Share” buttons while you are logged into your SoundCloud account, you can link the content of our pages to your SoundCloud profile. This means that SoundCloud can associate visits to our pages with your user account. We would like to point out that, as the provider of these pages, we have no knowledge of the content of the data transmitted or how it will be used by SoundCloud. For more information on SoundCloud’s privacy policy, please go to https://soundcloud.com/pages/privacy.</p><p>If you do not want SoundCloud to associate your visit to our site with your SoundCloud account, please log out of your SoundCloud account.</p>
+		<h3>Facebook</h3>
+			<p>Our website includes plugins for the social network Facebook, Facebook Inc., 1 Hacker Way, Menlo Park, California 94025, USA. For an overview of Facebook plugins, see <a href="https://developers.facebook.com/docs/plugins/" target="_blank" rel="noopener">https://developers.facebook.com/docs/plugins/</a>.</p><p>When you visit our site, a direct connection between your browser and the Facebook server is established via the plugin. This enables Facebook to receive information that you have visited our site from your IP address. If you click on the Facebook &#8220;Like button&#8221; while you are logged into your Facebook account, you can link the content of our site to your Facebook profile. This allows Facebook to associate visits to our site with your user account. Please note that, as the operator of this site, we have no knowledge of the content of the data transmitted to Facebook or of how Facebook uses these data. For more information, please see Facebook&#8217;s privacy policy at <a href="https://de-de.facebook.com/policy.php" target="_blank" rel="noopener">https://de-de.facebook.com/policy.php</a>.</p><p>If you do not want Facebook to associate your visit to our site with your Facebook account, please log out of your Facebook account.</p>
+		<h3>Twitter</h3>
+			<p>Functions of the Twitter service have been integrated into our website and app. These features are offered by Twitter Inc., 1355 Market Street, Suite 900, San Francisco, CA 94103, USA. When you use Twitter and the “Retweet” function, the websites you visit are connected to your Twitter account and made known to other users. In doing so, data will also be transferred to Twitter. We would like to point out that, as the provider of these pages, we have no knowledge of the content of the data transmitted or how it will be used by Twitter. For more information on Twitter&#8217;s privacy policy, please go to <a href="https://twitter.com/privacy" target="_blank" rel="noopener">https://twitter.com/privacy</a>.</p><p>Your privacy preferences with Twitter can be modified in your account settings at <a href="https://twitter.com/account/settings" target="_blank" rel="noopener">https://twitter.com/account/settings</a>.</p>
+		<h3>Instagram</h3>
+			<p>Our website contains functions of the Instagram service. These functions are offered by Instagram Inc., 1601 Willow Road, Menlo Park, CA 94025, USA.</p><p>If you are logged into your Instagram account, you can click the Instagram button to link the content of our pages with your Instagram profile. This means that Instagram can associate visits to our pages with your user account. As the provider of this website, we expressly point out that we receive no information on the content of the transmitted data or its use by Instagram.</p><p>For more information, see the Instagram Privacy Policy: <a href="https://instagram.com/about/legal/privacy/" target="_blank" rel="noopener">https://instagram.com/about/legal/privacy/</a>.</p>',EG_TEXTDOMAIN);
+	}
+	/**
+	 * Add the suggested privacy policy text to the policy postbox.
+	 */
+	public function add_suggested_privacy_content() {
+		if(function_exists("wp_add_privacy_policy_content")){
+			$content = $this->get_default_privacy_content();
+			wp_add_privacy_policy_content( __( 'Essential Grid' ), $content );
+		}
+	}
 	
 	/**
 	 * add notices from ThemePunch
@@ -267,10 +298,11 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 			wp_register_style($this->plugin_slug . '-plugin-settings', EG_PLUGIN_URL . 'public/assets/css/settings.css', array(), Essential_Grid::VERSION);
 			wp_enqueue_style($this->plugin_slug . '-plugin-settings' );
 			
-			wp_register_style('themepunchboxextcss', EG_PLUGIN_URL . 'public/assets/css/lightbox.css', array(), Essential_Grid::VERSION);
+			wp_register_style('themepunchboxextcss', EG_PLUGIN_URL . 'public/assets/css/jquery.esgbox.min.css', array(), Essential_Grid::VERSION);
 			
 			$font = new ThemePunch_Fonts();
 			$font->register_fonts();
+			$font->register_icon_fonts("admin");
 		}
 		
 		wp_enqueue_style($this->plugin_slug .'-global-styles', EG_PLUGIN_URL . 'admin/assets/css/global.css', array(), Essential_Grid::VERSION );
@@ -302,8 +334,8 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		if(in_array($screen->id, $this->plugin_screen_hook_suffix)) {
 			wp_enqueue_script(array('jquery', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-slider', 'jquery-ui-autocomplete', 'jquery-ui-sortable', 'jquery-ui-droppable', 'jquery-ui-tabs', 'wp-color-picker'));
 			
-			wp_register_script( 'themepunchboxext', EG_PLUGIN_URL . 'public/assets/js/lightbox.js', array('jquery'), Essential_Grid::VERSION);
-			
+			//wp_register_script( 'themepunchboxext', EG_PLUGIN_URL . 'public/assets/js/lightbox.js', array('jquery'), Essential_Grid::VERSION);
+			wp_enqueue_script( 'themepunchboxext', EG_PLUGIN_URL . 'public/assets/js/jquery.esgbox.min.js', array('jquery'), Essential_Grid::VERSION);
 			wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__ ), array('jquery', 'wp-color-picker'), Essential_Grid::VERSION );
             
 			wp_enqueue_script($this->plugin_slug . '-codemirror-script', plugins_url('assets/js/codemirror.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );			
@@ -314,9 +346,13 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 			
 			wp_enqueue_script($this->plugin_slug . '-jquery-draggable', plugins_url('assets/js/jquery-ui.draggable.min.js', __FILE__ ), array('jquery', 'jquery-ui-dialog'), Essential_Grid::VERSION );
 			
+			// 2.1.6
+			//enqueue TP-COLOR 
+			wp_enqueue_style('tp-color-picker-css', plugins_url('assets/css/tp-color-picker.css', __FILE__ ), array(), Essential_Grid::VERSION);
+			wp_enqueue_script('tp-color-picker-js', plugins_url('assets/js/tp-color-picker.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION);
+			
 			wp_enqueue_script( 'tp-tools', plugins_url( '../public/assets/js/jquery.themepunch.tools.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
 			wp_enqueue_script( $this->plugin_slug . '-essential-grid-script', plugins_url( '../public/assets/js/jquery.themepunch.essential.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
-			
 			wp_enqueue_media();
 		}
 		
@@ -325,11 +361,20 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		$post_types[] = 'comment';
 		
 		foreach($post_types as $post_type) {
-			if($post_type == $screen->id) wp_enqueue_script(array('wpdialogs', 'jquery', 'jquery-ui-core', 'jquery-ui-sortable'));
-			if($post_type == $screen->id) wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__ ), array('jquery', 'wp-color-picker'), Essential_Grid::VERSION );
-			if($post_type == $screen->id) wp_enqueue_script($this->plugin_slug . '-tooltipser-script', plugins_url('assets/js/jquery.tooltipster.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
-			if($post_type == $screen->id) wp_enqueue_script($this->plugin_slug . '-tinymce-shortcode-script', plugins_url('assets/js/tinymce-shortcode-script.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
-			if($post_type == $screen->id) wp_enqueue_media();
+			if($post_type == $screen->id) {
+				
+				wp_enqueue_script(array('wpdialogs', 'jquery', 'jquery-ui-core', 'jquery-ui-sortable', 'wp-color-picker'));
+				wp_enqueue_script($this->plugin_slug . '-admin-script', plugins_url('assets/js/admin.js', __FILE__ ), array('jquery', 'wp-color-picker'), Essential_Grid::VERSION );
+				wp_enqueue_script($this->plugin_slug . '-tooltipser-script', plugins_url('assets/js/jquery.tooltipster.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
+				wp_enqueue_script($this->plugin_slug . '-tinymce-shortcode-script', plugins_url('assets/js/tinymce-shortcode-script.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION );
+				wp_enqueue_media();
+				
+				// 2.1.6
+				//enqueue TP-COLOR 
+				wp_enqueue_style('tp-color-picker-css', plugins_url('assets/css/tp-color-picker.css', __FILE__ ), array(), Essential_Grid::VERSION);
+				wp_enqueue_script('tp-color-picker-js', plugins_url('assets/js/tp-color-picker.min.js', __FILE__ ), array('jquery'), Essential_Grid::VERSION);
+	
+			}	
 		}
 		
 		do_action('essgrid_enqueue_admin_scripts');
@@ -669,6 +714,18 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		if(isset($metas['eg_image_align_v']))
 			update_post_meta($post_id, 'eg_image_align_v', esc_attr($metas['eg_image_align_v']));
 		
+		/* 2.2 ?? */
+		if(isset($metas['eg_sources_revslider'])) {
+			update_post_meta($post_id, 'eg_sources_revslider', esc_attr($metas['eg_sources_revslider']));
+		}
+		
+		if(isset($metas['eg_sources_essgrid']))
+			update_post_meta($post_id, 'eg_sources_essgrid', esc_attr($metas['eg_sources_essgrid']));
+
+		if(isset($metas['eg_featured_grid']))
+			update_post_meta($post_id, 'eg_featured_grid', esc_attr($metas['eg_featured_grid']));
+
+		
 		if($ajax === false){ //only update these if we are in post, not at ajax that comes from the plugin in preview mode
 			/**
 			 * Save Custom Meta Things that Modify Skins
@@ -692,7 +749,14 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 				update_post_meta($post_id, 'eg_settings_custom_meta_style', $metas['eg-custom-meta-style']);
 			else
 				update_post_meta($post_id, 'eg_settings_custom_meta_style', '');
+			
+			if(isset($metas['eg_custom_meta_216']))
+				update_post_meta($post_id, 'eg_custom_meta_216', $metas['eg_custom_meta_216']);
 		
+			if(!is_numeric(get_post_meta( $post_id, 'eg_votes_count', $single = true ))){
+				update_post_meta($post_id, 'eg_votes_count',0);
+			}
+
 		}
 		
 		/**
@@ -980,8 +1044,8 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 			'category' => __('Content', EG_TEXTDOMAIN),
 			'show_settings_on_create' => false,
 			'js_view' => 'VcEssentialGrid',
-			'admin_enqueue_js' => EG_PLUGIN_URL.'/admin/assets/js/vc.js',
-			'front_enqueue_js' => EG_PLUGIN_URL.'/admin/assets/js/vc.js',
+			'admin_enqueue_js' => EG_PLUGIN_URL.'admin/assets/js/vc.js',
+			'front_enqueue_js' => EG_PLUGIN_URL.'admin/assets/js/vc.js',
 			//'admin_enqueue_js' => array(EG_PLUGIN_URL.'/admin/assets/js/tinymce-shortcode-script.js'),
 			'params' => array(
 				array(
@@ -1298,8 +1362,7 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		}
 		
 	}
-	
-	
+
 	/**
 	 * Handle Ajax Requests
 	 */
@@ -1532,8 +1595,20 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 						update_option('tp_eg_enable_log', @$data['enable_log']);
 						update_option('tp_eg_enable_post_meta', @$data['enable_post_meta']);
 						update_option('tp_eg_enable_custom_post_type', @$data['enable_custom_post_type']);
+						update_option('tp_eg_enable_media_filter', @$data['enable_media_filter']);
 						
 						update_option('tp_eg_use_lightbox', @$data['use_lightbox']);
+						update_option('tp_eg_global_default_img', @$data['global_default_img']);
+
+						update_option('tp_eg_no_filter_match_message', @$data['no_filter_match_message']);
+
+						update_option('tp_eg_global_enable_pe7',@$data['enable_pe7']);
+						update_option('tp_eg_global_enable_fontello', @$data['enable_fontello']);
+						update_option('tp_eg_global_enable_font_awesome', @$data['enable_font_awesome']);
+
+						update_option('tp_eg_enable_youtube_nocookie', @$data['nable_youtube_nocookie']);
+
+
 						
 						if(@$data['use_lightbox'] === 'jackbox'){
 							Essential_Grid_Jackbox::enable_jackbox();
@@ -1606,9 +1681,21 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 								}
 								Essential_Grid::ajaxResponseSuccess(__("Grid successfully saved/changed!", EG_TEXTDOMAIN), $result);
 							}else{
-								Essential_Grid::ajaxResponseSuccess(__("Grid successfully saved/changed!", EG_TEXTDOMAIN), array('data' => $result, 'is_redirect' => true, 'redirect_url' => self::getViewUrl(Essential_Grid_Admin::VIEW_OVERVIEW)));
+								$grid_id = false;
+								$esg_alias = $data['handle'];
+								$grids = Essential_Grid::get_essential_grids();
+								
+								foreach($grids as $grid) {
+									
+									$alias = $grid -> handle;
+									if($alias === $esg_alias) {
+										$grid_id = $grid -> id;
+										break;
+									}
+								}
+								
+								Essential_Grid::ajaxResponseSuccess(__("Grid successfully saved/changed!", EG_TEXTDOMAIN), array('data' => $result, 'is_redirect' => false, 'redirect_url' => self::getViewUrl(Essential_Grid_Admin::VIEW_OVERVIEW), 'grid_id' => $grid_id));
 							}
-							
 						}
 					break;
 					case 'delete_grid':
@@ -2048,6 +2135,10 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 									$tskin = json_decode(stripslashes($skin), true);
 									if(empty($tskin)) $tskin = json_decode($skin, true);
 									
+									if(class_exists('Essential_Grid_Plugin_Update')) {
+										$tskin = Essential_Grid_Plugin_Update::process_update_216($tskin, true);
+									}
+									
 									$skins[$key] = $tskin;
 								}
 								if(!empty($skins)){
@@ -2367,8 +2458,7 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 	public function ess_grid_addon_media_form(){
 		$grids = new Essential_Grid();
 		$arrGrids = $grids->get_essential_grids();
-		$defGrid = get_option('tp_eg_overwrite_gallery','');
-		
+		$defGrid = get_option('tp_eg_overwrite_gallery','');	
 	?>
 		<script type="text/html" id="tmpl-ess-grid-gallery-setting">
 		    <h3 style="z-index: -1;">___________________________________________________________________________________________</h3>
@@ -2378,6 +2468,7 @@ class Essential_Grid_Admin extends Essential_Grid_Base {
 		      <span><?php _e('Essential Grid',EG_TEXTDOMAIN); ?></span>
 		      <select class="specific_post_select" data-setting="ess_grid_gal">
 		      	<?php
+		      		if(empty($defGrid) || $defGrid == "off") echo '<option value="">'. __('Don\'t use EssGrid',EG_TEXTDOMAIN) .'</option>';
 		        	foreach($arrGrids as $grid){
 		        		echo '<option value="'.$grid->handle.'">'. $grid->name . '</option>';
 					}

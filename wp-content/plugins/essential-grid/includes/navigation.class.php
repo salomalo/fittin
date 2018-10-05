@@ -136,7 +136,8 @@ class Essential_Grid_Navigation {
 		if(function_exists('is_multisite') && is_multisite() && $networkwide){ //do for each existing site
 			global $wpdb;
 			
-			$old_blog = $wpdb->blogid;
+			// 2.2.5
+			// $old_blog = $wpdb->blogid;
 			
             // Get all blog ids and create tables
 			$blogids = $wpdb->get_col("SELECT blog_id FROM ".$wpdb->blogs);
@@ -144,9 +145,11 @@ class Essential_Grid_Navigation {
             foreach($blogids as $blog_id){
 				switch_to_blog($blog_id);
 				self::insert_default_navigation_skins($skins);
+				restore_current_blog();
             }
 			
-            switch_to_blog($old_blog); //go back to correct blog
+			// 2.2.5
+            // switch_to_blog($old_blog); //go back to correct blog
 			
 		}else{
 		
@@ -509,9 +512,7 @@ class Essential_Grid_Navigation {
 	
     public function set_orders($data){
         $this->sorting = $data + $this->sorting; //merges the array and preserves the key
-        
-		arsort($this->sorting);
-		
+        arsort($this->sorting);
 		$this->sorting = apply_filters('essgrid_set_orders', $this->sorting);
     }
 	
@@ -571,8 +572,16 @@ class Essential_Grid_Navigation {
 		$f .= '>'; //<!-- USE esg-multiplefilters FOR MIXED FILTERING, AND esg-singlefilters FOR SINGLE FILTERING -->
         //$f .= '<!-- THE FILTER BUTTONS -->';
         $f .= '<div class="esg-filter-wrapper">';
+		
+		// 2.2.5
+		$f .= '<div class="esg-mobile-filter-button" style="display: none"><span>'.$this->filter_dropdown_text['filter'].'</span><i class="eg-icon-down-open"></i></div>';
+		
 		$sel = (!empty($this->filter_start_select)) ? '' : ' selected';
-        $f .= '<div class="esg-filterbutton'.$sel.' esg-allfilter" data-filter="filterall" data-fid="-1" ><span>'.$this->filter_all_text['filter'].'</span></div>';
+		
+		/* 2.1.6 hide Filter-All button if text is empty */
+		$all_filter_text = $this->filter_all_text['filter'];
+		$hideallfilter = !empty($this->filter_all_text['filter']) ? '' : ' style="display: none"';
+        $f .= '<div class="esg-filterbutton'.$sel.' esg-allfilter" data-filter="filterall" data-fid="-1"'.$hideallfilter.'><span>'.$all_filter_text.'</span></div>';
 		
 		if($demo === 'skinchoose'){
             $f .= '<div class="esg-filterbutton" data-filter="filter-selectedskin"><span>'.__('Selected Skin', EG_TEXTDOMAIN).'</span><span class="esg-filter-checked"><i class="eg-icon-ok-1"></i></span></div>';
@@ -631,14 +640,22 @@ class Essential_Grid_Navigation {
 		$f .= '>';
 		
 		if($listing == 'dropdown'){
-			$f .= '<div class="esg-selected-filterbutton"><span>'.$this->filter_dropdown_text['filter'.$type].'</span><i class="eg-icon-down-open"></i></div>';
+			// 2.2.5
+			$f .= '<div class="esg-selected-filterbutton esg-mobile-filter-button"><span>'.$this->filter_dropdown_text['filter'.$type].'</span><i class="eg-icon-down-open"></i></div>';
 			
 			$f .= '<div class="esg-dropdown-wrapper">';
+		}
+		else {
+			// 2.2.5
+			$f .= '<div class="esg-mobile-filter-button"><span>'.$this->filter_dropdown_text['filter'.$type].'</span><i class="eg-icon-down-open"></i></div>';
 		}
 		
 		$sel = (!empty($this->filter_start_select)) ? '' : ' selected';
 		
-		$f .= '<div class="esg-filterbutton'.$sel.' esg-allfilter" data-filter="filterall" data-fid="-1"><span>'.@$this->filter_all_text['filter'.$type].'</span></div>';
+		/* 2.1.6 hide Filter-All button if text is empty */
+		$all_filter_text = @$this->filter_all_text['filter'.$type];
+		$hideallfilter = !empty($this->filter_all_text['filter']) ? '' : ' style="display: none"';
+		$f .= '<div class="esg-filterbutton'.$sel.' esg-allfilter" data-filter="filterall" data-fid="-1"'.$hideallfilter.'><span>'.$all_filter_text.'</span></div>';
 		
         if($demo){
             $f .= '<div class="esg-filterbutton" data-filter="filter-favorite"><span>'.__('Favorites', EG_TEXTDOMAIN).'</span><span class="esg-filter-checked"><i class="eg-icon-ok-1"></i></span></div>';
@@ -659,7 +676,18 @@ class Essential_Grid_Navigation {
 					if(!empty($t_id)) $f_id = $t_id;
 				}
 				if(isset($this->filter[$f_id])){
+
 					$filter_text = ($demo) ? self::translate_demo_filter($this->filter[$f_id]['slug']) : Essential_Grid_Wpml::strip_category_additions($this->filter[$f_id]['name']);
+					
+					// 2.2.5
+					// sanitize multi-select custom meta
+					if(strpos($filter_text, "['") !== false && strpos($filter_text, "']") !== false) {
+
+						$filter_text = preg_replace("/\[\'|\'\]/", '', $filter_text);
+						$filter_text = preg_replace("/\'\,\'/", ' & ', $filter_text);
+	
+					}
+					
 					$sel = (in_array(sanitize_key($this->filter[$f_id]['slug']), $this->filter_start_select)) ? ' selected' : '';
 					$parent_id = (isset($this->filter[$f_id]['parent']) && intval($this->filter[$f_id]['parent']) > 0) ? $this->filter[$f_id]['parent'] : 0;
 					
@@ -670,7 +698,18 @@ class Essential_Grid_Navigation {
 		}else{
 			if(!empty($this->filter)){
 				foreach($this->filter as $filter_id => $filter){
+					
 					$filter_text = ($demo) ? self::translate_demo_filter($filter['slug']) : Essential_Grid_Wpml::strip_category_additions($filter['name']);
+					
+					// 2.2.5
+					// sanitize multi-select custom meta
+					if(strpos($filter_text, "['") !== false && strpos($filter_text, "']") !== false) {
+
+						$filter_text = preg_replace("/\[\'|\'\]/", '', $filter_text);
+						$filter_text = preg_replace("/\'\,\'/", ' & ', $filter_text);
+	
+					}
+					
 					$sel = (in_array(sanitize_key($filter['slug']), $this->filter_start_select)) ? ' selected' : '';
 					$parent_id = (isset($filter['parent']) && intval($filter['parent']) > 0) ? $filter['parent'] : 0;
 					
@@ -823,7 +862,7 @@ class Essential_Grid_Navigation {
 		echo '>';
 		
 		echo '<div class="esg-cartbutton">';
-		echo '<a href="'.esc_url(WC()->cart->get_cart_url()).'">';
+		echo '<a href="'.wc_get_cart_url().'">';
 		echo '<i class="eg-icon-basket"></i><span class="ess-cart-content">';
 		echo WC()->cart->get_cart_contents_count();
 		echo __(' items - ', EG_TEXTDOMAIN);

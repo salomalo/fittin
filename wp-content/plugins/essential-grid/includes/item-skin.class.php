@@ -31,6 +31,28 @@ class Essential_Grid_Item_Skin {
     private $media_poster_css = array();
     private $google_fonts = array();
     private $cover_image = '';
+	
+	/* 2.1.6.2 */
+	private $grid_item_animation = 'none';
+	private $grid_item_animation_other = 'none';
+	private $grid_item_animation_zoomin = '125';
+	private $grid_item_other_zoomin = '125';	
+	private $grid_item_animation_zoomout = '75';
+	private $grid_item_other_zoomout = '75';
+	private $grid_item_animation_fade = '75';
+	private $grid_item_other_fade = '75';
+	private $grid_item_animation_blur = '5';
+	private $grid_item_other_blur = '5';
+	private $grid_item_animation_shift = 'top';
+	private $grid_item_other_shift = 'top';
+	private $grid_item_animation_shift_amount = '10';
+	private $grid_item_other_shift_amount = '10';
+	private $grid_item_animation_rotate = '30';
+	private $grid_item_other_rotate = '30';
+	
+	/* 2.2 */
+	private $fancybox_three_options = array();
+	
     private $default_image = '';
     private $default_image_attr = array();
     private $default_youtube_image = '';
@@ -38,7 +60,7 @@ class Essential_Grid_Item_Skin {
     private $default_html_image = '';
     private $media_sources = array();
 	private $video_sizes = array('0' => array('height' => '480', 'width' => '640'), '1' => array('height' => '576', 'width' => '1024'));
-    private $video_ratios = array('vimeo' => '0', 'youtube' => '0', 'wistia' => '0', 'html5' => '0');
+    private $video_ratios = array('vimeo' => '1', 'youtube' => '1', 'wistia' => '1', 'html5' => '1');
     private $media_sources_type = 'full';
 	private $item_media_type = ''; //gets the media type for later usage in advanced rules
     private $default_media_source_order = array();
@@ -509,7 +531,17 @@ class Essential_Grid_Item_Skin {
 		
 	}
 	
-    
+    /**
+	 * Set Fancybox 3 Options
+	 * @since: 2.2
+	 */
+	public function set_fancybox_three_options($title){
+	
+		$options = array('title' => $title);
+		$this->fancybox_three_options = apply_filters('essgrid_set_fancybox_three_options', $options);
+		
+	}
+	
     /**
 	 * Set video ratios
 	 */
@@ -542,8 +574,8 @@ class Essential_Grid_Item_Skin {
     public function set_sorting($data){
     	$this->sorting = $data + $this->sorting; //merges the array and preserves the key
         
-		arsort($this->sorting);
-
+        arsort($this->sorting);
+        
 		$this->sorting = apply_filters('essgrid_set_sorting', $this->sorting, $data);
     }
 	
@@ -639,7 +671,7 @@ class Essential_Grid_Item_Skin {
 		if(function_exists('is_multisite') && is_multisite() && $networkwide){ //do for each existing site
 			global $wpdb;
 			
-			$old_blog = $wpdb->blogid;
+			// $old_blog = $wpdb->blogid;
 			
             // Get all blog ids and create tables
 			$blogids = $wpdb->get_col("SELECT blog_id FROM ".$wpdb->blogs);
@@ -650,9 +682,12 @@ class Essential_Grid_Item_Skin {
 				$skins = apply_filters('essgrid_propagate_default_item_skins_multisite', $skins, $blog_id);
 				
 				self::insert_default_item_skins($skins);
+				
+				// 2.2.5
+				restore_current_blog();
             }
 			
-            switch_to_blog($old_blog); //go back to correct blog
+            // switch_to_blog($old_blog); //go back to correct blog
 			
 		}else{
 		
@@ -744,6 +779,7 @@ class Essential_Grid_Item_Skin {
 	 * @return    string	html
 	 */
     public function output_item_skin($demo = false, $choosen_skin = 0){
+		
         $base = new Essential_Grid_Base();
         $grid = new Essential_Grid();
         $m = new Essential_Grid_Meta();
@@ -786,36 +822,80 @@ class Essential_Grid_Item_Skin {
 		
 		$li_class .= ($is_post) ? ' eg-post-id-'.@$this->post['ID'] : ' eg-post-id-'.$this->item_counter;
 		$li_id = ($is_post) ? 'eg-'.$this->grid_id.'-post-id-'.@$this->post['ID'] : 'eg-'.$this->grid_id.'-post-id-'.$this->item_counter;
+		$grid_ids = $this->grid_id;
+		$post_ids = $is_post ? @$this->post['ID'] : $this->item_counter;
 		
 		$this->item_counter++;
 		
-        $container_background_color = $base->getVar($this->params, 'container-background-color', '#000');
-        $container_background_color_transparency = $base->getVar($this->params, 'element-container-background-color-opacity', '1');
-		
 		//check for custom meta layout settings
 		$meta_cover_bg_color = $this->get_meta_layout_change('cover-bg-color');
-		$meta_cover_bg_opacity = $this->get_meta_layout_change('cover-bg-opacity');
 		$meta_item_bg_color = $this->get_meta_layout_change('item-bg-color');
 		$meta_content_bg_color = $this->get_meta_layout_change('content-bg-color');
 		
-		$meta_cover_style = '';
+		/* 2.1.6 */
+		if($demo === false || $demo === 'preview') {
+
+			if($is_post) {
+			
+				$meta216 = $m->get_meta_value_by_handle($this->post['ID'], 'eg_custom_meta_216');
+				
+				// if post has not been modified since 2.1.6 update, legacy values still exist and need to be converted
+				if($meta216 != 'true') {
+					
+					$container_background_color = $base->getVar($this->params, 'container-background-color', '#000000');
+					$meta_cover_bg_opacity = $this->get_meta_layout_change('cover-bg-opacity');
+					$color_processed = TPColorpicker::process($container_background_color);
+					
+					if(!empty($color_processed) && is_array($color_processed) && count($color_processed) > 1) {
+						
+						$color_type = $color_processed[1];
+						if($meta_cover_bg_color === false && $meta_cover_bg_opacity !== false) { 
+						
+							if($color_type === 'rgb' || $color_type === 'rgba') {
+								$rgb_values = TPColorpicker::rgbValues($container_background_color, 3);
+								if(!empty($rgb_values) && is_array($rgb_values) && count($rgb_values) > 2) {
+									$meta_cover_bg_opacity = intval($meta_cover_bg_opacity) / 100;
+									$meta_cover_bg_color = 'rgba(' . $rgb_values[0] . ', ' . $rgb_values[1] . ', ' . $rgb_values[2] . ', ' . $meta_cover_bg_opacity . ')';
+								}
+							}
+							else if($color_type === 'hex') {	
+								$meta_cover_bg_color = TPColorpicker::convert($container_background_color, $meta_cover_bg_opacity);	
+							}
+						}
+						else if($meta_cover_bg_color !== false && $meta_cover_bg_opacity === false) {
+							
+							if($color_type === 'rgb' || $color_type === 'rgba') {
+								$rgb_values = TPColorpicker::rgbValues($container_background_color, 4);
+								if(!empty($rgb_values) && is_array($rgb_values) && count($rgb_values) > 3) {
+									$meta_cover_bg_color = TPColorpicker::processRgba($meta_cover_bg_color, $rgb_values[3]);
+								}
+							}
+						}
+						else if($meta_cover_bg_color !== false && $meta_cover_bg_opacity !== false) { 		
+							$meta_cover_bg_color = TPColorpicker::convert($meta_cover_bg_color, $meta_cover_bg_opacity);	
+						}	
+					}
+				}
+			}
+		}
+			
+		if($meta_cover_bg_color !== false) $meta_cover_bg_color = TPColorpicker::get($meta_cover_bg_color);
+		if($meta_content_bg_color !== false) $meta_content_bg_color = TPColorpicker::get($meta_content_bg_color);
+		if($meta_item_bg_color !== false) $meta_item_bg_color = TPColorpicker::get($meta_item_bg_color);
 		
-		if($meta_cover_bg_color === false && $meta_cover_bg_opacity !== false){ //we only change opacity, use default background-color
-			$meta_cover_style = ' style="background-color: '.Essential_Grid_Base::hex2rgba($container_background_color, $meta_cover_bg_opacity).';"';
-		}elseif($meta_cover_bg_color !== false && $meta_cover_bg_opacity === false){ //we only change background-color, use default opacity
-			$meta_cover_style = ' style="background-color: '.Essential_Grid_Base::hex2rgba($meta_cover_bg_color, $container_background_color_transparency).';"';
-		}elseif($meta_cover_bg_color !== false && $meta_cover_bg_opacity !== false){ //we change both settings
-			$meta_cover_style = ' style="background-color: '.Essential_Grid_Base::hex2rgba($meta_cover_bg_color, $meta_cover_bg_opacity).';"';
+		$meta_cover_style = '';
+		if(!empty($meta_cover_bg_color)) {
+			$meta_cover_style = ' style="background: '.$meta_cover_bg_color.';"';
 		}
 		
 		$meta_content_style = '';
 		if($meta_content_bg_color !== false){
-			$meta_content_style = ' style="background-color: '.$meta_content_bg_color.';"';
+			$meta_content_style = ' style="background: '.$meta_content_bg_color.';"';
 		}
 		
 		$meta_item_style = '';
 		if($meta_item_bg_color !== false){
-			$meta_item_style = ' style="background-color: '.$meta_item_bg_color.';"';
+			$meta_item_style = ' style="background: '.$meta_item_bg_color.';"';
 		}
 		
         $cover_type = $base->getVar($this->params, 'cover-type', 'full');
@@ -827,53 +907,167 @@ class Essential_Grid_Item_Skin {
         $cover_animation_bottom = '';
         $cover_animation_delay_bottom = '';
         
+		/* 2.1.6 */
+		$force_key = wp_is_mobile() ? 'cover-always-visible-mobile' : 'cover-always-visible-desktop';
+		$force_show_cover = $base->getVar($this->params, $force_key, '');
+		
         if($cover_type == 'full'){ //cover is for overlay container
+			
+			/* 2.1.6 */
+			if(empty($force_show_cover) || $force_show_cover === 'false') {
+				$cover_animation_center = 'esg-'.$base->getVar($this->params, 'cover-animation-center', 'fade').$base->getVar($this->params, 'cover-animation-center-type', '');
+			}
+			else {
+				$cover_animation_center = 'esg-none';
+			}
             
-            $cover_animation_center = ' esg-'.$base->getVar($this->params, 'cover-animation-center', 'fade').$base->getVar($this->params, 'cover-animation-center-type', '');
-            
-            if($cover_animation_center != ' esg-none' && $cover_animation_center != ' esg-noneout')
+            if($cover_animation_center != 'esg-none' && $cover_animation_center != ' esg-noneout')
                 $cover_animation_delay_center = ' data-delay="'.round($base->getVar($this->params, 'cover-animation-delay-center', 0, 'i') / 100, 2).'"';
-            else
-                $cover_animation_center = '';
             
         }else{
-            $cover_animation_top = ' esg-'.$base->getVar($this->params, 'cover-animation-top', 'fade').$base->getVar($this->params, 'cover-animation-top-type', '');
-            if($cover_animation_top != ' esg-none' && $cover_animation_top != ' esg-noneout')
+            
+			/* 2.1.6 */
+			if(empty($force_show_cover) || $force_show_cover === 'false') {
+				$cover_animation_top = 'esg-'.$base->getVar($this->params, 'cover-animation-top', 'fade').$base->getVar($this->params, 'cover-animation-top-type', '');
+				$cover_animation_center = 'esg-'.$base->getVar($this->params, 'cover-animation-center', 'fade').$base->getVar($this->params, 'cover-animation-center-type', '');
+				$cover_animation_bottom = 'esg-'.$base->getVar($this->params, 'cover-animation-bottom', 'fade').$base->getVar($this->params, 'cover-animation-bottom-type', '');
+			}
+			else {
+				$cover_animation_top = 'esg-none';
+				$cover_animation_center = 'esg-none';
+				$cover_animation_bottom = 'esg-none';
+			}
+			
+            if($cover_animation_top != 'esg-none' && $cover_animation_top != ' esg-noneout')
                 $cover_animation_delay_top = ' data-delay="'.round($base->getVar($this->params, 'cover-animation-delay-top', 0, 'i') / 100, 2).'"';
-            else
-                $cover_animation_top = '';
-            
-            $cover_animation_center = ' esg-'.$base->getVar($this->params, 'cover-animation-center', 'fade').$base->getVar($this->params, 'cover-animation-center-type', '');
-            if($cover_animation_center != ' esg-none' && $cover_animation_center != ' esg-noneout')
+			
+            if($cover_animation_center != 'esg-none' && $cover_animation_center != ' esg-noneout')
                 $cover_animation_delay_center = ' data-delay="'.round($base->getVar($this->params, 'cover-animation-delay-center', 0, 'i') / 100, 2).'"';
-            else
-                $cover_animation_center = '';
             
-            $cover_animation_bottom = ' esg-'.$base->getVar($this->params, 'cover-animation-bottom', 'fade').$base->getVar($this->params, 'cover-animation-bottom-type', '');
-            if($cover_animation_bottom != ' esg-none' && $cover_animation_bottom != ' esg-noneout')
+            if($cover_animation_bottom != 'esg-none' && $cover_animation_bottom != ' esg-noneout')
                 $cover_animation_delay_bottom = ' data-delay="'.round($base->getVar($this->params, 'cover-animation-delay-bottom', 0, 'i') / 100, 2).'"';
-            else
-                $cover_animation_bottom = '';
+			
         }
-        
+		
+		// 2.2.5
+		if($cover_animation_top) {
+			
+			$data_transition_top = ' data-transition="' . $cover_animation_top . '"';
+			$cover_animation_top = ' esg-transition';
+			
+		}
+		else {
+			$data_transition_top = '';
+		}
+		
+		if($cover_animation_center) {
+			
+			$data_transition_center = ' data-transition="' . $cover_animation_center . '"';
+			$cover_animation_center = ' esg-transition';
+			
+		}
+		else {
+			$data_transition_center = '';
+		}
+		
+		if($cover_animation_bottom) {
+			
+			$data_transition_bottom = ' data-transition="' . $cover_animation_bottom . '"';
+			$cover_animation_bottom = ' esg-transition';
+			
+		}
+		else {
+			$data_transition_bottom = '';
+		}
+
+		
+		/*  2.1.6
+			the following moved up a bit in the function so we can do more things in the foreach loop
+		*/
+		$c_layer = 0;
+		$t_layer = 0;
+		$b_layer = 0;
+		$m_layer = 0;
+		
+		/* 2.1.6 */
+		$visible_prop = wp_is_mobile() ? 'always-visible-mobile' : 'always-visible-desktop';
+		$disable_group_animation = false;
+		
+		if(!empty($this->layers)){
+            foreach($this->layers as $key => $layer){
+				if(isset($layer['container'])){
+					if(!isset($layer['settings']['position']) || $layer['settings']['position'] !== 'absolute'){
+						switch($layer['container']){
+							case 'c':
+								$c_layer++;
+							break;
+							case 'tl':
+								$t_layer++;
+							break;
+							case 'br':
+								$b_layer++;
+							break;
+							case 'm':
+								$m_layer++;
+							break;
+						}
+					}else{
+						//absolute element marking
+					}
+				}
+	
+				/* 2.1.6 */
+				if(isset($layer['settings']) && !empty($layer['settings']) && isset($layer['settings'][$visible_prop]) && !empty($layer['settings'][$visible_prop]) && $layer['settings'][$visible_prop] == 'true') {	
+					$layer['settings']['transition'] = 'none';
+					$this->layers[$key] = $layer;
+					$disable_group_animation = true;
+				}
+				
+			}
+		}
         
         //group is for cover container
         $cover_group_animation_delay = '';
-        $cover_group_animation = ' esg-'.$base->getVar($this->params, 'cover-group-animation', 'fade');
-        if($cover_group_animation != ' esg-none')
+        
+		/* 2.1.6 */
+		if(empty($disable_group_animation)) {
+			$cover_group_animation = 'esg-'.$base->getVar($this->params, 'cover-group-animation', 'fade');
+		}
+		else {
+			$cover_group_animation = 'esg-none';
+		}
+		
+        if($cover_group_animation != 'esg-none')
             $cover_group_animation_delay = ' data-delay="'.round($base->getVar($this->params, 'cover-group-animation-delay', 0, 'i') / 100, 2).'"';
         else
             $cover_group_animation = '';
+		
+		// 2.2.5
+		if($cover_group_animation) {
+			
+			$data_transition_group = ' data-transition="' . $cover_group_animation . '"';
+			$cover_group_animation = ' esg-transition';
+			
+		}
+		else {
+			$data_transition_group = '';
+		}
         
         //media is for media container
         $media_animation_delay = '';
-        $media_animation = ' esg-'.$base->getVar($this->params, 'media-animation', 'fade');
-        if($media_animation != ' esg-none')
+        $media_animation = 'esg-'.$base->getVar($this->params, 'media-animation', 'fade');
+        if($media_animation != 'esg-none')
             $media_animation_delay = ' data-delay="'.round($base->getVar($this->params, 'media-animation-delay', 0, 'i') / 100, 2).'"';
         else
             $media_animation = '';
 		
 		if($this->load_more_element == true) $li_class .= ' eg-newli';
+		
+		/* 2.1.6 Split Item Option */
+		$splitItem = $base->getVar($this->params, 'splitted-item', 'none');
+		if(!empty($splitItem) && $splitItem !== 'none') {
+			$li_class .= ' esg-split-content esg-split-' . $splitItem;
+		}
 		
 		//check if we are on cobble, if yes, get the data of entry for cobbles
 		$cobbles_data = '';
@@ -895,10 +1089,66 @@ class Essential_Grid_Item_Skin {
 			$cobbles_data = ' data-cobblesw="'.$use_cobbles[0].'" data-cobblesh="'.$use_cobbles[1].'"';	
 		}
 		
+		// 2.1.6.2 itm hover animation
+		$itm_anime = $this->grid_item_animation;
+		$item_animation = '';
+		
+		if($itm_anime !== 'none') {
+			$item_animation .= ' data-anime="esg-item-' . $itm_anime . '"';
+			switch($itm_anime) {
+				case 'zoomin':
+					$item_animation .= ' data-anime-zoomin="' . $this->grid_item_animation_zoomin . '"';
+				break;
+				case 'zoomout':
+					$item_animation .= ' data-anime-zoomout="' . $this->grid_item_animation_zoomout . '"';
+				break;
+				case 'fade':
+					$item_animation .= ' data-anime-fade="' . $this->grid_item_animation_fade . '"';
+				break;
+				case 'blur':
+					$item_animation .= ' data-anime-blur="' . $this->grid_item_animation_blur . '"';
+				break;
+				case 'shift':
+					$item_animation .= ' data-anime-shift="' . $this->grid_item_animation_shift . '"';
+					$item_animation .= ' data-anime-shift-amount="' . $this->grid_item_animation_shift_amount . '"';
+				break;
+				case 'rotate':
+					$item_animation .= ' data-anime-rotate="' . $this->grid_item_animation_rotate . '"';
+				break;
+			}
+		}
+		
+		// 2.1.6.2 itm hover animation
+		$itm_anime_other = $this->grid_item_animation_other;
+		if($itm_anime_other !== 'none') {
+			$item_animation .= ' data-anime-other="esg-item-' . $itm_anime_other . '"';
+			switch($itm_anime_other) {
+				case 'zoomin':
+					$item_animation .= ' data-anime-other-zoomin="' . $this->grid_item_other_zoomin . '"';
+				break;
+				case 'zoomout':
+					$item_animation .= ' data-anime-other-zoomout="' . $this->grid_item_other_zoomout . '"';
+				break;
+				case 'fade':
+					$item_animation .= ' data-anime-other-fade="' . $this->grid_item_other_fade . '"';
+				break;
+				case 'blur':
+					$item_animation .= ' data-anime-other-blur="' . $this->grid_item_other_blur . '"';
+				break;
+				case 'shift':
+					$item_animation .= ' data-anime-other-shift="' . $this->grid_item_other_shift . '"';
+					$item_animation .= ' data-anime-other-shift-amount="' . $this->grid_item_other_shift_amount . '"';
+				break;
+				case 'rotate':
+					$item_animation .= ' data-anime-other-rotate="' . $this->grid_item_other_rotate . '"';
+				break;
+			}
+		}
+		
         //echo '<!-- PORTFOLIO ITEM '.$this->id.' -->'."\n";
         echo '<li id="'.$li_id.'" class="filterall'.$filters.$li_class;
 		if($demo == 'custom') echo ' eg-newli'; //neccesary for refresh of preview grid if new li will be added
-		echo '"'.$sortings.$meta_item_style.$cobbles_data.'>'."\n";
+		echo '"'.$sortings.$meta_item_style.$cobbles_data.$item_animation.'>'."\n";
         
         if($demo == 'overview' || $demo == 'skinchoose'){
             //check if fav or not
@@ -908,6 +1158,10 @@ class Essential_Grid_Item_Skin {
 			$cl = ($demo == 'skinchoose') ? 'esg-screenselect-toolbar eg-tooltip-wrap' : ''; //show only in grid editor at skin chooser
 			$cltitle = ($demo == 'skinchoose') ? 'title="'.__('Select Skin', EG_TEXTDOMAIN).'"' :''; //Show Title only at Skin Chooser
 			
+			if($demo == 'skinchoose') {
+				echo '<a href="admin.php?page=essential-grid&view=grid-item-skin-editor&create=' . $this->id . '" class="eg-edit-skin-button eg-overview-button revyellow eg-tooltip-wrap" target="_blank" title="' . __('Edit Skin', EG_TEXTDOMAIN) . '"><i class="eg-icon-tint"></i></a>';
+			}
+			
             echo '<div '.$cltitle.' class="'.$cl.'" style="display:block !important;width:100%;height:30px;top:0px;left:0px;position:relative;z-index:10;background-color: #3498DB; padding: 0;">'."\n";
             echo '          <div class="btn-wrap-item-skin-overview-'.$this->id.'">'."\n";
             echo '<div class="eg-item-skin-overview-name">'.$this->name.$showid."</div>\n";
@@ -915,12 +1169,12 @@ class Essential_Grid_Item_Skin {
 			if($demo == 'overview'){
 				$fav_class = (!isset($this->settings['favorite']) || $this->settings['favorite'] == false) ? 'eg-icon-star-empty' : 'eg-icon-star';
 				
-				echo '<a href="javascript:void(0);" title="'.__('Mark as Favorit', EG_TEXTDOMAIN).'" class="eg-ov-1 eg-overview-button eg-btn-star-item-skin revyellow eg-tooltip-wrap" id="eg-star-'. $this->id .'"><i class="'.$fav_class.'"></i></a>';
+				echo '<a href="javascript:void(0);" title="'.__('Mark as Favorite', EG_TEXTDOMAIN).'" class="eg-ov-1 eg-overview-button eg-btn-star-item-skin revyellow eg-tooltip-wrap" id="eg-star-'. $this->id .'"><i class="'.$fav_class.'"></i></a>';
 				echo '<a href="'.Essential_Grid_Base::getViewUrl(Essential_Grid_Admin::VIEW_ITEM_SKIN_EDITOR, 'create='.$this->id).'" title="'.__('Edit Skin', EG_TEXTDOMAIN).'" class="eg-tooltip-wrap eg-ov-2 eg-overview-button revgreen "><i class="eg-icon-cog"></i></a>';
 				echo '<a href="javascript:void(0);" title="'.__('Duplicate Skin', EG_TEXTDOMAIN).'" class="eg-ov-3 eg-overview-button eg-btn-duplicate-item-skin revcarrot eg-tooltip-wrap " id="eg-duplicate-'. $this->id .'"><i class="eg-icon-picture"></i></a>';
 				echo '<a href="javascript:void(0);" title="'.__('Delete Skin', EG_TEXTDOMAIN).'" class="eg-ov-4 eg-overview-button eg-btn-delete-item-skin revred eg-tooltip-wrap " id="eg-delete-'. $this->id .'"><i class="eg-icon-trash"></i></a>';
 			}elseif($demo == 'skinchoose'){
-				echo '<div title="'.__('Select Skin', EG_TEXTDOMAIN).'" class="eg-tooltip-wrap eg-fakeinput "></div>';
+				echo '<div title="'.__('Select Skin', EG_TEXTDOMAIN).'" class="eg-fakeinput"></div>';
 				echo '<input class="eg-tooltip-wrap " style="position: absolute; right: 0; top: 0;" type="radio" value="'.$this->id.'" title="'. __('Choose Skin', EG_TEXTDOMAIN).'" name="entry-skin"';
 				if($choosen_skin == '-1')
 					echo ' checked="checked"';
@@ -938,7 +1192,7 @@ class Essential_Grid_Item_Skin {
 			$vis_icon = ($is_visible) ? 'eg-icon-eye' : 'eg-icon-eye-off';
 			$vis_icon_color = ($is_visible) ? 'revblue' : 'revred';			
 			
-			echo '<div class="esg-atoolbar" style="display:block !important;width:100%;height:30px;top:0px;left:0px;position:absolute;z-index:10; padding: 0;">'."\n";
+			echo '<div class="esg-atoolbar" style="display:block;width:100%;height:30px;top:0px;left:0px;position:absolute;z-index:10; padding: 0;">'."\n";
             echo '          <div class="btn-wrap-item-skin-overview-'.$this->post['ID'].'">'."\n";
             echo '<div class="eg-item-skin-overview-name">';
 			echo '<a href="javascript:void(0);" class="eg-ov-2 eg-overview-button eg-btn-activate-post-item '.$vis_icon_color.' eg-tooltip-wrap" title="'.__('Show/Hide from Grid', EG_TEXTDOMAIN).'" id="eg-act-post-item-'. $this->post['ID'] .'"><i class="'.$vis_icon.'"></i></a>';
@@ -976,7 +1230,7 @@ class Essential_Grid_Item_Skin {
 			echo '<input type="hidden" name="layers[]" value="'.$custom_layer_data.'" />'; //has the values for this entry
 			echo '<div class="esg-data-handler" data-exists="'.$custom_layer_elements.'" style="display: none;"></div>'; //has the information on what exists as layers in the skin #3498DB
 			
-			echo '<div class="esg-atoolbar" style="display:block !important;width:100%;height:30px;top:0px;left:0px;position:absolute;z-index:10;background-color: transparent; padding: 0;">'."\n";
+			echo '<div class="esg-atoolbar" style="display:block;width:100%;height:30px;top:0px;left:0px;position:absolute;z-index:10;background-color: transparent; padding: 0;">'."\n";
 			echo '          <div class="btn-wrap-item-skin-overview-0">'."\n";
 			echo '<div class="eg-item-skin-overview-name">';
 			
@@ -993,36 +1247,6 @@ class Essential_Grid_Item_Skin {
 			echo '          </div>'."\n";
 			echo '          <div class="clear"></div>'."\n\n";
 			echo '       </div>'."\n\n";
-		}
-		
-        $c_layer = 0;
-		$t_layer = 0;
-		$b_layer = 0;
-		$m_layer = 0;
-		
-		if(!empty($this->layers)){
-            foreach($this->layers as $layer){
-				if(isset($layer['container'])){
-					if(!isset($layer['settings']['position']) || $layer['settings']['position'] !== 'absolute'){
-						switch($layer['container']){
-							case 'c':
-								$c_layer++;
-							break;
-							case 'tl':
-								$t_layer++;
-							break;
-							case 'br':
-								$b_layer++;
-							break;
-							case 'm':
-								$m_layer++;
-							break;
-						}
-					}else{
-						//absolute element marking
-					}
-				}
-			}
 		}
 		
 		$is_video = false;		
@@ -1092,7 +1316,7 @@ class Essential_Grid_Item_Skin {
 										$video_poster_src = $this->default_youtube_image;
 									break;
 									case 'youtube-image':
-										$video_poster_src = 'http://img.youtube.com/vi/' . esc_attr($this->media_sources[$order]) . '/0.jpg';
+										$video_poster_src = '//img.youtube.com/vi/' . esc_attr($this->media_sources[$order]) . '/0.jpg';
 									break;
 								}
 
@@ -1124,6 +1348,7 @@ class Essential_Grid_Item_Skin {
 								
 								$echo_media = '<div class="esg-media-video" data-vimeo="'.esc_attr($this->media_sources[$order]).'" width="'.esc_attr($this->video_sizes[$this->video_ratios['vimeo']]['width']).'" height="'.esc_attr($this->video_sizes[$this->video_ratios['vimeo']]['height']).'" data-poster="'.esc_attr($video_poster_src).'"></div>';
 								$is_video = true;
+								
 							break;
 							case 'wistia':
 							case 'content-wistia':
@@ -1192,15 +1417,51 @@ class Essential_Grid_Item_Skin {
 			}
 			
 			if($echo_media == ''){ //set default image if one is set
+				
 				if($this->default_image !== ''){
 					$def_img_attr = $this->get_media_attributes(false);
 					
 					$echo_media = '<img src="'.esc_attr($this->default_image).'"'.$def_img_attr.' />';
+					$lightbox_thumb = esc_attr($this->default_image);
 					$this->item_media_type = 'default-image';
 				}
+				// 2.1.6 - no image should output when the post/item has no media sources assigned
+				// if(empty($echo_media)) $echo_media = '<img class="esg-no-media" src="'. EG_PLUGIN_URL .'public/assets/images/300x200transparent.png">';
+				
 			}else{
 				$this->item_media_type = $order;
 			}
+			
+			/* 2.1.6 new hover image */
+			/* hover images just get lazy-loaded immediately after the main image loads (whenever that happens) */
+			$hover_image = $base->getVar($this->params, 'element-hover-image', '');
+			if(!empty($hover_image) && $hover_image !== 'false' && !empty($this->media_sources) && isset($this->media_sources['alternate-image']) && !empty($this->media_sources['alternate-image'])) {	
+				
+				$hover_image = $this->media_sources['alternate-image'];
+				$hover_image_animation = 'esg-'.$base->getVar($this->params, 'hover-image-animation', 'fade');
+				
+				if($hover_image_animation != 'esg-none') {
+					$hover_image_animation_delay = ' data-delay="'.round($base->getVar($this->params, 'hover-image-animation-delay', 0, 'i') / 100, 2).'"';
+				}
+				else {
+					$hover_image_animation = '';
+					$hover_image_animation_delay = '';
+				}
+				
+				// 2.2.5
+				if($hover_image_animation) {
+					
+					$data_transition_hover = ' data-transition="' . $hover_image_animation . '"';
+					$hover_image_animation = ' esg-transition';
+					
+				}
+				else {
+					$data_transition_hover = '';
+				}
+				
+				$echo_media .= '<div class="esg-hover-image' . $hover_image_animation . '" data-src="' . $hover_image . '"' . $hover_image_animation_delay . $data_transition_hover . '></div>';
+			}
+
 		}
 		
 		//check if we have a full link
@@ -1216,6 +1477,7 @@ class Essential_Grid_Item_Skin {
 		$link_wrapper = '';
 		
 		if($link_set_to !== 'none'){
+			
 			switch($link_type_link){
 				case 'post':
 					if($demo === false){
@@ -1223,10 +1485,19 @@ class Essential_Grid_Item_Skin {
 							$link_wrapper = '<a href="'.get_permalink( $this->post['ID'] ).'"'.$link_target.'>%REPLACE%</a>';
 						}else{
 							$get_link = $this->get_custom_element_value('post-link', '', ''); //get the post link
-							if($get_link == '')
+							if($get_link == '') {
 								$link_wrapper = '<a href="javascript:void(0);"'.$link_target.'>%REPLACE%</a>';
-							else
-								$link_wrapper = '<a href="'.esc_attr($get_link).'"'.$link_target.'>%REPLACE%</a>';
+							}
+							else {
+								
+								/* 2.1.6 append "http" to manually written links starting with "www" */
+								$get_link = esc_attr($get_link);
+								if(strpos($get_link, '://') === false) {
+									$get_link = !is_ssl() ? 'http://' . $get_link : 'https://' . $get_link;
+								}
+								
+								$link_wrapper = '<a href="'.$get_link.'"'.$link_target.'>%REPLACE%</a>';
+							}
 						}
 							
 					}else{
@@ -1250,16 +1521,32 @@ class Essential_Grid_Item_Skin {
 							if($meta_link == ''){// if empty, link to nothing
 								$link_wrapper = '<a href="javascript:void(0);"'.$link_target.'>%REPLACE%</a>';
 							}else{
-								$link_wrapper = '<a href="'.esc_attr($meta_link).'"'.$link_target.'>%REPLACE%</a>';
+								
+								/* 2.1.6 append "http" to manually written links starting with "www" */
+								$meta_link = esc_attr($meta_link);
+								if((strpos($meta_link, '://') === false) && (strpos($meta_link, 'mailto:') === false)){
+									$meta_link = !is_ssl() ? 'http://' . $meta_link : 'https://' . $meta_link;
+								}
+								
+								$link_wrapper = '<a href="'.$meta_link.'"'.$link_target.'>%REPLACE%</a>';
 							}
 						}else{
 							$meta_key = $base->getVar($this->params, 'link-meta-link', 'javascript:void(0);');
 							
 							$get_link = $this->get_custom_element_value($meta_key, '', ''); //get the post link
-							if($get_link == '')
+							if($get_link == '') {
 								$link_wrapper = '<a href="javascript:void(0);"'.$link_target.'>%REPLACE%</a>';
-							else
-								$link_wrapper = '<a href="'.esc_attr($get_link).'"'.$link_target.'>%REPLACE%</a>';
+							}
+							else {
+
+								/* 2.1.6 append "http" to manually written links starting with "www" */
+								$get_link = esc_attr($get_link);
+								if(strpos($get_link, '://') === false) {
+									$get_link = !is_ssl() ? 'http://' . $get_link : 'https://' . $get_link;
+								}
+								
+								$link_wrapper = '<a href="'.$get_link.'"'.$link_target.'>%REPLACE%</a>';
+							}
 						}
 					}else{
 						$link_wrapper = '<a href="javascript:void(0);"'.$link_target.'>%REPLACE%</a>';
@@ -1277,46 +1564,76 @@ class Essential_Grid_Item_Skin {
 					}
 					
 					$lb_source = 'javascript:void(0);';
+					$lb_owidth = '';
+					$lb_oheight = '';
 					$lb_class = '';
 					$lb_addition = '';
 					$lb_content = '';
-					$lb_rel = ($this->lb_rel !== false) ? ' rel="'.esc_attr($this->lb_rel).'"' : '';
+					$lb_data = '';
+					$lb_featured = '';
+					$lb_post_title = '';
+					$lb_rel = ($this->lb_rel !== false) ? ' data-esgbox="'.esc_attr($this->lb_rel).'"' : '';
+					
 					if(!empty($this->default_lightbox_source_order)){ //only show if something is checked
 						foreach($this->default_lightbox_source_order as $order){ //go through the order and set media as wished
-							if(isset($this->media_sources[$order]) && $this->media_sources[$order] !== '' && $this->media_sources[$order] !== false){ //found entry
+							
+							$val = isset($this->media_sources[$order]) && $this->media_sources[$order] !== '' && $this->media_sources[$order] !== false;
+							if($order === 'post-content' || !empty($val)){ //found entry
+								
 								$do_continue = false;
-								if(!empty($this->lightbox_additions['items']) && $this->lightbox_additions['base'] == 'off'){
+								if(!empty($this->lightbox_additions['items']) && $this->lightbox_additions['base'] == 'on') {
 									$lb_source = $this->lightbox_additions['items'][0];
 									$lb_class = ' esgbox';
-								}else{
+								}
+								else{
+									
 									switch($order){
+										
 										case 'featured-image':
 										case 'alternate-image':
 										case 'content-image':
-											if($order == 'content-image')
-												$lb_source = $this->media_sources[$order];
-											else
-												$lb_source = $this->media_sources[$order.'-full'];
+											
+											// 2.2.5
+											$imgsource = explode('-', $order);
+											$imgsource = $imgsource[0];
+											
+											if($order == 'content-image') $lb_source = $this->media_sources[$order];
+											else $lb_source = $this->media_sources[$order.'-full'];
 											$lb_class = ' esgbox';
+											
+											if(isset($this->media_sources[$imgsource . '-image-full-width'])) $lb_owidth = ' data-width="' . $this->media_sources[$imgsource . '-image-full-width'] . '" ';
+											if(isset($this->media_sources[$imgsource . '-image-full-height'])) $lb_oheight = ' data-height="' . $this->media_sources[$imgsource . '-image-full-height'] . '" ';
+											
 										break;
+											
 										case 'youtube':
 											$http = (is_ssl()) ? 'https' : 'http';
-											$lb_source = $http.'://www.youtube.com/watch?v='.$this->media_sources[$order];
+											$lb_source = $enable_youtube_nocookie!='false' ? $http.'://www.youtube-nocookie.com/embed/'.$this->media_sources[$order] : $lb_source = $http.'://www.youtube.com/watch?v='.$this->media_sources[$order];
+											$lb_addition = ($this->video_ratios['youtube'] == '1') ? '' : ' data-ratio="4:3"';
 											$lb_class = ' esgbox';
 										break;
 										case 'vimeo':
 											$http = (is_ssl()) ? 'https' : 'http';
 											$lb_source = $http.'://vimeo.com/'.$this->media_sources[$order];
+											$lb_addition = ($this->video_ratios['vimeo'] == '1') ? '' : ' data-ratio="4:3"';
 											$lb_class = ' esgbox';
 										break;
 										case 'wistia':
-											$http = (is_ssl()) ? 'https' : 'http';
-											$lb_source = $http.'://www.wistia.com/watch?v='.$this->media_sources[$order];
+											// $http = (is_ssl()) ? 'https' : 'http';
+											$lb_source = '//fast.wistia.net/embed/iframe/'.$this->media_sources[$order];
 											$lb_class = ' esgbox';
+											$lb_data .= ' data-type="iframe"';
+											$lb_addition = ($this->video_ratios['wistia'] == '1') ? '' : ' data-ratio="4:3"';
+										break;
+										case 'soundcloud':
+											$lb_source = '//w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' . $this->media_sources[$order] . '&amp;color=%23ff5500&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true';
+											$lb_class = ' esgbox';
+											$lb_data .= ' data-type="iframe"';
 										break;
 										case 'iframe':
-											//$lb_source = html_entity_decode($this->media_sources[$order]);
-											//$lb_class = ' esgbox';
+											$lb_source = addslashes($this->media_sources[$order]);
+											$lb_class = ' esgbox';
+											$lb_data .= ' data-type="iframe"';
 										break;
 										case 'html5':
 											if(trim($this->media_sources[$order]['mp4']) === '' && trim($this->media_sources[$order]['ogv']) === '' && trim($this->media_sources[$order]['webm'] === '')){
@@ -1326,20 +1643,86 @@ class Essential_Grid_Item_Skin {
 												$lb_ogv = $this->media_sources[$order]['ogv'];
 												$lb_webm = $this->media_sources[$order]['webm'];
 												$lb_source = "";
+												if(!empty($lb_mp4)){
+													$lb_source = $lb_mp4;
+												}
+												elseif (!empty($lb_ogv)) {
+													$lb_source = $lb_ogv;
+												}
+												elseif (!empty($lb_webm)) {
+													$lb_source = $lb_webm;
+												}
 												$lb_class = ' esgbox esgboxhtml5';
-												$vid_ratio = ($this->video_ratios['html5'] == '0') ? '4:3' : '16:9';
-												$lb_addition = ' data-mp4="'.esc_attr($lb_mp4).'" data-ogv="'.esc_attr($lb_ogv).'" data-webm="'.esc_attr($lb_webm).'" data-ratio="'.$vid_ratio.'"';
+												$vid_ratio = ($this->video_ratios['html5'] == '1') ? '' : ' data-ratio="4:3"';
+												
+												$lb_addition = ' data-mp4="'.esc_attr($lb_mp4).'" data-ogv="'.esc_attr($lb_ogv).'" data-webm="'.esc_attr($lb_webm).$vid_ratio;
 												if($lightbox_thumb !== false){
 													$lb_content = '<img style="display: none;" src="'.esc_attr($lightbox_thumb).'" />';
 												}
 											}
 										break;
+										
+										case 'post-content':
+										
+											$lb_source = 'javascript:void(0);';
+											$lb_class = ' esgbox esgbox-post';
+											$lb_data = ' data-post="' . $post_ids . '"';
+											$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+											
+											$lb_post_title  = $is_post ? $base->getVar($this->post, 'post_title', '') : $this->get_custom_element_value('title', $separator, '');
+											$lb_post_title = ' data-posttitle="' . $lb_post_title . '"';
+											
+											// if featured full is available
+											if(isset($this->media_sources['featured-image-full']) && !empty($this->media_sources['featured-image-full'])) {
+												$lb_featured = ' data-featured="' . esc_attr($this->media_sources['featured-image-full']) . '"';
+											}
+											// if featured regular size is available
+											else if(isset($this->media_sources['featured-image']) && !empty($this->media_sources['featured-image'])) {
+												$lb_featured = ' data-featured="' . esc_attr($this->media_sources['featured-image']) . '"';
+											}
+											// if global image is available
+											else if(!empty($this->default_image)) {
+												$lb_featured = ' data-featured="' . esc_attr($this->default_image) . '"';
+											}
+										
+										break;
+										
+										case 'revslider':
+										
+											$lb_source = admin_url('admin-ajax.php');
+											$lb_class = ' esgbox esgbox-post';
+											$lb_data = ' data-post="' . $post_ids . '" data-revslider="' . $this->media_sources[$order] . '"';
+											$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+										
+										break;
+										
+										case 'essgrid':
+										
+											$lb_source = admin_url('admin-ajax.php');
+											$lb_class = ' esgbox esgbox-post';
+											$lb_data = ' data-post="' . $post_ids . '" data-lbesg="' . $this->media_sources[$order] . '"';
+											$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+										
+										break;
+										
 									}
 								}
 								if($do_continue){
 									continue;
 								}
 								break;
+							}
+							
+							/* 2.1.6 */
+							if($order === 'featured-image') {
+								$default_img = $this->default_image;
+								if(!empty($default_img)) {
+									$lb_source = $default_img;
+									$lb_class = ' esgbox';
+									$lb_owidth = ' data-width="' . $this->default_image_attr[0] . '" ';
+									$lb_oheight = ' data-height="' . $this->default_image_attr[1] . '" ';		
+									break;
+								}
 							}
 						}
 					}
@@ -1353,7 +1736,11 @@ class Essential_Grid_Item_Skin {
 							$lb_title = $this->get_custom_element_value('title', '', ''); //the title from Post Title will be used
 					}
 					
-					$link_wrapper = '<a class="'.$lb_class.'"'.$lb_addition.' href="'.esc_attr($lb_source).'" lgtitle="'.esc_attr($lb_title).'"'.$lb_rel.'>'.$lb_content.'%REPLACE%</a>';
+					/* 2.2 */
+					$lb_caption = isset($this->fancybox_three_options['title']) ? $this->fancybox_three_options['title'] : 'off';
+					$lb_caption = $lb_caption === 'on' ? ' data-caption="' . esc_attr($lb_title) . '" ' : '';
+					
+					$link_wrapper = '<a class="'.$lb_class.'"'.$lb_addition.' href="'.esc_attr($lb_source).'" '.$lb_caption.$lb_owidth.$lb_oheight.$lb_rel.$lb_data.$lb_featured.$lb_post_title.'>'.$lb_content.'%REPLACE%</a>';
 					
 					$this->load_lightbox = true; //set that jQuery is written
 				break;
@@ -1464,12 +1851,26 @@ class Essential_Grid_Item_Skin {
             $show_content = $base->getVar($this->params, 'show-content', 'bottom');
             
             if($show_content == 'top'){
-                self::insert_masonry_layer($demo, $meta_content_style, $is_video);
+                self::insert_masonry_layer($demo, $meta_content_style, $is_video, $grid_ids, $post_ids);
             }
         }
 		
 		if($is_iframe != false) //disable animation if we fill in iFrame
 			$media_animation = '';
+			
+		if(isset($hover_image) && !empty($hover_image) && $hover_image !== 'false') 
+			$media_animation = '';
+		
+		// 2.2.5
+		if($media_animation) {
+			
+			$data_transition_media = ' data-transition="' . $media_animation . '"';
+			$media_animation = ' esg-transition';
+			
+		}
+		else {
+			$data_transition_media = '';
+		}
 		
         //echo '    <!-- THE CONTAINER FOR THE MEDIA AND THE COVER EFFECTS -->'."\n";
         echo '    <div class="esg-media-cover-wrapper">'."\n";
@@ -1477,7 +1878,7 @@ class Essential_Grid_Item_Skin {
 		if($demo == 'overview' || $demo == 'skinchoose'){
 			echo '            <div class="esg-entry-media'.$media_animation.'"'.$media_animation_delay.'><img src="'.EG_PLUGIN_URL.'admin/assets/images/'.$this->cover_image.'"></div>'."\n\n";
 		}else{
-			$echo_media = '<div class="esg-entry-media'.$media_animation.'"'.$media_animation_delay.'>'.$echo_media.'</div>'."\n\n";
+			$echo_media = '<div class="esg-entry-media'.$media_animation.'"'.$media_animation_delay.$data_transition_media.'>'.$echo_media.'</div>'."\n\n";
 			//echo media from top here
 			if($link_set_to == 'media' && $link_type_link !== 'none'){ //set link on whole media
 				$echo_media = str_replace('%REPLACE%', $echo_media, $link_wrapper);
@@ -1495,7 +1896,7 @@ class Essential_Grid_Item_Skin {
 				if($link_set_to == 'cover' && $link_type_link !== 'none')
 					$cover_attr = ' data-clickable="on"';
 				
-				echo '            <div class="esg-entry-cover'.$cover_group_animation.'"'.$cover_group_animation_delay.$cover_attr.'>'."\n\n";
+				echo '            <div class="esg-entry-cover'.$cover_group_animation.'"'.$cover_group_animation_delay.$cover_attr.$data_transition_group.'>'."\n\n";
 				//echo '                <!-- THE COLORED OVERLAY -->'."\n";
 				
 				if($link_set_to == 'cover' && $link_type_link !== 'none'){
@@ -1508,28 +1909,28 @@ class Essential_Grid_Item_Skin {
 				}
 			}
 			if($cover_type == 'full'){
-				$echo_c = '                <div class="esg-overlay'.$cover_animation_center.$container_class.'"'.$cover_animation_delay_center.$meta_cover_style.'></div>'."\n\n";
+				$echo_c = '                <div class="esg-overlay'.$cover_animation_center.$container_class.'"'.$cover_animation_delay_center.$meta_cover_style.$data_transition_center.'></div>'."\n\n";
 				if($link_set_to == 'cover' && $link_type_link !== 'none' && $link_inserted === false){ //set link on whole cover
 					$echo_c = str_replace('%REPLACE%', $echo_c, $link_wrapper);
 				}
 				echo $echo_c;
 			}else{
 				if($t_layer > 0){
-					$echo_t = '                <div class="esg-overlay esg-top'.$cover_animation_top.$container_class.'"'.$cover_animation_delay_top.$meta_cover_style.'></div>'."\n\n";
+					$echo_t = '                <div class="esg-overlay esg-top'.$cover_animation_top.$container_class.'"'.$cover_animation_delay_top.$meta_cover_style.$data_transition_top.'></div>'."\n\n";
 					if($link_set_to == 'cover' && $link_type_link !== 'none' && $link_inserted === false){ //set link on whole cover
 						$echo_t = str_replace('%REPLACE%', $echo_t, $link_wrapper);
 					}
 					echo $echo_t;
 				}
 				if($c_layer > 0){
-					$echo_c = '                <div class="esg-overlay esg-center'.$cover_animation_center.$container_class.'"'.$cover_animation_delay_center.$meta_cover_style.'></div>'."\n\n";
+					$echo_c = '                <div class="esg-overlay esg-center'.$cover_animation_center.$container_class.'"'.$cover_animation_delay_center.$meta_cover_style.$data_transition_center.'></div>'."\n\n";
 					if($link_set_to == 'cover' && $link_type_link !== 'none' && $link_inserted === false){ //set link on whole cover
 						$echo_c = str_replace('%REPLACE%', $echo_c, $link_wrapper);
 					}
 					echo $echo_c;
 				}
 				if($b_layer > 0){
-					$echo_b = '                <div class="esg-overlay esg-bottom'.$cover_animation_bottom.$container_class.'"'.$cover_animation_delay_bottom.$meta_cover_style.'></div>'."\n\n";
+					$echo_b = '                <div class="esg-overlay esg-bottom'.$cover_animation_bottom.$container_class.'"'.$cover_animation_delay_bottom.$meta_cover_style.$data_transition_bottom.'></div>'."\n\n";
 					if($link_set_to == 'cover' && $link_type_link !== 'none' && $link_inserted === false){ //set link on whole cover
 						$echo_b = str_replace('%REPLACE%', $echo_b, $link_wrapper);
 					}
@@ -1578,9 +1979,9 @@ class Essential_Grid_Item_Skin {
 					if($link_to != 'embedded_video' && $hide_on_video == 'show' && $is_video == false) continue; //this element is only shown if media is video
 					
 					if($demo == 'overview' || $demo == 'skinchoose' || $demo == 'custom'){
-						self::insert_layer($layer, $demo);
+						self::insert_layer($layer, $demo, false, $grid_ids, $post_ids);
 					}else{
-						self::insert_layer($layer);
+						self::insert_layer($layer, false, false, $grid_ids, $post_ids);
 					}
 				}
 				
@@ -1588,13 +1989,12 @@ class Essential_Grid_Item_Skin {
 			
 			if($this->load_lightbox === true){
 				if(!empty($this->lightbox_additions['items'])){
-					$lb_rel = ($this->lb_rel !== false) ? ' rel="'.esc_attr($this->lb_rel).'"' : '';
+					$lb_rel = ($this->lb_rel !== false) ? ' data-esgbox="'.esc_attr($this->lb_rel).'"' : '';
 					
-					echo '<div style="display: none">';
+					echo '<div style="display: none" class="esgbox-additional">';
 					foreach($this->lightbox_additions['items'] as $lb_key => $lb_img){
 						if($this->lightbox_additions['base'] == 'on' && $lb_key == 0) continue; //if off, the first one is already written on the handle somewhere
-						
-						echo '<a href="'.esc_attr($lb_img).'" class="esgbox"'.$lb_rel.'></a>';
+						echo '<a href="'.esc_attr($lb_img).'" class="esgbox" '.$lb_rel.'><img class="esg-lb-dummy" src="'. EG_PLUGIN_URL .'public/assets/images/300x200transparent.png"></a>';
 					}
 					echo '</div>';
 				}
@@ -1607,7 +2007,7 @@ class Essential_Grid_Item_Skin {
 		
         if($m_layer > 0){
             if($show_content == 'bottom'){
-                self::insert_masonry_layer($demo, $meta_content_style, $is_video);
+                self::insert_masonry_layer($demo, $meta_content_style, $is_video, $grid_ids, $post_ids);
             }
         }
         
@@ -1649,16 +2049,16 @@ class Essential_Grid_Item_Skin {
 			<div class="esg-media-cover-wrapper">
 				<div class="esg-entry-media"><img src="'. EG_PLUGIN_URL .'public/assets/images/300x200transparent.png"></div>
 				<div class="esg-entry-cover">
-					<div class="esg-overlay esg-fade eg-addnewitem-container" data-delay="0.18"></div>
-					<div id="esg-add-new-custom-youtube" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-rotatescale" data-delay="0"><i class="eg-icon-youtube-squared"></i></div>
-					<div class="esg-absolute eg-addnewitem-element-3 esg-falldownout" data-delay="0.1"><i class="eg-icon-plus"></i></div>
-					<div class="esg-bottom eg-addnewitem-element-2 esg-flipup" data-delay="0.1">'. __('CHOOSE YOUR ITEM', EG_TEXTDOMAIN) .'</div>
-					<div id="esg-add-new-custom-vimeo" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 eg-addnewitem-element-5 esg-rotatescale" data-delay="0.1"><i class="eg-icon-vimeo-squared"></i></div>
-					<div id="esg-add-new-custom-html5" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-rotatescale" data-delay="0.2"><i class="eg-icon-video"></i></div>
+					<div class="esg-overlay esg-transition eg-addnewitem-container" data-transition="esg-fade" data-delay="0.18"></div>
+					<div id="esg-add-new-custom-youtube" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-transition" data-transition="esg-slideup" data-delay="0"><i class="eg-icon-youtube-squared"></i></div>
+					<div class="esg-absolute eg-addnewitem-element-3 esg-transition" data-transition="esg-falldownout" data-delay="0.1"><i class="eg-icon-plus"></i></div>
+					<div class="esg-bottom eg-addnewitem-element-2 esg-transition" data-transition="esg-flipup" data-delay="0.1">'. __('CHOOSE YOUR ITEM', EG_TEXTDOMAIN) .'</div>
+					<div id="esg-add-new-custom-vimeo" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 eg-addnewitem-element-5 esg-transition" data-transition="esg-slideup" data-delay="0.1"><i class="eg-icon-vimeo-squared"></i></div>
+					<div id="esg-add-new-custom-html5" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-transition" data-transition="esg-slideup" data-delay="0.2" style="visibility: hidden"><i class="eg-icon-video"></i></div>
 					<div class="esg-center eg-addnewitem-element-4 esg-none esg-clear" style="height: 5px; visibility: hidden;"></div>
-					<div id="esg-add-new-custom-image" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-rotatescale" data-delay="0.3"><i class="eg-icon-picture-1"></i></div>
-					<div id="esg-add-new-custom-soundcloud" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 eg-addnewitem-element-5 esg-rotatescale" data-delay="0.4"><i class="eg-icon-soundcloud"></i></div>
-					<div id="esg-add-new-custom-text" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-rotatescale" data-delay="0.5"><i class="eg-icon-font"></i></div>
+					<div id="esg-add-new-custom-image" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-transition" data-transition="esg-slideup" data-delay="0.3"><i class="eg-icon-picture-1"></i></div>
+					<div id="esg-add-new-custom-soundcloud" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 eg-addnewitem-element-5 esg-transition" data-transition="esg-slideup" data-delay="0.4"><i class="eg-icon-soundcloud"></i></div>
+					<div id="esg-add-new-custom-text" class="esg-open-edit-dialog esg-center eg-addnewitem-element-1 esg-transition" data-transition="esg-slideup" data-delay="0.5"><i class="eg-icon-font"></i></div>
 				</div>
 			</div>
 		</li>');
@@ -1668,7 +2068,7 @@ class Essential_Grid_Item_Skin {
     /**
      * return all current set filter as array
      */
-    public function insert_masonry_layer($demo = false, $style = false, $is_video = false){
+    public function insert_masonry_layer($demo = false, $style = false, $is_video = false, $grid_ids = '', $post_ids = ''){
         $base = new Essential_Grid_Base();
         
 		$content_class = ' eg-'.esc_attr($this->handle).'-content';
@@ -1710,9 +2110,9 @@ class Essential_Grid_Item_Skin {
 				}
 				
                 if($demo == 'overview' || $demo == 'skinchoose' || $demo == 'custom'){
-                    self::insert_layer($layer, $demo, true);
+                    self::insert_layer($layer, $demo, true, $grid_ids, $post_ids);
                 }else{
-                    self::insert_layer($layer, false, true);
+                    self::insert_layer($layer, false, true, $grid_ids, $post_ids);
                 }
             }
         }
@@ -2484,6 +2884,8 @@ class Essential_Grid_Item_Skin {
 			}
 		}
 		
+		$this->layers_meta_css = array();
+		
 	}
 	
 	/**
@@ -2508,10 +2910,21 @@ class Essential_Grid_Item_Skin {
     public function register_skin_css(){
 		$base = new Essential_Grid_Base();
 		
+		/* 2.1.6 */
 		$container_background_color = $base->getVar($this->params, 'container-background-color', '#000');
-        $container_background_color_transparency = $base->getVar($this->params, 'element-container-background-color-opacity', '1');
-        
-        $this->cover_css[$this->id]['background-color'] = Essential_Grid_Base::hex2rgba($container_background_color, $container_background_color_transparency); // we only need rgba in backend
+		$contentBgColor = $base->getVar($this->params, 'content-bg-color', '#FFF');
+		$fullBgColor = $base->getVar($this->params, 'full-bg-color', '#FFF');
+		if(class_exists('TPColorpicker')) {
+			
+			$container_background_color = TPColorpicker::get($container_background_color);
+			$contentBgColor = TPColorpicker::get($contentBgColor);
+			$fullBgColor = TPColorpicker::get($fullBgColor);
+			
+		}
+		
+        // $container_background_color_transparency = $base->getVar($this->params, 'element-container-background-color-opacity', '1');
+        // $this->cover_css[$this->id]['background-color'] = Essential_Grid_Base::hex2rgba($container_background_color, $container_background_color_transparency); // we only need rgba in backend
+		$this->cover_css[$this->id]['background'] = $container_background_color;
         
 		$cover_background_image_id = $base->getVar($this->params, 'cover-background-image', 0, 'i');
 		$cover_background_image_size = $base->getVar($this->params, 'cover-background-size', 'cover');
@@ -2527,7 +2940,7 @@ class Essential_Grid_Item_Skin {
 			}
 		}
 		
-		$this->wrapper_css[$this->id]['background-color'] = $base->getVar($this->params, 'full-bg-color', '#FFF');
+		$this->wrapper_css[$this->id]['background'] = $fullBgColor;
 		$this->wrapper_css[$this->id]['padding'] = implode('px ', $base->getVar($this->params, 'full-padding', array('0'))).'px';
 		$this->wrapper_css[$this->id]['border-width'] = implode('px ', $base->getVar($this->params, 'full-border', array('0'))).'px';
 		$this->wrapper_css[$this->id]['border-radius'] = implode('px ', $base->getVar($this->params, 'full-border-radius', array('0'))).'px';
@@ -2540,7 +2953,7 @@ class Essential_Grid_Item_Skin {
 		$this->media_poster_css[$this->id]['background-position'] = $base->getVar($this->params, 'image-align-vertical', 'center') . ' ' . $base->getVar($this->params, 'image-align-horizontal', 'center');
 		$this->media_poster_css[$this->id]['background-repeat'] = $base->getVar($this->params, 'image-repeat', 'no-repeat');
 		
-		$this->content_css[$this->id]['background-color'] = $base->getVar($this->params, 'content-bg-color', '#FFF');
+		$this->content_css[$this->id]['background'] = $contentBgColor;
 		$this->content_css[$this->id]['padding'] = implode('px ', $base->getVar($this->params, 'content-padding', array('0'))).'px';
 		$this->content_css[$this->id]['border-width'] = implode('px ', $base->getVar($this->params, 'content-border', array('0'))).'px';
 		$this->content_css[$this->id]['border-radius'] = implode('px ', $base->getVar($this->params, 'content-border-radius', array('0'))).'px';
@@ -2550,9 +2963,12 @@ class Essential_Grid_Item_Skin {
 		
 		$shadow_place = $base->getVar($this->params, 'all-shadow-used', 'none');
 		$shadow_values = implode('px ', $base->getVar($this->params, 'content-box-shadow', array('0','0','0','0'))).'px';
-		$shadow_color = $base->getVar($this->params, 'content-shadow-color', '#000000');
-		$shadow_alpha = $base->getVar($this->params, 'content-shadow-alpha', '100');
-		$shadow_rgba = Essential_Grid_Base::hex2rgba($shadow_color, $shadow_alpha);
+		
+		/* 2.1.6 */
+		$shadow_rgba = $base->getVar($this->params, 'content-shadow-color', '#000000');
+		// $shadow_alpha = $base->getVar($this->params, 'content-shadow-alpha', '100');
+		// $shadow_rgba = Essential_Grid_Base::hex2rgba($shadow_color, $shadow_alpha);
+		
 		if($shadow_place == 'media'){
 			$this->media_css[$this->id]['box-shadow'] = $shadow_values.' '.$shadow_rgba;
 			$this->media_css[$this->id]['-moz-box-shadow'] = $shadow_values.' '.$shadow_rgba;
@@ -2585,7 +3001,8 @@ class Essential_Grid_Item_Skin {
 		}else{
 			$is_post = (!empty($this->layer_values)) ? false : true;
 			
-			$unique_class = 'eg-'.esc_attr($this->handle).'-element-'.$layer['id'];
+			if(isset($layer['id'])) $unique_class = 'eg-'.esc_attr($this->handle).'-element-'.$layer['id'];
+			else $unique_class = "";
 			
 			$special_item = $base->getVar($layer['settings'], 'special', 'false');
 			if($special_item != 'true'){
@@ -2607,14 +3024,17 @@ class Essential_Grid_Item_Skin {
 			
 			if(isset($layer['settings']['source'])){
 				$separator = $base->getVar($layer['settings'], 'source-separate', ',');
+				$catmax = $base->getVar($layer['settings'], 'source-catmax', '-1');
 				$meta = $base->getVar($layer['settings'], 'source-meta', '');
 				$func = $base->getVar($layer['settings'], 'source-function', 'link');
+				$taxonomy = $base->getVar($layer['settings'], 'source-taxonomy', '');
 				
 				switch($layer['settings']['source']){
 					case 'post':
+						
 						if($demo === false){
 							if($is_post)
-								$text = $this->get_post_value($layer['settings']['source-post'], $separator, $func, $meta);
+								$text = $this->get_post_value($layer['settings']['source-post'], $separator, $func, $meta, $catmax,$taxonomy);
 							else
 								$text = $this->get_custom_element_value($layer['settings']['source-post'], $separator, $meta);
 						}elseif($demo === 'custom'){
@@ -2645,7 +3065,7 @@ class Essential_Grid_Item_Skin {
 						if(Essential_Grid_Woocommerce::is_woo_exists()){
 							if($demo === false){
 								if($is_post)
-									$text = $this->get_woocommerce_value($layer['settings']['source-woocommerce'], $separator);
+									$text = $this->get_woocommerce_value($layer['settings']['source-woocommerce'], $separator, $catmax);
 								else
 									$text = $this->get_custom_element_value($layer['settings']['source-woocommerce'], $separator, '');
 							
@@ -2785,11 +3205,13 @@ class Essential_Grid_Item_Skin {
                         //get box shadow color
                         $shadow_color = ($attr['style'] == 'idle') ? $settings['shadow-color'] : $settings['shadow-color-hover'];
                         
+						/* 2.1.6 */
+						/*
                         //get box shadow transaprency
 						$shadow_transparency = ($attr['style'] == 'idle') ? $settings['shadow-alpha'] : $settings['shadow-alpha-hover'];
-                        
                         $shadow_color = Essential_Grid_Base::hex2rgba($shadow_color, $shadow_transparency);
-                        
+                        */
+						
                         $multi_string .= ' '.$shadow_color;
                         
                         if($attr['style'] == 'idle'){
@@ -2828,15 +3250,21 @@ class Essential_Grid_Item_Skin {
                         }
                     }
                 }else{
-                    if($set_style == 'background-color'){
-                        //get bg color transaprency
+                    if($set_style == 'background-color' || $set_style == 'background'){
+                        
+						/* 2.1.6 */
+						/*
+						//get bg color transaprency
                         $bg_color_transparency = ($attr['style'] == 'idle') ? $settings['bg-alpha'] : $settings['bg-alpha-hover'];
                         $bg_color_rgba = Essential_Grid_Base::hex2rgba($settings[$style], $bg_color_transparency); // we only need rgba in backend
+						*/
+						$bg_color_rgba = $settings[$style];
+						if(class_exists('TPColorpicker')) $bg_color_rgba = TPColorpicker::get($bg_color_rgba);
                         
                         if($attr['style'] == 'idle'){
-                            $idle[$set_style] = $bg_color_rgba;
+                            $idle['background'] = $bg_color_rgba;
                         }else{
-                            $hover[$set_style] = $bg_color_rgba;
+                            $hover['background'] = $bg_color_rgba;
                         }
                         
                     }else{
@@ -2965,13 +3393,52 @@ class Essential_Grid_Item_Skin {
     public function set_default_image_by_id($img_id){
         
 		$img = wp_get_attachment_image_src($img_id, 'full');
+		
+		/* 2.1.5 */
+		if($img === false) {
+			$img = get_option('tp_eg_global_default_img', '');
+			$img = !empty($img) ? wp_get_attachment_image_src($img, 'full') : false;
+		}
+		
 		if($img !== false){
 			$this->default_image = $img[0];
 			$this->default_image_attr = array($img[1], $img[2]);
+			
 		}
 		
     }
     
+	/**
+     * set grid item animation
+	 * @since: 2.1.6.2
+     */
+    public function set_grid_item_animation($base, $params){
+		
+		$this->grid_item_animation = $base->getVar($params, 'grid-item-animation', 'none');
+		$this->grid_item_animation_other = $base->getVar($params, 'grid-item-animation-other', 'none');
+		
+		$this->grid_item_animation_zoomin = $base->getVar($params, 'grid-item-animation-zoomin', '125');
+		$this->grid_item_other_zoomin = $base->getVar($params, 'grid-item-other-zoomin', '125');
+		
+		$this->grid_item_animation_zoomout = $base->getVar($params, 'grid-item-animation-zoomout', '75');
+		$this->grid_item_other_zoomout = $base->getVar($params, 'grid-item-other-zoomout', '75');
+		
+		$this->grid_item_animation_fade = $base->getVar($params, 'grid-item-animation-fade', '75');
+		$this->grid_item_other_fade = $base->getVar($params, 'grid-item-other-fade', '75');
+		
+		$this->grid_item_animation_blur = $base->getVar($params, 'grid-item-animation-blur', '5');
+		$this->grid_item_other_blur = $base->getVar($params, 'grid-item-other-blur', '5');
+		
+		$this->grid_item_animation_shift = $base->getVar($params, 'grid-item-animation-shift', 'top');
+		$this->grid_item_other_shift = $base->getVar($params, 'grid-item-other-shift', 'top');
+		
+		$this->grid_item_animation_shift_amount = $base->getVar($params, 'grid-item-animation-shift-amount', '10');
+		$this->grid_item_other_shift_amount = $base->getVar($params, 'grid-item-other-shift-amount', '10');
+		
+		$this->grid_item_animation_rotate = $base->getVar($params, 'grid-item-animation-rotate', '30');
+		$this->grid_item_other_rotate = $base->getVar($params, 'grid-item-other-rotate', '30');
+		
+    }
     
     /**
      * set default image
@@ -3343,10 +3810,11 @@ class Essential_Grid_Item_Skin {
 	/**
 	 * insert layer
 	 */
-	public function insert_layer($layer, $demo = false, $masonry = false){
+	public function insert_layer($layer, $demo = false, $masonry = false, $grid_ids = '', $post_ids = ''){
 		
 		$base = new Essential_Grid_Base();
 		$m = new Essential_Grid_Meta();
+		$enable_youtube_nocookie = get_option('tp_eg_enable_youtube_nocookie', 'false');
 		
 		$is_post = (!empty($this->layer_values)) ? false : true;
 
@@ -3384,7 +3852,8 @@ class Essential_Grid_Item_Skin {
 		
 		$this->register_layer_css($layer, $demo);
 		
-		$unique_class = 'eg-'.esc_attr($this->handle).'-element-'.$layer['id'];
+		if (isset($layer['id'])) $unique_class = 'eg-'.esc_attr($this->handle).'-element-'.$layer['id'];
+		else $unique_class = '';
 		
 		$special_item = $base->getVar($layer['settings'], 'special', 'false');
 		$special_item_type = $base->getVar($layer['settings'], 'special-type', 'line-break');
@@ -3424,24 +3893,39 @@ class Essential_Grid_Item_Skin {
 		if($masonry){
 			$transition = '';
 			//$transition_split = '';
+			$data_transition_transition = '';
 		}else{
-			$transition = ' esg-'.esc_attr($base->getVar($layer['settings'], 'transition', 'fade')).esc_attr($base->getVar($layer['settings'], 'transition-type', ''));
+			$transition = 'esg-'.esc_attr($base->getVar($layer['settings'], 'transition', 'fade')).esc_attr($base->getVar($layer['settings'], 'transition-type', ''));
 			//$transition_split = ' data-split="'.$base->getVar($layer['settings'], 'split', 'line').'"';
 			
-			$meta_tran = esc_attr($this->get_meta_element_change($layer['id'], 'transition')); //check if we have meta transition set
+			if(isset($layer['id'])) $meta_tran = esc_attr($this->get_meta_element_change($layer['id'], 'transition')); //check if we have meta transition set
+			else $meta_tran = false;
 			if($meta_tran !== false && trim($meta_tran) !== '') $transition = ' esg-'.$meta_tran;
 			
-			if($transition == ' esg-none' || $transition == ' esg-noneout' || $base->getVar($layer['settings'], 'transition-type', '') == 'always'){ //no transition
+			if($transition == 'esg-none' || $transition == 'esg-noneout' || $base->getVar($layer['settings'], 'transition-type', '') == 'always'){ //no transition
 				$transition = '';
 				//$transition_split = '';
 			}else{
 				$delay = ' data-delay="'.round($base->getVar($layer['settings'], 'delay', 0) / 100, 2).'"';
 				
-				$meta_tran_delay = $this->get_meta_element_change($layer['id'], 'transition-delay'); //check if we have meta transition-delay set
+				if(isset($layer['id'])) $meta_tran_delay = $this->get_meta_element_change($layer['id'], 'transition-delay'); //check if we have meta transition-delay set
+				else $meta_tran_delay = false;
 				if($meta_tran_delay !== false)
 					$delay = ' data-delay="'.round($meta_tran_delay / 100, 2).'"';
 				
 			}
+			
+			// 2.2.5
+			if($transition) {
+				
+				$data_transition_transition = ' data-transition="' . $transition . '"';
+				$transition = ' esg-transition';
+				
+			}
+			else {
+				$data_transition_transition = '';
+			}
+			
 		}
 		
 		$text = '';
@@ -3458,13 +3942,16 @@ class Essential_Grid_Item_Skin {
 		
 		if(isset($layer['settings']['source'])){
 			$separator = $base->getVar($layer['settings'], 'source-separate', ',');
+			$catmax = $base->getVar($layer['settings'], 'source-catmax', '-1');
 			$meta = $base->getVar($layer['settings'], 'source-meta', '');
 			$func = $base->getVar($layer['settings'], 'source-function', 'link');
+			$taxonomy = $base->getVar($layer['settings'], 'source-taxonomy', '');
+
 			switch($layer['settings']['source']){
 				case 'post':
 					if($demo === false){
 						if($is_post)
-							$text = $this->get_post_value($layer['settings']['source-post'], $separator, $func, $meta);
+							$text = $this->get_post_value($layer['settings']['source-post'], $separator, $func, $meta, $catmax,$taxonomy);
 						else
 							$text = $this->get_custom_element_value($layer['settings']['source-post'], $separator, $meta);
 						
@@ -3511,7 +3998,7 @@ class Essential_Grid_Item_Skin {
 					if($demo === false){
 						if(Essential_Grid_Woocommerce::is_woo_exists()){
 							if($is_post)
-								$text = $this->get_woocommerce_value($layer['settings']['source-woocommerce'], $separator);
+								$text = $this->get_woocommerce_value($layer['settings']['source-woocommerce'], $separator, $catmax);
 							else
 								$text = $this->get_custom_element_value($layer['settings']['source-woocommerce'], $separator, '');
 								
@@ -3617,16 +4104,38 @@ class Essential_Grid_Item_Skin {
 					if($is_post){
 						$text = '<a href="'.get_permalink( $post['ID'] ).'"'.$link_target.'>'.$text.'</a>';
 					}else{
+
+						/*
 						if(isset($this->layer_values['custom-image'])){
 							$text = '<a href="'.get_permalink( $this->layer_values['custom-image'] ).'"'.$link_target.'>'.$text.'</a>';
 						}
 						else{
+						*/
 							$get_link = $this->get_custom_element_value('post-link', $separator, ''); //get the post link
-							if($get_link == '')
-								$text = '<a href="javascript:void(0);"'.$link_target.'>'.$text.'</a>';
-							else
-								$text = '<a href="'.esc_attr($get_link).'"'.$link_target.'>'.$text.'</a>';
-						}
+							
+							/* 2.1.5 */
+							// fix for grids populated with WP Media Galleries
+							if($get_link == '') {
+								
+								if(isset($this->layer_values['custom-image']) && !empty($this->layer_values['custom-image'])) {
+									$text = '<a href="'.get_permalink( $this->layer_values['custom-image'] ).'"'.$link_target.'>'.$text.'</a>';
+								}
+								else {
+									$text = '<a href="javascript:void(0);"'.$link_target.'>'.$text.'</a>';
+								}
+								
+							}
+							else {
+								
+								/* 2.1.6 append "http" to manually written links starting with "www" */
+								$get_link = esc_attr($get_link);
+								if(strpos($get_link, '://') === false) {
+									$get_link = !is_ssl() ? 'http://' . $get_link : 'https://' . $get_link;
+								}
+								
+								$text = '<a href="'.$get_link.'"'.$link_target.'>'. preg_replace('/<a href=\"(.*?)\">(.*?)<\/a>/', "\\2", $text).'</a>';
+							}
+						/*}*/
 					}
 						
 				}else{
@@ -3649,16 +4158,32 @@ class Essential_Grid_Item_Skin {
 						if($meta_link == ''){// if empty, link to nothing
 							$text = '<a href="javascript:void(0);"'.$link_target.'>'.$text.'</a>';
 						}else{
-							$text = '<a href="'.esc_attr($meta_link).'"'.$link_target.'>'.$text.'</a>';
+							
+							/* 2.1.6 append "http" to manually written links starting with "www" */
+							$meta_link = esc_attr($meta_link);
+							if((strpos($meta_link, '://') === false) && (strpos($meta_link, 'mailto:') === false)){
+								$meta_link = !is_ssl() ? 'http://' . $meta_link : 'https://' . $meta_link;
+							}
+							
+							$text = '<a href="'.$meta_link.'"'.$link_target.'>'.$text.'</a>';
 						}
 					}else{
 						$meta_key = $base->getVar($layer['settings'], 'link-type-meta', '');
 						
 						$get_link = $this->get_custom_element_value('post-link', $separator, $meta_key); //get the post link
-						if($get_link == '')
+						if($get_link == '') {
 							$text = '<a href="javascript:void(0);"'.$link_target.'>'.$text.'</a>';
-						else
-							$text = '<a href="'.esc_attr($get_link).'"'.$link_target.'>'.$text.'</a>';
+						}
+						else {
+							
+							/* 2.1.6 append "http" to manually written links starting with "www" */
+							$get_link = esc_attr($get_link);
+							if(strpos($get_link, '://') === false) {
+								$get_link = !is_ssl() ? 'http://' . $get_link : 'https://' . $get_link;
+							}
+							
+							$text = '<a href="'.$get_link.'"'.$link_target.'>'.$text.'</a>';
+						}
 					}
 				}else{
 					$text = '<a href="javascript:void(0);"'.$link_target.'>'.$text.'</a>';
@@ -3675,50 +4200,77 @@ class Essential_Grid_Item_Skin {
 				}
 				$lb_source = 'javascript:void(0);';
 				$lb_addition = '';
-				$lb_rel = ($this->lb_rel !== false) ? ' rel="'.esc_attr($this->lb_rel).'"' : '';
+				$lb_rel = ($this->lb_rel !== false) ? ' data-esgbox="'.esc_attr($this->lb_rel).'"' : '';
+				$lb_data = '';
+				$lb_featured = '';
+				$lb_post_title = '';
+				$lb_owidth='';
+				$lb_oheight='';
 				
 				if(!empty($this->default_lightbox_source_order)){ //only show if something is checked
+					
 					foreach($this->default_lightbox_source_order as $order){ //go through the order and set media as wished
-						if(isset($this->media_sources[$order]) && $this->media_sources[$order] !== '' && $this->media_sources[$order] !== false){ //found entry
+						
+						$val = isset($this->media_sources[$order]) && $this->media_sources[$order] !== '' && $this->media_sources[$order] !== false;
+						if($order === 'post-content' || !empty($val)){ //found entry
+							
 							$do_continue = false;
 							$is_video = false;
-							if(!empty($this->lightbox_additions['items']) && $this->lightbox_additions['base'] == 'on'){
+							
+							if(!empty($this->lightbox_additions['items']) && $this->lightbox_additions['base'] == 'on') {
 								$lb_source = $this->lightbox_additions['items'][0];
 								$lb_class = ' esgbox';
 							}else{
+								
 								switch($order){
 									case 'featured-image':
 									case 'alternate-image':
 									case 'content-image':
-										if($order == 'content-image')
-											$lb_source = $this->media_sources[$order];
-										else
-											$lb_source = $this->media_sources[$order.'-full'];
-											
+										
+										// 2.2.5
+										$imgsource = explode('-', $order);
+										$imgsource = $imgsource[0];
+										
+										if($order == 'content-image') $lb_source = $this->media_sources[$order];
+										else $lb_source = $this->media_sources[$order.'-full'];
 										$lb_class = ' esgbox';
+										
+										if(isset($this->media_sources[$imgsource . '-image-full-width'])) $lb_owidth = ' data-width="' . $this->media_sources[$imgsource . '-image-full-width'] . '" ';
+										if(isset($this->media_sources[$imgsource . '-image-full-height'])) $lb_oheight = ' data-height="' . $this->media_sources[$imgsource . '-image-full-height'] . '" ';
+										
 									break;
 									case 'youtube':
 										$http = (is_ssl()) ? 'https' : 'http';
-										$lb_source = $http.'://www.youtube.com/watch?v='.$this->media_sources[$order];
+										$lb_source = $enable_youtube_nocookie!='false' ? $http.'://www.youtube-nocookie.com/embed/'.$this->media_sources[$order] : $lb_source = $http.'://www.youtube.com/watch?v='.$this->media_sources[$order];
+										
 										$lb_class = ' esgbox';
 										$is_video = true;
+										$lb_addition = ($this->video_ratios['youtube'] == '1') ? '' : ' data-ratio="4:3"';
 									break;
 									case 'vimeo':
 										$http = (is_ssl()) ? 'https' : 'http';
 										$lb_source = $http.'://vimeo.com/'.$this->media_sources[$order];
 										$lb_class = ' esgbox';
 										$is_video = true;
+										$lb_addition = ($this->video_ratios['vimeo'] == '1') ? '' : ' data-ratio="4:3"';
 									break;
 									case 'wistia':
-										$http = (is_ssl()) ? 'https' : 'http';
-										$lb_source = $http.'://fast.wistia.net/embed/iframe/'.$this->media_sources[$order];
+										// $http = (is_ssl()) ? 'https' : 'http';
+										$lb_source = '//fast.wistia.net/embed/iframe/'.$this->media_sources[$order];
 										$lb_class = ' esgbox';
-										$is_video = true;
+										$lb_data .= ' data-type="iframe"';
+										$lb_addition = ($this->video_ratios['wistia'] == '1') ? '' : ' data-ratio="4:3"';
+									break;
+									case 'soundcloud':
+										$lb_source = '//w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/' . $this->media_sources[$order] . '&amp;color=%23ff5500&amp;auto_play=true&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true';
+										$lb_class = ' esgbox';
+										$lb_data .= ' data-type="iframe"';
 									break;
 									case 'iframe':
-										//$lb_source = html_entity_decode($this->media_sources[$order]);
-										//$lb_class = ' esgbox';
-										$do_continue = true;
+										$lb_source = addslashes($this->media_sources[$order]);
+										$lb_class = ' esgbox';
+										$lb_data .= ' data-type="iframe"';
+									
 									break;
 									case 'html5':
 										if(trim($this->media_sources[$order]['mp4']) === '' && trim($this->media_sources[$order]['ogv']) === '' && trim($this->media_sources[$order]['webm'] === '')){
@@ -3742,21 +4294,79 @@ class Essential_Grid_Item_Skin {
 											$lb_mp4 = $this->media_sources[$order]['mp4'];
 											$lb_ogv = $this->media_sources[$order]['ogv'];
 											$lb_webm = $this->media_sources[$order]['webm'];
-											$vid_ratio = ($this->video_ratios['html5'] == '0') ? '4:3' : '16:9';
+											$vid_ratio = ($this->video_ratios['html5'] == '1') ? '' : ' data-ratio="4:3"';
+											
 											$lb_source = ""; //Leave it Empty, other way HTML5 Video will not work !!
+
+											if(!empty($lb_mp4)){
+												$lb_source = $lb_mp4;
+											}
+											elseif (!empty($lb_ogv)) {
+												$lb_source = $lb_ogv;
+											}
+											elseif (!empty($lb_webm)) {
+												$lb_source = $lb_webm;
+											} 
+
 											$text = '<img style="display: none;" src="'.esc_attr($video_poster_src).'" />'.$text;
 											$lb_class = ' esgbox esgboxhtml5';
-											$lb_addition = ' data-mp4="'.esc_attr($lb_mp4).'" data-ogv="'.esc_attr($lb_ogv).'" data-webm="'.esc_attr($lb_webm).'" data-ratio="'.$vid_ratio.'"';
+											$lb_addition = ' data-mp4="'.esc_attr($lb_mp4).'" data-ogv="'.esc_attr($lb_ogv).'" data-webm="'.esc_attr($lb_webm).$vid_ratio;
 											$is_video = true;
 										}
 									break;
+									
+									case 'revslider':
+
+										$lb_source = 'javascript:void(0);';
+										$lb_class = ' esgbox esgbox-post';
+										$lb_data = ' data-post="' . $post_ids . '"';
+										$lb_data .= ' data-revslider="' . $this->media_sources[$order] . '"';
+										$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+									
+									break;
+									
+									case 'essgrid':
+									
+										$lb_source = 'javascript:void(0);';
+										$lb_class = ' esgbox esgbox-post';
+										$lb_data = ' data-post="' . $post_ids . '"';
+										$lb_data .= ' data-lbesg="' . $this->media_sources[$order] . '"';
+										$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+									
+									break;
+									
+									case 'post-content':
+										
+										$lb_source = 'javascript:void(0);';
+										$lb_class = ' esgbox esgbox-post';
+										$lb_data = ' data-post="' . $post_ids . '"';
+										$lb_data .= ' data-gridid="' . $grid_ids . '" data-ispost="' . $is_post . '"';
+										$lb_post_title = $is_post ? $base->getVar($this->post, 'post_title', '') : $this->get_custom_element_value('title', $separator, '');
+										$lb_post_title = ' data-posttitle="' . $lb_post_title . '"';
+										
+										// if featured full is available
+										if(isset($this->media_sources['featured-image-full']) && !empty($this->media_sources['featured-image-full'])) {
+											$lb_featured = ' data-featured="' . esc_attr($this->media_sources['featured-image-full']) . '"';
+										}
+										// if featured regular size is available
+										else if(isset($this->media_sources['featured-image']) && !empty($this->media_sources['featured-image'])) {
+											$lb_featured = ' data-featured="' . esc_attr($this->media_sources['featured-image']) . '"';
+										}
+										// if global image is available
+										else if(!empty($this->default_image)) {
+											$lb_featured = ' data-featured="' . esc_attr($this->default_image) . '"';
+										}
+													
+									break;
+									
 									default:
 										$do_continue = true;
 									break;
 									
 								}
+								
 							}
-							
+
 							if($do_continue){
 								continue;
 							}
@@ -3770,6 +4380,19 @@ class Essential_Grid_Item_Skin {
 							
 							break;
 						}
+						
+						/* 2.1.5 */
+						if($order === 'featured-image') {
+							$default_img = $this->default_image;
+							if(!empty($default_img)) {
+								$lb_source = $default_img;
+								$lb_class = ' esgbox';
+								$lb_owidth = ' data-width="' . $this->default_image_attr[0] . '" ';
+								$lb_oheight = ' data-height="' . $this->default_image_attr[1] . '" ';		
+								break;
+							}
+						}
+
 					}
 				}
 				
@@ -3782,7 +4405,13 @@ class Essential_Grid_Item_Skin {
 						$lb_title = $this->get_custom_element_value('title', $separator, ''); //the title from Post Title will be used
 				}
 				
-				$text = '<a href="'.esc_attr($lb_source).'"'.$lb_addition.' lgtitle="'.esc_attr($lb_title).'"'.$lb_rel.'>'.$text.'</a>';
+				//$text = '<a href="'.esc_attr($ ).'"'.$lb_addition.' data-caption="'.esc_attr($lb_title).'"'.$lb_rel.$lb_data.$lb_featured.$lb_post_title.'>'.$text.'</a>';
+				
+				/* 2.2 */
+				$lb_caption = isset($this->fancybox_three_options['title']) ? $this->fancybox_three_options['title'] : 'off';
+				$lb_caption = $lb_caption === 'on' ? ' data-caption="' . esc_attr($lb_title) . '" ' : '';
+				
+				$text = '<a href="'.esc_attr($lb_source).'"'.$lb_addition.$lb_caption.$lb_owidth.$lb_oheight.$lb_rel.$lb_data.$lb_featured.$lb_post_title.'>'.$text.'</a>';
 				
 				$this->load_lightbox = true; //set that jQuery is written
 			break;
@@ -3893,7 +4522,184 @@ class Essential_Grid_Item_Skin {
 				
 			break;
 			case 'sharefacebook':
-				$text = '<a href="javascript:'.esc_attr($base->getVar($layer['settings'], 'link-type-javascript', 'void(0);')).'">'.$text.'</a>'; //javascript-link
+				if(isset($layer['settings']['link-type-sharefacebook'])){
+					switch ($layer['settings']['link-type-sharefacebook']) {
+						case 'custom':
+							$facebook_share_url = $layer['settings']['link-type-sharefacebook-custom-url'];
+							break;
+						case 'site':
+							$facebook_share_url = get_permalink();
+							break;
+						default:
+							if($is_post){
+								$facebook_share_url =  get_permalink( $post['ID'] );
+							}
+							else{
+								$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+								$facebook_share_url = $get_link;
+							}
+							break;
+					}
+				}
+				else {
+					if($is_post){
+						$facebook_share_url =  get_permalink( $post['ID'] );
+					}
+					else{
+						$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+						$facebook_share_url = $get_link;
+					}
+				}
+				$text = '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($facebook_share_url).'" target="_blank" rel=nofollow>'.$text.'</a>';	
+			break;
+			case 'sharegplus':
+				if(isset($layer['settings']['link-type-sharegplus'])){
+					switch ($layer['settings']['link-type-sharegplus']) {
+						case 'custom':
+							$gplus_share_url = $layer['settings']['link-type-sharegplus-custom-url'];
+							break;
+						case 'site':
+							$gplus_share_url = get_permalink();
+							break;
+						default:
+							if($is_post){
+								$gplus_share_url =  get_permalink( $post['ID'] );
+							}
+							else{
+								$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+								$gplus_share_url = $get_link;
+							}
+							break;
+					}
+				}
+				else {
+					if($is_post){
+						$gplus_share_url =  get_permalink( $post['ID'] );
+					}
+					else{
+						$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+						$gplus_share_url = $get_link;
+					}
+				}
+				$text = '<a href="https://plus.google.com/share?url='.urlencode($gplus_share_url).'" target="_blank" rel=nofollow>'.$text.'</a>';	
+			break;
+			case 'sharepinterest':
+				$title = $excerpt = $img_url = "";
+				if(isset($layer['settings']['link-type-sharepinterest'])){
+					switch ($layer['settings']['link-type-sharepinterest']) {
+						case 'custom':
+							$pinterest_share_url = $layer['settings']['link-type-sharepinterest-custom-url'];
+							break;
+						case 'site':
+							$pinterest_share_url = get_permalink();
+							$title = get_the_title();
+							$excerpt = get_the_excerpt();	
+							break;
+						default:
+							if($is_post){
+								$pinterest_share_url =  get_permalink( $post['ID'] );
+								$title = get_the_title($post['ID']);
+								$excerpt = get_the_excerpt($post['ID']);
+							}
+							else{
+								$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+								$title = $this->get_custom_element_value('title', $separator, ''); 
+								$excerpt = $this->get_custom_element_value('content', $separator, ''); 
+								$pinterest_share_url = $get_link;
+							}
+							break;
+					}
+				}
+				else {
+					if($is_post){
+						$pinterest_share_url =  get_permalink( $post['ID'] );
+						$title = get_the_title($post['ID']);
+						$excerpt = get_the_excerpt($post['ID']);
+					}
+					else{
+						$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+						$title = $this->get_custom_element_value('title', $separator, ''); 
+						$excerpt = $this->get_custom_element_value('content', $separator, ''); 
+						$pinterest_share_url = $get_link;
+					}
+				}
+				// if featured full is available
+				if(isset($this->media_sources['featured-image-full']) && !empty($this->media_sources['featured-image-full'])) {
+					$img_url = $this->media_sources['featured-image-full'];
+				}
+				// if featured regular size is available
+				else if(isset($this->media_sources['featured-image']) && !empty($this->media_sources['featured-image'])) {
+					$img_url = $this->media_sources['featured-image'];
+				}
+				// if global image is available
+				else if(!empty($this->default_image)) {
+					$img_url = esc_attr($this->default_image);
+				}	
+
+				$description = str_replace(array("%title%","%excerpt%"), array($title,$excerpt), $layer['settings']['link-type-sharepinterest-description']);
+
+				$text = '<a href="https://pinterest.com/pin/create/button/?url='.urlencode($pinterest_share_url).'&media='.urlencode($img_url).'&description='.urlencode($description).'" target="_blank" rel=nofollow>'.$text.'</a>';	
+			break;
+			case 'sharetwitter':
+				$title = $excerpt = $img_url = "";
+				if(isset($layer['settings']['link-type-sharetwitter'])){
+					switch ($layer['settings']['link-type-sharetwitter']) {
+						case 'custom':
+							$twitter_share_url = $layer['settings']['link-type-sharetwitter-custom-url'];
+							break;
+						case 'site':
+							$twitter_share_url = get_permalink();
+							$title = get_the_title();
+							$excerpt = get_the_excerpt();
+							break;
+						default:
+							if($is_post){
+								$twitter_share_url =  get_permalink( $post['ID'] );
+								$title = get_the_title($post['ID']);
+								$excerpt = get_the_excerpt($post['ID']);
+							}
+							else{
+								$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+								$title = $this->get_custom_element_value('title', $separator, ''); 
+								$excerpt = $this->get_custom_element_value('content', $separator, ''); 
+								$twitter_share_url = $get_link;
+							}
+							break;
+					}
+				}
+				else{
+					if($is_post){
+						$twitter_share_url =  get_permalink( $post['ID'] );
+						$title = get_the_title($post['ID']);
+						$excerpt = get_the_excerpt($post['ID']);
+					}
+					else{
+						$get_link = $this->get_custom_element_value('post-link', $separator, ''); 
+						$title = $this->get_custom_element_value('title', $separator, ''); 
+						$excerpt = $this->get_custom_element_value('content', $separator, ''); 
+						$twitter_share_url = $get_link;
+					}
+				}
+
+				if(!empty($layer['settings']['link-type-sharetwitter-text-before'])){
+					$twitter_share_text_before = str_replace(array("%title%","%excerpt%"), array($title,$excerpt), $layer['settings']['link-type-sharetwitter-text-before']);
+				}
+				else {
+					$twitter_share_text_before = "";
+				}
+				if(!empty($layer['settings']['link-type-sharetwitter-text-after'])){
+					$twitter_share_text_after = str_replace(array("%title%","%excerpt%"), array($title,$excerpt), $layer['settings']['link-type-sharetwitter-text-after']);
+				}
+				else {
+					$twitter_share_text_after = "";	
+				}
+				$twitter_share_text = $twitter_share_text_before.$twitter_share_url.$twitter_share_text_after;
+				$text = '<a href="https://twitter.com/home?status='.urlencode($twitter_share_text).'" target="_blank" rel=nofollow>'.$text.'</a>';	
+			break;
+			case 'likepost':
+				if(!empty($this->post['ID'])) 
+					$text = '<a data-post_id="'.@$this->post['ID'].'" href="#"><span class="eg-post-like">'.$text.'</span></a>'; //javascript-link
+				else $text = ''; 
 			break;
 			
 		}
@@ -3903,10 +4709,10 @@ class Essential_Grid_Item_Skin {
 		$text = trim($text);
 		
 		//check for special styling coming from post option and set css to the queue
-		$this->set_meta_element_changes($layer['id'], $unique_class);
+		if(isset($layer['id'])) $this->set_meta_element_changes($layer['id'], $unique_class);
 		
 		$post_class = (!isset($post['ID'])) ? '' : ' eg-post-'.$post['ID'];
-
+		
 		if($base->text_has_certain_tag($text, 'a') && !$do_ignore_styles){ //check if a tag exists, if yes, class will be set to a tags and not the wrapping div, also the div will receive the position and other stylings // && @$layer['settings']['source'] !== 'text'
 			if($is_woo_cats && strpos($text, 'class="') !== false || $is_woo_button || $is_filter_cat && strpos($text, 'class="') !== false){ //add to the classes instead of creating own class attribute if it is woocommerce cats AND a class can be found
 				$text = str_replace('class="', 'class="'.$unique_class.$post_class.$lb_class.' ', $text);
@@ -3915,6 +4721,9 @@ class Essential_Grid_Item_Skin {
 			}else{
 				$text = str_replace('<a', '<a class="'.$unique_class.$post_class.$lb_class.'"', $text);
 			}
+			
+			/* 2.2 */
+			// if(!empty($lb_class)) $text = str_replace('</a>', '<img class="esg-lb-dummy" src="'. EG_PLUGIN_URL .'public/assets/images/300x200transparent.png"></a>', $text);
 			
 			//moved to more global css generation process @version: 2.0
 			//$this->add_css_wrap[$unique_class]['a']['display'] = $do_display; //do_display defines if we should write display: block;
@@ -3941,7 +4750,7 @@ class Essential_Grid_Item_Skin {
 			$use_tag = $base->getVar($layer['settings'], 'tag-type', 'div');
 			echo '				<'.$use_tag.' class="esg-'.$class.$post_class.$video_play.$ajax_class.' '.$hideunderClass.$unique_class.$transition.'"'.$ajax_attr.$transition_split.$delay.$hideunderHTML;
 			echo ($demo == 'custom') ? $demo_element_type : '';
-			echo '>';
+			echo $data_transition_transition . '>';
 			
 			echo $text;
 			
@@ -3954,11 +4763,22 @@ class Essential_Grid_Item_Skin {
 	/**
 	 * Retrieve the value of post elements
 	 */
-	public function get_post_value($handle, $separator, $function, $meta){
+	public function get_post_value($handle, $separator, $function, $meta, $catmax = '-1', $taxonomy = ""){
 		
 		$base = new Essential_Grid_Base();
 		
 		$text = '';
+		
+		/* 2.1.5 category max option */
+		$adjustMax = false;
+
+		if( in_array( $handle, array( 'cat_list','tag_list','taxonomy') ) )  {
+			if(!empty($catmax) && $catmax !== '-1' && is_numeric($catmax) && intval($catmax) > 0) {
+				$catmax = intval($catmax);
+				$adjustMax = true;
+			}
+		}
+
 		switch($handle){
 			//Post elements
 			case 'post_id':
@@ -3987,6 +4807,19 @@ class Essential_Grid_Item_Skin {
 				$m = new Essential_Grid_Meta();
 				$text = $m->get_meta_value_by_handle($base->getVar($this->post, 'ID', ''),$meta);
 				break;
+			case 'likespost':
+				$post_id = $base->getVar($this->post, 'ID', '');
+				if(!empty($post_id)){
+					$count = get_post_meta($post_id, "eg_votes_count", 0);
+					if(!$count) $count[0] = 0;
+					if(is_array($count)){
+						$text = '<span class="eg-post-count">'.$count[0].'</span>';
+					}
+				}
+				else{
+					$text = '';
+				}
+				break;
 			case 'alias':
 				$text = $base->getVar($this->post, 'post_name');
 				break;
@@ -4000,6 +4833,26 @@ class Essential_Grid_Item_Skin {
 				$postDate = $base->getVar($this->post, "post_date_gmt");
 				$text = $base->convert_post_date($postDate);
 				break;
+			case 'date_day':
+				$postDate = $base->getVar($this->post, "post_date_gmt");	
+				$text = date('dd',strtotime($postDate));
+				break;
+			case 'date_month':
+				$postDate = $base->getVar($this->post, "post_date_gmt");	
+				$text = date('m',strtotime($postDate));
+				break;
+			case 'date_month_abbr':
+				$postDate = $base->getVar($this->post, "post_date_gmt");	
+				$text = date('M',strtotime($postDate));
+				break;
+			case 'date_year':
+				$postDate = $base->getVar($this->post, "post_date_gmt");	
+				$text = date('Y',strtotime($postDate));
+				break;
+			case 'date_year_abbr':
+				$postDate = $base->getVar($this->post, "post_date_gmt");	
+				$text = date('y',strtotime($postDate));
+				break;
 			case 'date_modified':
 				$dateModified = $base->getVar($this->post, "post_modified");
 				$text = $base->convert_post_date($dateModified);
@@ -4007,6 +4860,30 @@ class Essential_Grid_Item_Skin {
 			case 'author_name':
 				$authorID = $base->getVar($this->post, 'post_author');
 				$text = get_the_author_meta('display_name', $authorID);
+				break;
+			case 'author_posts':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$text = get_author_posts_url($authorID );
+				break;
+			case 'author_profile':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$meta_value =  get_the_author_meta('url', $authorID);
+				break;
+			case 'author_avatar_32':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$meta_value =  get_avatar( $authorID, 32);
+				break;
+			case 'author_avatar_64':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$meta_value =  get_avatar( $authorID, 64);
+				break;
+			case 'author_avatar_96':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$meta_value =  get_avatar( $authorID, 96);
+				break;
+			case 'author_avatar_512':
+				$authorID = $base->getVar($this->post, 'post_author');
+				$meta_value =  get_avatar( $authorID, 512);
 				break;
 			case 'num_comments':
 				$text = $base->getVar($this->post, 'comment_count');
@@ -4031,11 +4908,37 @@ class Essential_Grid_Item_Skin {
 						}
 					}
 				}
+				
+				/* 2.1.5 category max option */
+				if($adjustMax && is_array($postCatsIDs)) $postCatsIDs = array_slice($postCatsIDs, 0, $catmax, true);
+				
 				$text = $base->get_categories_html_list($postCatsIDs, $function, $separator, $use_taxonomies);
 				break;
 			case 'tag_list':
-				$text = $base->get_tags_html_list($base->getVar($this->post, 'ID', ''), $separator, $function);	
+				if(!$adjustMax) {
+					$text = $base->get_tags_html_list($base->getVar($this->post, 'ID', ''), $separator, $function);
+				}
+				else {
+					$text = $base->get_tags_html_list($base->getVar($this->post, 'ID', ''), $separator, $function, $catmax);
+				}
 				break;
+			case 'taxonomy':
+				if(!$adjustMax) {
+					$text = $base->get_tax_html_list($base->getVar($this->post, 'ID', ''), $taxonomy, $separator,  $function);
+				}
+				else {
+					$text = $base->get_tax_html_list($base->getVar($this->post, 'ID', ''), $taxonomy, $separator, $function, $catmax);
+				}
+
+				break;
+			
+			/*			
+			case 'iframe':
+				print '<h1>HELLO!</h1>';
+				die();
+				break;
+			*/
+			
 			default:
 				$text = apply_filters('essgrid_post_meta_content', $text, $handle, $base->getVar($this->post, 'ID', ''), $this->post);
 			break;
@@ -4124,7 +5027,7 @@ class Essential_Grid_Item_Skin {
 	/**
 	 * Retrieve the value of woocommerce elements
 	 */
-	public function get_woocommerce_value($meta, $separator){
+	public function get_woocommerce_value($meta, $separator, $catmax = false){
 		$text = '';
 		
 		if(isset($this->post['ID'])){
@@ -4132,7 +5035,21 @@ class Essential_Grid_Item_Skin {
 				$base = new Essential_Grid_Base();
 				$m = new Essential_Grid_Meta();
 				
-				$text = Essential_Grid_Woocommerce::get_value_by_meta($this->post['ID'], $meta, $separator);
+				/* 2.1.5 category max option */
+				$adjustMax = false;
+				if($meta === 'wc_categories') {
+					if(!empty($catmax) && $catmax !== '-1' && is_numeric($catmax) && intval($catmax) > 0) {
+						$catmax = intval($catmax);
+						$adjustMax = true;
+					}
+				}
+				
+				if($adjustMax) {
+					$text = Essential_Grid_Woocommerce::get_value_by_meta($this->post['ID'], $meta, $separator, $catmax);
+				}
+				else {
+					$text = Essential_Grid_Woocommerce::get_value_by_meta($this->post['ID'], $meta, $separator);
+				}
 			}
 		}
 		return $text;
