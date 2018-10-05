@@ -1,9 +1,8 @@
 <?php
+namespace Favorites\Entities\Favorite;
 
-namespace SimpleFavorites\Entities\Favorite;
-
-use SimpleFavorites\Entities\User\UserRepository;
-use SimpleFavorites\Config\SettingsRepository;
+use Favorites\Entities\User\UserRepository;
+use Favorites\Config\SettingsRepository;
 
 class ClearFavoritesButton
 {
@@ -41,7 +40,7 @@ class ClearFavoritesButton
 	public function display()
 	{
 		if ( !$this->user->getsButton() ) return false;
-		if ( !$this->text ) $this->text = $this->settings_repo->clearFavoritesText();
+		if ( !$this->text ) $this->text = html_entity_decode($this->settings_repo->clearFavoritesText());
 		if ( !$this->site_id ) $this->site_id = 1;
 		$out = '<button class="simplefavorites-clear" data-siteid="' . $this->site_id . '">' . $this->text . '</button>';
 		return $out;

@@ -1,17 +1,24 @@
 <?php 
+namespace Favorites;
 
-namespace SimpleFavorites;
+use Favorites\Config\SettingsRepository;
 
 /**
 * Plugin Bootstrap
 */
 class Bootstrap 
 {
+	/**
+	* Settings Repository
+	* @var object
+	*/
+	private $settings_repo;
 
 	public function __construct()
 	{
-		$this->init();
-		add_action( 'init', array($this, 'startSession') );
+		$this->settings_repo = new SettingsRepository;
+		add_action( 'init', array($this, 'init') );
+		add_action( 'admin_init', array($this, 'adminInit'));
 		add_filter( 'plugin_action_links_' . 'favorites/favorites.php', array($this, 'settingsLink' ) );
 		add_action( 'plugins_loaded', array($this, 'addLocalization') );
 	}
@@ -33,6 +40,15 @@ class Bootstrap
 		new API\Shortcodes\UserFavoriteCount;
 		new API\Shortcodes\PostFavoritesShortcode;
 		new API\Shortcodes\ClearFavoritesShortcode;
+		$this->startSession();
+	}
+
+	/**
+	* Admin Init
+	*/
+	public function adminInit()
+	{
+		new Entities\Post\AdminColumns;
 	}
 
 	/**
@@ -40,8 +56,8 @@ class Bootstrap
 	*/
 	public function settingsLink($links)
 	{ 
-		$settings_link = '<a href="options-general.php?page=simple-favorites">' . __('Settings', 'simplefavorites') . '</a>'; 
-		$help_link = '<a href="http://favoriteposts.com">' . __('FAQ','simplefavorites') . '</a>'; 
+		$settings_link = '<a href="options-general.php?page=simple-favorites">' . __('Settings', 'favorites') . '</a>'; 
+		$help_link = '<a href="http://favoriteposts.com">' . __('FAQ', 'favorites') . '</a>'; 
 		array_unshift($links, $help_link); 
 		array_unshift($links, $settings_link);
 		return $links; 
@@ -53,7 +69,7 @@ class Bootstrap
 	public function addLocalization()
 	{
 		load_plugin_textdomain(
-			'simplefavorites', 
+			'favorites', 
 			false, 
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages' );
 	}
@@ -63,7 +79,7 @@ class Bootstrap
 	*/
 	public function startSession()
 	{
+		if ( $this->settings_repo->saveType() !== 'session' ) return;
 		if ( !session_id() ) session_start();
 	}
-
 }

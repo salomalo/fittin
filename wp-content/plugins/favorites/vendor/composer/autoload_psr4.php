@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'SimpleFavorites\\' => array($baseDir . '/app'),
+    'Favorites\\' => array($baseDir . '/app'),
 );

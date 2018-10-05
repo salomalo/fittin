@@ -46,8 +46,6 @@ foreach( $no_builtin_taxs as $tax ) {
 
 <div class="wrap">
 
-<?php screen_icon( 'plugins' ); ?>
-
 <h2>
 	<?php _e('Custom Taxonomies', 'cptg'); ?>
 	<a href="<?php echo admin_url('admin.php?page=cptg-regist-tax'); ?>" class="add-new-h2"><?php _e('Add New', 'cptg'); ?></a>
@@ -190,8 +188,9 @@ foreach( $no_builtin_taxs as $tax ) {
 			</tr>
 		</tfoot>
 		<tbody>
+			<?php $cnt = 0; ?>
 			<?php foreach( $builtin_taxs as $key => $tax ) : ?>
-			<tr <?php if ( $key%2 == 0 ) echo 'class="alternate"' ?>>
+			<tr <?php if ( $cnt%2 == 0 ) echo 'class="alternate"' ?>>
 				<td valign="top">
 					<strong><?php echo $tax->name; ?></strong>
 				</td>
@@ -204,6 +203,7 @@ foreach( $no_builtin_taxs as $tax ) {
 					?>
 				</td>
 			</tr>
+			<?php $cnt++; ?>
 			<?php endforeach; ?>
 		</tbody>
 	</table>

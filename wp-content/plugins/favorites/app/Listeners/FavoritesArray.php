@@ -1,19 +1,11 @@
 <?php 
-
-namespace SimpleFavorites\Listeners;
-
-use SimpleFavorites\Entities\User\UserRepository;
+namespace Favorites\Listeners;
 
 /**
 * Return an array of user's favorited posts
 */
 class FavoritesArray extends AJAXListenerBase
 {
-	/**
-	* User Repository
-	*/
-	private $user;
-
 	/**
 	* User Favorites
 	* @var array
@@ -22,7 +14,7 @@ class FavoritesArray extends AJAXListenerBase
 
 	public function __construct()
 	{
-		$this->user = new UserRepository;
+		parent::__construct(false);
 		$this->setFavorites();
 		$this->response(array('status'=>'success', 'favorites' => $this->favorites));
 	}
@@ -32,7 +24,7 @@ class FavoritesArray extends AJAXListenerBase
 	*/
 	private function setFavorites()
 	{
-		$favorites = $this->user->formattedFavorites();
+		$favorites = $this->user_repo->formattedFavorites();
 		$this->favorites = $favorites;
 	}
 }
