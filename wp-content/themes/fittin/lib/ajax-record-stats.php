@@ -14,14 +14,14 @@ function record_stats() {
 	$recent = get_user_meta( $user, 'time_list_most_recent', true );
 	$time_list = get_user_meta( $user, 'time_list', true );
 
-	if ( '' != $recent ) {
-		// compare current time to recent time
-		$time_difference =  time() - $recent[timestamp];
+	// if ( '' != $recent ) {
+	// 	// compare current time to recent time
+	// 	$time_difference =  time() - $recent[timestamp];
 
-		if ( $time_difference < 1 ) { // 300 = 5 mins
-			die('not enough time elapsed');
-		}
-	}
+	// 	if ( $time_difference < 1 ) { // 300 = 5 mins
+	// 		die('not enough time elapsed');
+	// 	}
+	// }
 
 	// update recent time
 	update_user_meta( $user, 'time_list_most_recent', array(
@@ -40,7 +40,7 @@ function record_stats() {
 
 	update_user_meta( $user, 'time_list',  $time_list );
 
-	wp_die();
+	wp_die('complete');
 
 }
 add_action( 'wp_ajax_record_stats', 'record_stats' );

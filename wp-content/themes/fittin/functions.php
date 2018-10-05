@@ -8,6 +8,8 @@
  *
  */
 
+include( 'lib/all_stats.php' );
+
 include( 'lib/member-page.php' );
 include( 'lib/ajax-record-stats.php' );
 include( 'lib/ajax-default.php' );
