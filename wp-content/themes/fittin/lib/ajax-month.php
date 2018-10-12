@@ -20,7 +20,7 @@ function month_view_button() {
 	if ( !empty ( $_POST['selected_month'] ) ) {
 		$datesminutes = json_encode( view_month( $time_log, esc_html( $_POST['selected_month'] ) ) );
 	} else {
-		$datesminutes = json_encode( view_month( $time_log ) );
+		$datesminutes = json_encode( view_month( $time_log, null ) );
 	}
 
 	wp_die($datesminutes);

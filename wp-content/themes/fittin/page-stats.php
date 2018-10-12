@@ -23,40 +23,40 @@ get_header();
 
 
                 // steve c log
-                echo print_r( get_current_user_id() );
-                echo '<br>';
-echo '<pre>'.print_r( get_user_meta( 357, 'time_list', true ), true ) . '</pre><br><br>';
+//                 echo print_r( get_current_user_id() );
+//                 echo '<br>';
+// echo '<pre>'.print_r( get_user_meta( 357, 'time_list', true ), true ) . '</pre><br><br>';
 
-global $wpdb;
-$sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . 191 . "'";
-$result	= $wpdb -> get_row($sql);
+// global $wpdb;
+// $sql = "SELECT id, group_name FROM " . $wpdb -> prefix . "group_sets WHERE group_leader = '" . 191 . "'";
+// $result	= $wpdb -> get_row($sql);
 
-if ( $result ) {
+// if ( $result ) {
 
-    // now get users from group
-    $gMemSql = "SELECT * FROM " . $wpdb -> prefix . "group_sets_members WHERE group_id = '" . $result->id . "' ORDER BY createdDate";
-    $gMemResults = $wpdb -> get_results($gMemSql);
-    foreach( $gMemResults as $member ) {
-        // echo '<pre>'.print_r( $member, true ) . '</pre>';
-        // echo '<pre style="background: #fcc">'.print_r( get_user_meta( $member->member_id, 'time_list', true ), true ) . '</pre><br><br>';
+//     // now get users from group
+//     $gMemSql = "SELECT * FROM " . $wpdb -> prefix . "group_sets_members WHERE group_id = '" . $result->id . "' ORDER BY createdDate";
+//     $gMemResults = $wpdb -> get_results($gMemSql);
+//     foreach( $gMemResults as $member ) {
+//         // echo '<pre>'.print_r( $member, true ) . '</pre>';
+//         // echo '<pre style="background: #fcc">'.print_r( get_user_meta( $member->member_id, 'time_list', true ), true ) . '</pre><br><br>';
 
-        $dates =  get_user_meta( $member->member_id, 'time_list', true );
-        if ($dates) {
-            foreach ( $dates as $date => $key ) {
-                if ( strpos( $date, '2018' ) !== false  ) {
-                    echo $date . '<br>';
-                }
-            }
-        }
-        echo '<hr>';
+//         $dates =  get_user_meta( $member->member_id, 'time_list', true );
+//         if ($dates) {
+//             foreach ( $dates as $date => $key ) {
+//                 if ( strpos( $date, '2018' ) !== false  ) {
+//                     echo $date . '<br>';
+//                 }
+//             }
+//         }
+//         echo '<hr>';
 
-    }
-} 
-
-
+//     }
+// } 
 
 
 
+
+if ( current_user_can( 'manage_options' ) ) {
 
                 // get each monday & sunday since june 2017
                 $first_day = date( 'U', strtotime( '5 June 2017' ) );
@@ -80,8 +80,7 @@ if ( $result ) {
                     echo '<br><hr><br>';
                 }
 
-
-
+} // is user can manage options i.e. is admin
 
                 ?>
             </section><!-- /#main -->

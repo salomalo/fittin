@@ -31,7 +31,11 @@ jQuery(document).ready(function($){
 
 					jQuery.post(ajax_object.ajax_url, data, function(response) {
 						console.log('Got this from the server: ' + response);
-					});
+					})
+						.fail(function(error){
+							console.log('ajax url error: ');
+							console.dir(error);
+						});
 
 				}).catch(function(error) {
 				    console.log('getVideoId error: '+error);
@@ -112,7 +116,10 @@ jQuery(document).ready(function($){
 				$('.default-view').removeClass('current');
 				$('.week-view').addClass('current');
 				$('.month-view').removeClass('current');
-			});
+			})
+				.fail(function(err){
+					console.log(err);
+				});
 		}
 	}
 
@@ -220,8 +227,10 @@ jQuery(document).ready(function($){
 				$('.default-view').addClass('current');
 				$('.week-view').removeClass('current');
 				$('.month-view').removeClass('current');
-
-			});
+			})
+				.fail(function(error) {
+					console.log(error);
+				});
 		}
 	}
 

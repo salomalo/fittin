@@ -2,27 +2,27 @@
 
 wp_schedule_event( time(), 'hourly', 'fittin_weekly_email' );
 
-// add_action( 'wp_footer', 'stats_email' );// @DEBUG_INFO
+add_action( 'wp_footer', 'stats_email' );// @DEBUG_INFO
 // add_action( 'fittin_weekly_email', 'stats_email' );
 
 function stats_email() {
 
 	// only run on live (not staging!)
 	if ( strpos( $_SERVER['HTTP_HOST'], 'staging' ) !== false ) {
-		echo '<h3>staging server</h3>';
+		// echo '<h3>staging server</h3>';
 		return;
 	}
 
 	// check it's saturday
 	if ( 'Sat' !== date( 'D' ) ) {
-		// return; // @DEBUG_INFO
+		return; // @DEBUG_INFO
 	}
 
 	// Force one per day! This was firing multiple times
 	$emails_last_sent_date = get_option( 'fittin_emails_last_sent_date' );
 
 	if ( date( 'd-m-Y' ) == $emails_last_sent_date  ) {
-		// return; // @DEBUG_INFO
+		return; // @DEBUG_INFO
 	} else  {
 		update_option( 'fittin_emails_last_sent_date',  date( 'd-m-Y' ) );
 	}
@@ -175,12 +175,10 @@ function stats_email() {
 		wp_mail( 'cpd@loopmill.com', '@DEBUG Fitt-in video views this week', print_r( $admin_emails ), $headers );
 		
 
-
-
 	} // if there are users
 
 
-}
+} // stats_email func
 
 add_filter( 'wp_mail_content_type', function() {
 	return "text/html";
