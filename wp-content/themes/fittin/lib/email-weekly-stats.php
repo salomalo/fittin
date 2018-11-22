@@ -28,10 +28,9 @@ function stats_email() {
 	}
 
 	$args = array(
-		 'fields' => 'all',
-		//  'fields' => 'id',
-		 'no_found_rows' => true,
-		 'role__in' => array( 'Group Leader', 'subscriber', 'administrator' )
+		'fields' => 'all',
+		'no_found_rows' => true,
+		'role__in' => array( 'Group Leader', 'subscriber', 'administrator' )
 	);
 	$user_query = new WP_User_Query( $args );
 
@@ -47,7 +46,7 @@ function stats_email() {
 			$log = get_user_meta( $user->ID, 'time_list', true);
 
 			// get start/end day  (run this job on a sunday)
-			$first_day = date( 'd-m-Y', strtotime( 'last monday -110 days' )); // mon
+			$first_day = date( 'd-m-Y', strtotime( 'last monday -1 days' )); // mon
 			$last_day = date( 'd-m-Y', strtotime( 'last monday +6 days' )); // sat
 
 			// echo "<div style='position:fixed; background: #ddd; top: 100px; right:0; z-index:999;'>$first_day -> $last_day</div>"; //@DEBUG INFO
